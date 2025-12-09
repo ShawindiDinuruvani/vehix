@@ -1,17 +1,13 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import { Button, Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Link } from "react-router-dom"; // ✅ must be imported
 
 const NavbarComponent = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        {/* Just text instead of <Vehix /> */}
-        <Navbar.Brand href="#">Vehix</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Vehix</Navbar.Brand>
+
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -19,17 +15,19 @@ const NavbarComponent = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Service</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Signin</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">Signup</NavDropdown.Item>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/service">Service</Nav.Link>
+            <Nav.Link as={Link} to="/vehicles">Vehicles</Nav.Link>
+            <Nav.Link as={Link} to="/appoinments">Appointments</Nav.Link>
+
+            <NavDropdown title="Account" id="navbarScrollingDropdown">
+              <NavDropdown.Item as={Link} to="/login">Signin</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/signup">Signup</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
+              <NavDropdown.Item href="#">Something else here</NavDropdown.Item>
             </NavDropdown>
           </Nav>
+
           <Form className="d-flex">
             <Form.Control
               type="search"
