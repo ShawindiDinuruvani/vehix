@@ -6,6 +6,7 @@ import Signin from "./pages/Signin";
 import Vehicles from "./pages/Vehicles";
 import Appoinments from "./pages/Appoinments";
 import NavbarComponent from "./components/Navbar";
+import Service from "./pages/Service";
 
 function App() {
   return (
@@ -14,12 +15,16 @@ function App() {
         <NavbarComponent />
 
         <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Signin />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/appoinments" element={<Appoinments />} />
-          </Routes>
+         
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Signin />} />
+  <Route path="/vehicles" element={<Vehicles />} />
+  <Route path="/appoinments" element={<Appoinments />} />
+  <Route path="/service" element={<Service />} />
+</Routes>
+
         </main>
 
         <Footer />
