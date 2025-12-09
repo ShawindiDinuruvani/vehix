@@ -10,7 +10,8 @@ const NavbarComponent = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        {/* Just text instead of <Vehix /> */}
+        <Navbar.Brand href="#">Vehix</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -19,7 +20,7 @@ const NavbarComponent = () => {
             navbarScroll
           >
             <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Login</Nav.Link>
+            <Nav.Link href="#action2">Service</Nav.Link>
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Signin</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Signup</NavDropdown.Item>
@@ -28,9 +29,6 @@ const NavbarComponent = () => {
                 Something else here
               </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Appoiment
-            </Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Form.Control
