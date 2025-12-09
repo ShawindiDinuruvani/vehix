@@ -9,17 +9,22 @@ import NavbarComponent from "./components/Navbar";
 
 function App() {
   return (
-    <Router>
-      <NavbarComponent />
+    <div className="app-container">
+      <Router>
+        <NavbarComponent />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Signin />} />
-        <Route path="/vehicles" element={<Vehicles />} />
-        <Route path="/appoinments" element={<Appoinments />} />
-      </Routes>
-      <Footer />
-    </Router>
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Signin />} />
+            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/appoinments" element={<Appoinments />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </Router>
+    </div>
   );
 }
 
