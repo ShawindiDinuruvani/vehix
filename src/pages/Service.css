@@ -1,0 +1,18 @@
+/* Service Page Styling */
+h2 {
+  font-weight: bold;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
