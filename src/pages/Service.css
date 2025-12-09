@@ -1,18 +1,39 @@
-/* Service Page Styling */
-h2 {
-  font-weight: bold;
+/* Service Page General */
+.service-page {
+  background: linear-gradient(135deg, #007bff, #00c6ff); /* same blue gradient as Home */
+  min-height: 100vh;
+  padding: 60px 0;
+  color: #fff; /* white text */
 }
 
+/* Card Styling */
 .card {
   border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  transition: all 0.3s ease;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
+/* Form Card Background */
+.card.form-card {
+  background-color: #ffffff; /* white background for the form */
+  color: #000; /* black text inside form */
+}
+
+/* Buttons */
 .btn-primary {
   background-color: #007bff;
   border: none;
 }
+
+/* Custom colored borders for common issues */
+.card.issue-primary { border: 2px solid #0d6efd !important; }
+.card.issue-secondary { border: 2px solid #6c757d !important; }
+.card.issue-success { border: 2px solid #198754 !important; }
+.card.issue-danger { border: 2px solid #dc3545 !important; }
+.card.issue-warning { border: 2px solid #ffc107 !important; }
+.card.issue-info { border: 2px solid #0dcaf0 !important; }
+.card.issue-dark { border: 2px solid #212529 !important; }
