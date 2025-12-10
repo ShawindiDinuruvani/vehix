@@ -1,0 +1,50 @@
+/* Appointment Page Background */
+.appointment-page {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  min-height: 100vh;
+  padding: 80px 0;
+  color: #fff;
+  font-family: cursive;
+}
+
+/* Glass Card Style */
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Controls */
+.form-control {
+  border-radius: 8px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4);
+  outline: none;
+}
+
+/* Button */
+.btn-primary {
+  background-color: #004aad;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  background-color: #003d8c;
+  transform: scale(1.02);
+}

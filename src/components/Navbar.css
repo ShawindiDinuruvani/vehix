@@ -1,0 +1,50 @@
+/* Navbar gradient background */
+.custom-navbar {
+  background: linear-gradient(135deg, #007bff, #00c6ff) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Navbar links */
+.custom-navbar .nav-link,
+.custom-navbar .navbar-brand {
+  color: #fff !important; /* force white text */
+}
+
+/* Hover effects */
+.custom-navbar .nav-link:hover {
+  color: #000000 !important;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Dropdown items */
+.custom-navbar .dropdown-item {
+  color: #000000 !important;
+}
+.custom-navbar .dropdown-item:hover {
+  background: rgba(255,255,255,0.2);
+  color: #007bff !important;
+}
+
+/* Search */
+.custom-navbar .form-control {
+  border-radius: 50px;
+  border: none;
+  padding: 0.4rem 1rem;
+}
+
+.custom-navbar .btn-outline-light {
+  border-radius: 50px;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.custom-navbar .btn-outline-light:hover {
+  background: #fff;
+  color: #007bff;
+}
+
+/* Hamburger icon */
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255,255,255,1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
