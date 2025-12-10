@@ -1,21 +1,21 @@
+// src/pages/Service.jsx
 import React, { useState } from "react";
 import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
+import ServiceMap from "../components/ServiceMap";
 import "./Service.css";
 
 const commonIssues = [
-  "Dead Battery",
-  "Engine Issues",
-  "Flat Tire",
-  "Out of Fuel",
-  "Overheating",
-  "Electrical Problem",
-  "Brake Issues",
-  "Locked Out",
-  "Transmission Problem",
-  "AC/Heating Problem",
-  "Other",
+  "Dead Battery", "Engine Issues", "Flat Tire", "Out of Fuel", "Overheating",
+  "Electrical Problem", "Brake Issues", "Locked Out", "Transmission Problem",
+  "AC/Heating Problem", "Other",
 ];
 
+// Sample service centers
+const sampleServiceCenters = [
+  { name: "City Auto Service", address: "123 Colombo Rd", lat: 6.9271, lng: 79.8612 },
+  { name: "QuickFix Garage", address: "456 Kandy Rd", lat: 6.9147, lng: 79.9723 },
+  { name: "AutoPro Center", address: "789 Galle Rd", lat: 6.9025, lng: 79.8578 },
+];
 
 const Service = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +26,8 @@ const Service = () => {
     additionalNotes: "",
   });
 
+  const [serviceCenters, setServiceCenters] = useState([]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -34,6 +36,10 @@ const Service = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     alert("Service request submitted successfully!");
+    
+    // Show service centers on the map after submit
+    setServiceCenters(sampleServiceCenters);
+
     setFormData({
       vehicleNumber: "",
       vehicleModel: "",
@@ -44,13 +50,12 @@ const Service = () => {
   };
 
   return (
-     <div className="service-page">
+    <div className="service-page">
       <Container>
         <h2 className="mb-4 text-center text-white">Vehicle Service Request</h2>
         <Row className="gy-4">
           {/* Form Section */}
           <Col md={6}>
-            {/* ✅ CHANGED: Added class "form-card" to make background white */}
             <Card className="p-4 shadow-sm form-card">
               <h5 className="mb-3">Vehicle Information</h5>
               <Form onSubmit={handleSubmit}>
@@ -100,9 +105,7 @@ const Service = () => {
                   >
                     <option value="">Select an issue</option>
                     {commonIssues.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item}
-                      </option>
+                      <option key={index} value={item}>{item}</option>
                     ))}
                   </Form.Select>
                 </Form.Group>
@@ -119,9 +122,7 @@ const Service = () => {
                   />
                 </Form.Group>
 
-                <Button type="submit" className="btn-primary w-100">
-                  Submit Request
-                </Button>
+                <Button type="submit" className="btn-primary w-100">Submit Request</Button>
               </Form>
             </Card>
           </Col>
@@ -131,25 +132,22 @@ const Service = () => {
             <h5 className="mb-3 text-white">Common Issues</h5>
             {commonIssues.map((issue, index) => {
               const colorClasses = [
-                "issue-primary",
-                "issue-secondary",
-                "issue-success",
-                "issue-danger",
-                "issue-warning",
-                "issue-info",
-                "issue-dark",
+                "issue-primary", "issue-secondary", "issue-success",
+                "issue-danger", "issue-warning", "issue-info", "issue-dark"
               ];
-              const className =
-                colorClasses[index % colorClasses.length] +
-                " mb-2 p-3 shadow-sm";
-              return (
-                <Card key={index} className={className}>
-                  {issue}
-                </Card>
-              );
+              const className = colorClasses[index % colorClasses.length] + " mb-2 p-3 shadow-sm commonissue";
+              return <Card key={index} className={className}>{issue}</Card>;
             })}
           </Col>
         </Row>
+
+        {/* Map Section */}
+        {serviceCenters.length > 0 && (
+          <div className="mt-5">
+            <h5 className="text-white mb-3">Nearby Service Centers</h5>
+            <ServiceMap serviceCenters={serviceCenters} />
+          </div>
+        )}
       </Container>
     </div>
   );

@@ -1,20 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+import { Container, Form, Button, Card } from "react-bootstrap";
+import "./Signin.css"; // Make sure this path is correct
+import { Link } from "react-router-dom";
 
 const Signin = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("User Signed In:", formData);
+    alert("Signed in successfully!");
+  };
+
   return (
-    <div className="container py-5">
-      <h2 className="mb-4">Login to Vehix</h2>
-      <form>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email address</label>
-          <input type="email" className="form-control" id="email" placeholder="Enter email" />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input type="password" className="form-control" id="password" placeholder="Password" />
-        </div>
-        <button type="submit" className="btn btn-primary">Login</button>
-      </form>
+    <div className="auth-page">
+      <Container className="d-flex justify-content-center align-items-center min-vh-100">
+        <Card className="auth-card p-4">
+          <h2 className="text-center mb-4">Sign In to Vehix</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Button type="submit" className="btn-primary w-100 mb-3">
+              Sign In
+            </Button>
+          </Form>
+          <div className="text-center">
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+          </div>
+        </Card>
+      </Container>
     </div>
   );
 };

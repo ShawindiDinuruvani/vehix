@@ -1,3 +1,5 @@
+import './Footer.css'
+
 const Footer = () => {
   return (
     <footer className="bg-dark text-white text-center py-3">

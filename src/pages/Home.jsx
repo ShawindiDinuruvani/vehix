@@ -18,9 +18,7 @@ const Home = () => {
             <Link to="/login">
               <button className="btn btn-primary btn-lg me-3">Get Started</button>
             </Link>
-            <Link to="#features">
-              <button className="btn btn-outline-primary btn-lg">Learn More</button>
-            </Link>
+           
           </div>
         </Container>
       </section>
