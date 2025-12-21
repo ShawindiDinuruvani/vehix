@@ -1,11 +1,13 @@
+// src/pages/Signup.jsx
 import React, { useState } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
-import "./Signup.css"; // Make sure the path is correct
+import axios from "axios";
 import { Link } from "react-router-dom";
+import "./Signup.css";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -14,35 +16,51 @@ const Signup = () => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("User Signed Up:", formData);
-    alert("Account created successfully!");
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+
+    try {
+      // Send POST request to backend
+      const response = await axios.post(
+        "http://localhost:8080/api/users/signup",
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
+
+      alert(`Account created successfully! Welcome ${response.data.fullName}`);
+      setFormData({
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Failed to create account");
+    }
   };
 
   return (
     <div className="auth-page">
       <Container className="d-flex justify-content-center align-items-center min-vh-100">
-        <Card className="auth-card p-4">
+        <Card className="auth-card p-4 shadow-lg">
           <h2 className="text-center mb-4">Create Your Account</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Full Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
+                name="fullName"
                 placeholder="Enter your full name"
-                value={formData.name}
+                value={formData.fullName}
                 onChange={handleChange}
                 required
               />
