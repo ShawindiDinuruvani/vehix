@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
 import "./Signin.css"; // Make sure this path is correct
 import { Link } from "react-router-dom";
-import api from '../api/axios'; //  api  import 
+import api from '../api/axios'; // අපි හදාගත්ත api එක import කරන්න
+
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -11,12 +12,12 @@ const handleSubmit = async (e) => {
             password: formData.password
         });
         
-        // , Role 
+        // සාර්ථක නම්, Role එක අනුව අදාළ පිටුවට යවන්න 
         alert("Login Successful!");
         window.location.href = "/home"; 
         
     } catch (err) {
-        // Backend එන Error [cite: 18, 54]
+        // Backend එකෙන් එන Error message එක පෙන්වීම [cite: 18, 54]
         alert(err.response?.data || "Login failed!");
     }
 };
