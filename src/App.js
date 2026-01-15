@@ -9,6 +9,8 @@ import NavbarComponent from "./components/Navbar";
 import Service from "./pages/Service";
 import TrackHistory from "./pages/TrackHistory";
 import 'leaflet/dist/leaflet.css';
+import axiosInstance from './api/axios';
+
 
 
 function App() {
