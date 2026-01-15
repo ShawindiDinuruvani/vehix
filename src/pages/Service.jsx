@@ -4,6 +4,10 @@ import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
 import ServiceMap from "../components/ServiceMap";
 import "./Service.css";
 
+import axiosInstance from "../api/axios";
+
+
+
 const commonIssues = [
   "Dead Battery", "Engine Issues", "Flat Tire", "Out of Fuel", "Overheating",
   "Electrical Problem", "Brake Issues", "Locked Out", "Transmission Problem",
