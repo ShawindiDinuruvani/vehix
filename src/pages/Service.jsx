@@ -31,27 +31,53 @@ const Service = () => {
   });
 
   const [serviceCenters, setServiceCenters] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Service request submitted successfully!");
-    
-    // Show service centers on the map after submit
-    setServiceCenters(sampleServiceCenters);
+  e.preventDefault();
 
-    setFormData({
-      vehicleNumber: "",
-      vehicleModel: "",
-      ownerName: "",
-      issue: "",
-      additionalNotes: "",
-    });
-  };
+  console.log("Form submitted:", formData);
+
+  // 🧭 Get user location
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const userLat = position.coords.latitude;
+      const userLng = position.coords.longitude;
+      console.log("User Location:", userLat, userLng);
+
+      // Show nearby garages based on user location
+      const nearby = sampleServiceCenters.filter(
+        (c) =>
+          Math.abs(c.lat - userLat) < 0.1 &&
+          Math.abs(c.lng - userLng) < 0.1
+      );
+
+      setServiceCenters(nearby);
+      setUserLocation({ lat: userLat, lng: userLng }); //  store in state
+
+      alert("Service request submitted! Showing nearby garages.");
+    },
+    (error) => {
+      console.error("Location error:", error);
+      alert("Please allow location access to show nearby garages.");
+    }
+  );
+
+  // Reset form after submission
+  setFormData({
+    vehicleNumber: "",
+    vehicleModel: "",
+    ownerName: "",
+    issue: "",
+    additionalNotes: "",
+  });
+};
+
 
   return (
     <div className="service-page">
@@ -149,7 +175,7 @@ const Service = () => {
         {serviceCenters.length > 0 && (
           <div className="mt-5">
             <h5 className="text-white mb-3">Nearby Service Centers</h5>
-            <ServiceMap serviceCenters={serviceCenters} />
+              <ServiceMap serviceCenters={serviceCenters} userLocation={userLocation} />
           </div>
         )}
       </Container>
