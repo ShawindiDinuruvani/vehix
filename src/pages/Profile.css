@@ -1,0 +1,84 @@
+/* Page Background */
+.profile-page {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Profile Image */
+.profile-img-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  padding: 5px;
+  background: linear-gradient(45deg, #0d6efd, #0dcaf0); /* Border gradient */
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #1a1a1a; /* Inner border to separate from gradient */
+  background-color: #fff;
+}
+
+/* Vehicle Card (For Customers) */
+.vehicle-card {
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #0d6efd !important;
+}
+
+.add-new-btn {
+  border-style: dashed !important;
+  cursor: pointer;
+}
+
+.add-new-btn:hover {
+  background: rgba(13, 110, 253, 0.1);
+  border-color: #0d6efd !important;
+  color: #0d6efd !important;
+}
+
+/* Garage Info */
+.garage-info {
+  border-left: 5px solid #ffc107;
+}
+.profile-icon-large {
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+.custom-input:disabled {
+    background: rgba(0, 0, 0, 0.3) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.custom-input:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none;
+    border-color: #0d6efd !important;
+}
