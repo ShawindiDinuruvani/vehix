@@ -1,14 +1,10 @@
 /* =========================================
-  1. Page Background & Layout
+   1. Page Background & Layout
    ========================================= */
-  .appointment-page {
-
-  padding-top: 120px !important; 
-}
 .appointment-page {
   /* High-quality dark automotive background */
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7)), 
-              url('');
+              url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -18,7 +14,7 @@
 }
 
 /* =========================================
-  2. Glass Card Effect (The Form Container)
+   2. Glass Card Effect (The Form Container)
    ========================================= */
 .glass-card {
   background: rgba(255, 255, 255, 0.92) !important; /* Slightly opaque white */
@@ -31,7 +27,7 @@
 }
 
 /* =========================================
-  3. Form Inputs & Selects
+   3. Form Inputs & Selects
    ========================================= */
 .form-label {
   font-weight: 600;
@@ -63,7 +59,7 @@ textarea.form-control {
 }
 
 /* =========================================
-  4. Buttons (Submit Button)
+   4. Buttons (Submit Button)
    ========================================= */
 .btn-primary {
   background: linear-gradient(45deg, #0d6efd, #0056b3); /* Gradient Blue */
@@ -87,7 +83,7 @@ textarea.form-control {
 }
 
 /* =========================================
-  5. Left Side Info Boxes
+   5. Left Side Info Boxes
    ========================================= */
 .info-box {
   background: rgba(255, 255, 255, 0.1);
@@ -117,7 +113,9 @@ textarea.form-control {
   border: 1px solid #495057;
 }
 
-/* 6. Table Styles (History Section)*/
+/* =========================================
+   6. Table Styles (History Section)
+   ========================================= */
 .table {
   margin-bottom: 0;
 }
@@ -150,8 +148,9 @@ textarea.form-control {
   font-weight: 500;
 }
 
-/*
-  7. Mobile Responsiveness */
+/* =========================================
+   7. Mobile Responsiveness
+   ========================================= */
 @media (max-width: 768px) {
   .display-4 {
     font-size: 2.5rem; /* Smaller title on mobile */
