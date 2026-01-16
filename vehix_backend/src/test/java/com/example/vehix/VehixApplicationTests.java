@@ -1,10 +1,10 @@
-package com.vehix.Appoinment;
+package com.example.vehix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppoinmentApplicationTests {
+class VehixApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,13 +1,13 @@
-package com.vehix.Appoinment;
+package com.example.vehix;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AppoinmentApplication {
+public class VehixApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppoinmentApplication.class, args);
+		SpringApplication.run(VehixApplication.class, args);
 	}
 
 }
