@@ -1,140 +1,180 @@
-/* 🌈 Navbar Base Style */
+/* =========================================
+   1. Navbar Base Style (Dark Glass Theme)
+   ========================================= */
 .custom-navbar {
-  background: linear-gradient(135deg, #007bff, #00c6ff) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  /* Dark background with slight transparency for glass effect */
+  background: rgba(33, 37, 41, 0.95) !important;
+  backdrop-filter: blur(10px); /* Blurs content behind the navbar */
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   padding: 0.8rem 1rem;
-  font-family: 'Poppins', 'Lucida Sans', sans-serif;
+  font-family: 'Poppins', sans-serif;
   transition: all 0.3s ease;
 }
 
-/* 🏷️ Brand Text */
+/* Optional: Make it stick to the top */
+.sticky-top {
+  position: fixed;
+  top: 0;
+  z-index: 1020;
+}
+
+/* =========================================
+   2. Brand Text
+   ========================================= */
 .custom-navbar .navbar-brand {
   color: #ffffff !important;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  font-weight: 800; /* Extra Bold */
   letter-spacing: 1px;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(13, 110, 253, 0.5); /* Subtle Blue Glow */
 }
 
-/* ✨ Navbar Links */
+.custom-navbar .navbar-brand span {
+  color: #0d6efd; /* Primary Blue Accent */
+}
+
+/* =========================================
+   3. Navbar Links
+   ========================================= */
 .custom-navbar .nav-link {
-  color: #ffffff !important;
+  color: rgba(255, 255, 255, 0.8) !important;
   font-size: 1rem;
-  margin: 0 8px;
-  transition: all 0.3s ease;
-}
-
-.custom-navbar .nav-link:hover {
-  color: #000000 !important;
-  background: rgba(255, 255, 255, 0.25);
+  font-weight: 500;
+  margin: 0 5px;
+  padding: 8px 15px !important;
   border-radius: 8px;
-  padding: 6px 10px;
-  transform: translateY(-2px);
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-/* 🔽 Dropdown Styling */
+/* Hover Effect: Light background + Blue Text */
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: #fff !important;
+  background: rgba(13, 110, 253, 0.2); /* Semi-transparent blue */
+  text-shadow: 0 0 5px rgba(13, 110, 253, 0.8);
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   4. Dropdown Styling
+   ========================================= */
 .custom-navbar .dropdown-menu {
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
+  background: #2b3035; /* Dark grey */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
 }
 
 .custom-navbar .dropdown-item {
-  color: #000000 !important;
-  font-size: 0.95rem;
+  color: #e0e0e0 !important;
+  padding: 10px 20px;
+  transition:  background 0.3s ease, color 0.3s ease;
 }
 
 .custom-navbar .dropdown-item:hover {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  background: #0d6efd; /* Blue background on hover */
   color: #ffffff !important;
 }
 
-/* 🔍 Search Bar */
+/* =========================================
+   5. Search Bar (Dark Mode)
+   ========================================= */
 .custom-navbar .form-control {
+  background-color: #1a1d20; /* Very dark grey */
+  border: 1px solid #495057;
+  color: #fff; /* White text */
   border-radius: 50px;
-  border: none;
-  padding: 0.45rem 1rem;
-  width: 230px;
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  padding: 0.5rem 1.2rem;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.custom-navbar .form-control::placeholder {
+  color: #adb5bd;
 }
 
 .custom-navbar .form-control:focus {
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  background-color: #000;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
 }
 
-/* 🔘 Search Button */
+/* Search Button */
 .custom-navbar .btn-outline-light {
   border-radius: 50px;
-  border: 1px solid #fff;
-  color: #fff;
-  padding: 0.4rem 1.1rem;
-  font-weight: 500;
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+  font-weight: 600;
+  padding: 0.4rem 1.2rem;
   transition: all 0.3s ease;
 }
 
 .custom-navbar .btn-outline-light:hover {
-  background: #fff;
-  color: #007bff;
+  background: #0d6efd;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(13, 110, 253, 0.5);
 }
 
-/* 🍔 Hamburger icon (white) */
+/* =========================================
+   6. Hamburger Icon (Mobile)
+   ========================================= */
 .custom-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255,255,255,1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  filter: invert(1); /* Ensures the icon is white */
+}
+.navbar-toggler {
+  border-color: rgba(255,255,255,0.5);
 }
 
-/* 🔧 Mechanic Search Results Dropdown */
+/* =========================================
+   7. Mechanic Search Results Dropdown
+   ========================================= */
 .search-results {
   position: absolute;
-  top: 80px;
-  left: 0;
+  top: 75px; /* Adjust based on navbar height */
+  right: 0; /* Aligned to right or left as needed */
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  padding: 15px 20px;
-  max-height: 400px;
+  max-width: 500px; /* Limit width on desktop */
+  background: rgba(33, 37, 41, 0.98); /* Solid dark background */
+  border: 1px solid rgba(13, 110, 253, 0.3);
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  max-height: 500px;
   overflow-y: auto;
   z-index: 9999;
-  animation: slideDown 0.4s ease forwards;
+  animation: slideDown 0.3s ease forwards;
 }
 
-/* 🌀 Dropdown animation */
+/* Animation */
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 🧰 Mechanic cards inside dropdown */
+/* The Mechanic Cards inside results */
 .search-results .card {
-  border-radius: 10px;
-  border-left: 5px solid #007bff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #212529; /* Dark card */
+  border: 1px solid #495057;
+  border-left: 5px solid #0d6efd; /* Blue accent */
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 .search-results .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+  transform: translateX(5px);
+  border-color: #0d6efd;
 }
 
-/* 🎛️ Close button */
-.search-results button {
-  border-radius: 50px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: #fff;
-  font-weight: bold;
+/* Close Button inside search results */
+.search-results button.btn-danger {
+  border-radius: 20px;
+  font-size: 0.8rem;
+  padding: 5px 15px;
+  background: #dc3545;
   border: none;
-  transition: all 0.3s ease;
-}
-
-.search-results button:hover {
-  background: #0056b3;
 }

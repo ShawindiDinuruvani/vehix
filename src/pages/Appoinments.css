@@ -1,50 +1,167 @@
-/* Appointment Page Background */
+/* =========================================
+  1. Page Background & Layout
+   ========================================= */
+  .appointment-page {
+
+  padding-top: 120px !important; 
+}
 .appointment-page {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  /* High-quality dark automotive background */
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7)), 
+              url('');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Clean modern font */
   min-height: 100vh;
-  padding: 80px 0;
-  color: #fff;
-  font-family: cursive;
+  padding-bottom: 50px;
 }
 
-/* Glass Card Style */
+/* =========================================
+  2. Glass Card Effect (The Form Container)
+   ========================================= */
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.92) !important; /* Slightly opaque white */
+  backdrop-filter: blur(20px); /* The "Frosted Glass" blur */
+  -webkit-backdrop-filter: blur(20px); /* For Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Soft shadow depth */
+  border-radius: 20px !important;
+  overflow: hidden; /* Keeps content inside rounded corners */
+}
+
+/* =========================================
+  3. Form Inputs & Selects
+   ========================================= */
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+  background-color: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px; /* Softer rounded corners */
+  padding: 12px 15px;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
 }
 
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-/* Form Controls */
-.form-control {
-  border-radius: 8px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.85);
-}
-
-.form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4);
+/* Input Focus Animation (Glow effect) */
+.form-control:focus, .form-select:focus {
+  background-color: #fff;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); /* Soft blue glow */
   outline: none;
 }
 
-/* Button */
+/* Textarea resizing */
+textarea.form-control {
+  resize: none; /* Prevents user from breaking layout */
+}
+
+/* =========================================
+  4. Buttons (Submit Button)
+   ========================================= */
 .btn-primary {
-  background-color: #004aad;
+  background: linear-gradient(45deg, #0d6efd, #0056b3); /* Gradient Blue */
   border: none;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 12px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: #003d8c;
-  transform: scale(1.02);
+  transform: translateY(-2px); /* Moves up slightly */
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4); /* Shadow on hover */
+  background: linear-gradient(45deg, #0b5ed7, #004494);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+  5. Left Side Info Boxes
+   ========================================= */
+.info-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 5px solid #0d6efd; /* Blue accent line on left */
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.info-box:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px); /* Slide effect */
+}
+
+.info-box ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-box ul li:last-child {
+  border-bottom: none;
+}
+
+.contact-box {
+  background: linear-gradient(135deg, #212529, #343a40);
+  color: white;
+  border-radius: 15px;
+  border: 1px solid #495057;
+}
+
+/* 6. Table Styles (History Section)*/
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr td {
+  vertical-align: middle;
+  padding: 15px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* Badge Updates */
+.badge {
+  padding: 8px 12px;
+  border-radius: 30px;
+  font-weight: 500;
+}
+
+/*
+  7. Mobile Responsiveness */
+@media (max-width: 768px) {
+  .display-4 {
+    font-size: 2.5rem; /* Smaller title on mobile */
+  }
+  
+  .glass-card {
+    padding: 1.5rem !important;
+  }
+  
+  .appointment-page {
+    padding-top: 20px;
+  }
 }
