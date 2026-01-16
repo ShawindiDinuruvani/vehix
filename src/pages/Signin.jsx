@@ -103,7 +103,7 @@ const Signin = () => {
 
           <div className="text-center mt-3">
             <span className="text-white-50">Don't have an account? </span>
-            <Link to="/register" className="text-primary fw-bold text-decoration-none">Sign Up</Link>
+            <Link to="/signup" className="text-primary fw-bold text-decoration-none">Sign Up</Link>
           </div>
         </Card>
       </Container>
