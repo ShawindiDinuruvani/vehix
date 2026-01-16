@@ -1,18 +1,8 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
-import axios from "axios";
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        await api.post('/api/users/signup', formData); // Backend Signup endpoint [cite: 11]
-        alert("Registration Successful!");
-        window.location.href = "/login";
-    } catch (err) {
-        // Validation Errors  [cite: 18]
-        alert("Check your details again!");
-    }
-};
-
+import { Container, Form, Button, Card, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/axios"; // Import your axios instance
+import "./Signup.css"; // Ensure you create this file
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,97 +10,203 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "CUSTOMER",
+    role: "CUSTOMER", // Default role
     // Garage specific fields
     businessName: "",
     businessAddress: "",
-    locationLink: "", // Google Maps Link or Coordinates
+    locationLink: "", 
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+
+    // 1. Basic Validation
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
 
+    setLoading(true);
+
     try {
-      await axios.post("http://localhost:8080/api/users/signup", formData);
-      alert("Account created successfully!");
+      // 2. Send Data to Backend
+      // We send the whole formData object. The backend should ignore extra fields 
+      // if the role is CUSTOMER, or you can filter them here if needed.
+      const response = await api.post("/api/users/signup", formData); 
+      
+      console.log("Registration Success:", response.data);
+      alert("Account created successfully! Please Login.");
+      
+      // 3. Redirect to Login Page
+      navigate("/login");
+
     } catch (err) {
-      alert("Registration failed!");
+      console.error("Signup Error:", err);
+      // Display backend error message or default message
+      setError(err.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center min-vh-100">
-      <Card className="p-4 shadow-lg w-100" style={{ maxWidth: '600px' }}>
-        <h2 className="text-center mb-4">Register</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Register As</Form.Label>
-            <Form.Select name="role" value={formData.role} onChange={handleChange}>
-              <option value="CUSTOMER">Customer (Vehicle Owner)</option>
-              <option value="GARAGE_OWNER">Garage Owner</option>
-            </Form.Select>
-          </Form.Group>
+    <div className="signup-page">
+      <Container className="d-flex justify-content-center align-items-center min-vh-100 py-5">
+        <Card className="p-4 shadow-lg glass-card" style={{ maxWidth: '700px', width: '100%' }}>
+          
+          <div className="text-center mb-4">
+            <h2 className="fw-bold text-white">Create Account</h2>
+            <p className="text-white-50">Join Vehix to manage or service vehicles</p>
+          </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control type="text" name="fullName" onChange={handleChange} required />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" name="email" onChange={handleChange} required />
-              </Form.Group>
-            </Col>
-          </Row>
+          {/* Error Alert */}
+          {error && <Alert variant="danger" dismissible onClose={() => setError("")}>{error}</Alert>}
 
-          {/* Conditional Rendering for Garage Owners */}
-          {formData.role === "GARAGE_OWNER" && (
-            <div className="p-3 mb-3 border rounded bg-light">
-              <h5>Business Details</h5>
-              <Form.Group className="mb-2">
-                <Form.Label>Business Name</Form.Label>
-                <Form.Control type="text" name="businessName" placeholder="E.g. Saman's Motors" onChange={handleChange} required />
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Business Address</Form.Label>
-                <Form.Control as="textarea" rows={2} name="businessAddress" onChange={handleChange} required />
-              </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Google Maps Location (Link/Coordinates)</Form.Label>
-                <Form.Control type="text" name="locationLink" placeholder="Paste Google Maps link here" onChange={handleChange} />
-              </Form.Group>
+          <Form onSubmit={handleSubmit}>
+            
+            {/* Role Selection */}
+            <Form.Group className="mb-4">
+              <Form.Label className="text-white fw-bold">I am a:</Form.Label>
+              <Form.Select 
+                name="role" 
+                value={formData.role} 
+                onChange={handleChange}
+                className="custom-input"
+              >
+                <option value="CUSTOMER">Vehicle Owner (Customer)</option>
+                <option value="GARAGE_OWNER">Garage Owner (Mechanic)</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-white">Full Name</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="fullName" 
+                    placeholder="Enter full name"
+                    onChange={handleChange} 
+                    required 
+                    className="custom-input"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-white">Email Address</Form.Label>
+                  <Form.Control 
+                    type="email" 
+                    name="email" 
+                    placeholder="Enter email"
+                    onChange={handleChange} 
+                    required 
+                    className="custom-input"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            {/* Conditional Rendering: GARAGE OWNER EXTRA FIELDS */}
+            {formData.role === "GARAGE_OWNER" && (
+              <div className="garage-section p-3 mb-4 rounded border border-secondary">
+                <h5 className="text-primary mb-3"><i className="bi bi-tools me-2"></i>Business Details</h5>
+                
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-white-50">Garage Name</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    name="businessName" 
+                    placeholder="E.g. Saman's Motors" 
+                    onChange={handleChange} 
+                    required 
+                    className="custom-input"
+                  />
+                </Form.Group>
+
+                <Row>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                        <Form.Label className="text-white-50">Address</Form.Label>
+                        <Form.Control 
+                            type="text"
+                            name="businessAddress" 
+                            placeholder="City, Street"
+                            onChange={handleChange} 
+                            required 
+                            className="custom-input"
+                        />
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group className="mb-3">
+                        <Form.Label className="text-white-50">Google Maps Link</Form.Label>
+                        <Form.Control 
+                            type="text" 
+                            name="locationLink" 
+                            placeholder="https://maps.google..." 
+                            onChange={handleChange} 
+                            className="custom-input"
+                        />
+                        </Form.Group>
+                    </Col>
+                </Row>
+              </div>
+            )}
+
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-white">Password</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    name="password" 
+                    placeholder="Create password"
+                    onChange={handleChange} 
+                    required 
+                    className="custom-input"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label className="text-white">Confirm Password</Form.Label>
+                  <Form.Control 
+                    type="password" 
+                    name="confirmPassword" 
+                    placeholder="Confirm password"
+                    onChange={handleChange} 
+                    required 
+                    className="custom-input"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Button 
+                type="submit" 
+                className="btn-primary w-100 mt-3 py-2 fw-bold"
+                disabled={loading}
+            >
+               {loading ? <Spinner animation="border" size="sm" /> : "Create Account"}
+            </Button>
+
+            <div className="text-center mt-3">
+                <span className="text-white-50">Already have an account? </span>
+                <Link to="/login" className="text-primary fw-bold text-decoration-none">Log In</Link>
             </div>
-          )}
-
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" onChange={handleChange} required />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" name="confirmPassword" onChange={handleChange} required />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Button type="submit" className="w-100 btn-success">Create Account</Button>
-        </Form>
-      </Card>
-    </Container>
+          </Form>
+        </Card>
+      </Container>
+    </div>
   );
 };
 

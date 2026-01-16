@@ -1,101 +1,121 @@
-/* TrackHistory.css */
-
-/* Page background */
-.track-history-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  padding: 50px 15px;
+/* 
+   1. Page Background & Layout
+   */
+.track-page {
+  /* Matching the dark automotive theme */
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.8)), 
+              url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   font-family: 'Poppins', sans-serif;
-  color: #fff;
-  font-family: cursive;
+  min-height: 100vh;
+  
+  /* FIX: Adds space at top so Navbar doesn't cover content */
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 
-/* Page title */
-.track-history-page h2 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 3rem;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
-}
-
-/* Glass card */
+/*
+   2. Glass Card (Container for Chart & Table)
+ */
 .glass-card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.3);
-  padding: 25px;
-  margin-bottom: 30px;
-  transition: all 0.3s ease;
+  background: rgba(33, 37, 41, 0.6) !important; 
+  backdrop-filter: blur(15px); 
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border-radius: 20px !important;
   color: #fff;
 }
 
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-}
-
-/* Chart Section */
-.glass-card canvas {
-  max-height: 300px;
-}
-
-/* Table styling */
-.table-glass {
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
+/* 
+   3. Search Input Styling
+ */
+.glass-card input.form-control {
   background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff; 
+  border-radius: 50px; 
+  padding: 10px 20px;
 }
 
-.table-glass th, 
-.table-glass td {
-  color: #fff;
-  border-color: rgba(255,255,255,0.3);
-  text-align: center;
-  padding: 12px;
+.glass-card input.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.table-glass thead {
-  background: rgba(255,255,255,0.15);
-}
-
-.table-glass tbody tr:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-/* Search input */
-.form-control {
-  border-radius: 10px;
+.glass-card input.form-control:focus {
   background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  color: #fff;
-  height: 45px;
-  padding: 0 15px;
-  font-size: 0.95rem;
-}
-
-.form-control::placeholder {
-  color: rgba(255,255,255,0.7);
-}
-
-.form-control:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: #fff;
-  box-shadow: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
   color: #fff;
 }
 
-/* Responsive adjustments */
+/* 
+   4. Table Styling (Transparent & Modern)
+   */
+.table-glass {
+  color: #fff !important;
+  margin-bottom: 0;
+}
+
+.table-glass thead th {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: #0d6efd; /* Blue headers */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.table-glass tbody td {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+  padding: 15px;
+}
+
+/* Row Hover Effect */
+.table-glass tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.05) !important;
+  cursor: default;
+}
+
+/* 
+   5. Chart Container
+    */
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+} /* FIXED: Removed the extra semicolon here */
+
+/* 
+   6. Badges & Typography
+   */
+h2 {
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  color: #ffffff;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 30px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-  .glass-card {
-    padding: 20px;
+  .track-page {
+    padding-top: 80px;
   }
-  .track-history-page h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
+  
+  .glass-card {
+    padding: 1.5rem !important;
   }
 }

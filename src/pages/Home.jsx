@@ -7,25 +7,6 @@ const Home = () => {
   return (
     <div className="home-page d-flex flex-column min-vh-100">
       
-      {/* 1. Navigation Bar */}
-      <Navbar bg="dark" variant="dark" expand="lg" className="py-3 sticky-top">
-        <Container>
-          <Navbar.Brand href="#" className="fw-bold fs-3 text-primary">Vehix</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href="#features" className="text-white me-3">Features</Nav.Link>
-              <Nav.Link href="#how-it-works" className="text-white me-3">How it Works</Nav.Link>
-              <Link to="/login">
-                <Button variant="outline-light" className="me-2">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button variant="primary">Sign Up</Button>
-              </Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
 
       {/* 2. Hero Section (Updated) */}
       <section className="hero-section d-flex align-items-center text-center text-white">
