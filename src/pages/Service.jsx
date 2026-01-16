@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
 import ServiceMap from "../components/ServiceMap";
 import "./Service.css";
+import axios from "../api/axios";
 
-import axiosInstance from "../api/axios";
-
+// Common vehicle issues
 
 
 const commonIssues = [
