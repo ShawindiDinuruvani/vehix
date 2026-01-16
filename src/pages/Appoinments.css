@@ -1,6 +1,6 @@
-/* =========================================
+/* 
   1. Page Background & Layout
-   ========================================= */
+ */
   .appointment-page {
 
   padding-top: 120px !important; 
@@ -12,22 +12,21 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Clean modern font */
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
   min-height: 100vh;
   padding-bottom: 50px;
 }
 
-/* =========================================
+/* 
   2. Glass Card Effect (The Form Container)
-   ========================================= */
+   */
 .glass-card {
-  background: rgba(255, 255, 255, 0.92) !important; /* Slightly opaque white */
-  backdrop-filter: blur(20px); /* The "Frosted Glass" blur */
-  -webkit-backdrop-filter: blur(20px); /* For Safari support */
+  background: rgba(255, 255, 255, 0.92) !important; 
+  backdrop-filter: blur(20px); 
+  -webkit-backdrop-filter: blur(20px); 
   border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Soft shadow depth */
-  border-radius: 20px !important;
-  overflow: hidden; /* Keeps content inside rounded corners */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); 
+  overflow: hidden; 
 }
 
 /* =========================================
@@ -43,7 +42,7 @@
 .form-control, .form-select {
   background-color: #f8f9fa;
   border: 2px solid #e9ecef;
-  border-radius: 12px; /* Softer rounded corners */
+  border-radius: 12px; 
   padding: 12px 15px;
   font-size: 0.95rem;
   transition: all 0.3s ease;
@@ -53,20 +52,20 @@
 .form-control:focus, .form-select:focus {
   background-color: #fff;
   border-color: #0d6efd;
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); /* Soft blue glow */
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15); 
   outline: none;
 }
 
 /* Textarea resizing */
 textarea.form-control {
-  resize: none; /* Prevents user from breaking layout */
+  resize: none; 
 }
 
-/* =========================================
+/* 
   4. Buttons (Submit Button)
-   ========================================= */
+   */
 .btn-primary {
-  background: linear-gradient(45deg, #0d6efd, #0056b3); /* Gradient Blue */
+  background: linear-gradient(45deg, #0d6efd, #0056b3); 
   border: none;
   padding: 14px;
   border-radius: 12px;
@@ -77,8 +76,8 @@ textarea.form-control {
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px); /* Moves up slightly */
-  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4); /* Shadow on hover */
+  transform: translateY(-2px); 
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
   background: linear-gradient(45deg, #0b5ed7, #004494);
 }
 
@@ -86,19 +85,19 @@ textarea.form-control {
   transform: translateY(0);
 }
 
-/* =========================================
+/* 
   5. Left Side Info Boxes
-   ========================================= */
+ */
 .info-box {
   background: rgba(255, 255, 255, 0.1);
-  border-left: 5px solid #0d6efd; /* Blue accent line on left */
+  border-left: 5px solid #0d6efd; 
   border-radius: 15px;
   transition: transform 0.3s ease;
 }
 
 .info-box:hover {
   background: rgba(255, 255, 255, 0.15);
-  transform: translateX(5px); /* Slide effect */
+  transform: translateX(5px); 
 }
 
 .info-box ul li {
@@ -154,7 +153,7 @@ textarea.form-control {
   7. Mobile Responsiveness */
 @media (max-width: 768px) {
   .display-4 {
-    font-size: 2.5rem; /* Smaller title on mobile */
+    font-size: 2.5rem; 
   }
   
   .glass-card {
