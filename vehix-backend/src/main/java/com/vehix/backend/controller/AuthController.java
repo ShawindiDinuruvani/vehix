@@ -1,37 +1,56 @@
 package com.vehix.backend.controller;
 
+
 import com.vehix.backend.entity.User;
 import com.vehix.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin
 public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-    @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return "User registered successfully!";
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        User existing = userRepository.findByEmail(user.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
 
-        if (encoder.matches(user.getPassword(), existing.getPassword())) {
-            return "Login successful!";
-        } else {
-            return "Invalid credentials!";
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Check password
+            if (passwordEncoder.matches(password, user.getPassword())) {
+
+                // Construct success response
+                Map<String, Object> response = new
+                        HashMap<>();
+                response.put("token", UUID.randomUUID().toString()); // Mock token for frontend
+                response.put("email", user.getEmail());
+                response.put("role", user.getRole());
+                response.put("fullName", user.getFullName());
+
+                return ResponseEntity.ok(response);
+            }
         }
+
+        return ResponseEntity.status(401).body(Map.of("message", "Invalid email or password"));
     }
 }
