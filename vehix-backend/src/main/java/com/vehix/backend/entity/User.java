@@ -18,7 +18,7 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String email;
-
+    private String mobileNumber;
     private String password; // Will store Hashed Password
 
     private String role; // "CUSTOMER" or "GARAGE_OWNER"
