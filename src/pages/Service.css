@@ -1,9 +1,15 @@
 /* Page Background */
 .service-page {
-  background: linear-gradient(135deg, #111111 0%, #2a2a2a 100%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7)), 
+              url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Clean modern font */
   min-height: 100vh;
-  padding-top: 80px; /* Space for Navbar */
+  padding-bottom: 50px;
 }
+
 
 /* Glass Card Style */
 .glass-card {

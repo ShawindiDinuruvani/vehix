@@ -17,7 +17,7 @@
    2. Glass Card Effect (The Form Container)
    ========================================= */
 .glass-card {
-  background: rgba(255, 255, 255, 0.92) !important; /* Slightly opaque white */
+  background: rgba(17, 16, 16, 0.92) !important; /* Slightly opaque white */
   backdrop-filter: blur(20px); /* The "Frosted Glass" blur */
   -webkit-backdrop-filter: blur(20px); /* For Safari support */
   border: 1px solid rgba(255, 255, 255, 0.5);
