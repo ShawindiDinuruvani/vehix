@@ -20,32 +20,28 @@ const Signin = () => {
     setError("");
 
     try {
-        // 1. Backend එකට Login Request යැවීම
         const response = await api.post('/api/auth/login', formData);
-        
-        console.log("Login Data:", response.data);
         const userData = response.data;
 
-        // 2. දත්ත Browser එකේ Save කරගැනීම (localStorage)
+        // දත්ත LocalStorage හි Save කිරීම
         localStorage.setItem("token", userData.token);
         localStorage.setItem("userEmail", userData.email);
         localStorage.setItem("userRole", userData.role);
         localStorage.setItem("userName", userData.fullName);
 
-        // Garage Owner කෙනෙක් නම් ගරාජ් එකේ නමත් Save කරනවා
         if (userData.role === "GARAGE_OWNER" && userData.businessName) {
             localStorage.setItem("myGarageName", userData.businessName);
         }
 
         alert("Login Successful!");
 
-        // 3. 🔥 ROLE එක අනුව පිටුව මාරු කිරීම (REDIRECT LOGIC) 🔥
-        if (userData.role === "GARAGE_OWNER") {
-            navigate("/garage-dashboard"); // Garage Owner Dashboard එකට
-        } else {
-            navigate("/appointments"); // Customer නම් Appointment Page එකට
-        }
+        // 🔥 වෙනස් කළ කොටස: කෙලින්ම Home Page එකට යැවීම 🔥
+        // Role එක check කර කර ඉන්න අවශ්‍ය නෑ, මොකද Nav Bar එකෙන් ඒක බලාගන්නවා.
+        navigate("/"); 
         
+        // Note: NavBar එක refresh නොවන්නේ නම්, පහත පේළිය භාවිතා කරන්න:
+        // window.location.href = "/";
+
     } catch (err) {
         console.error("Login Error:", err);
         setError(err.response?.data?.message || "Invalid email or password.");

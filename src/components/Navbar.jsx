@@ -25,45 +25,54 @@ const NavbarComponent = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             
-            {/* 1. ඕනෑම කෙනෙක්ට පෙනෙන Link එක (Home විතරයි) */}
             <Nav.Link as={Link} to="/" className="mx-2">Home</Nav.Link>
             
-            {/* 2. Login වී ඇත්නම් පමණක් පෙනෙන Links */}
             {isLoggedIn ? (
               <>
-                {/* 👇 මේ Links දෙක දැන් පෙනෙන්නේ Login වුනාම විතරයි */}
-                <Nav.Link as={Link} to="/service" className="mx-2">Services</Nav.Link>
-                <Nav.Link as={Link} to="/track-history" className="mx-2">History</Nav.Link>
+                {/* =========================================
+                    CUSTOMER SECTION
+                   ========================================= */}
+                {userRole === "CUSTOMER" && (
+                  <>
+                    <Nav.Link as={Link} to="/service" className="mx-2">Find Services</Nav.Link>
+                    <Nav.Link as={Link} to="/track-history" className="mx-2">History</Nav.Link>
+                    <Nav.Link as={Link} to="/appointments" className="mx-2 text-info fw-bold">
+                       My Appointments
+                    </Nav.Link>
+                  </>
+                )}
 
-                <div className="vr bg-white mx-2 d-none d-lg-block"></div> 
-
-                {/* Dashboard Button */}
+                {/* =========================================
+                    GARAGE OWNER SECTION (Updated)
+                   ========================================= */}
                 {userRole === "GARAGE_OWNER" && (
-                   <Nav.Link as={Link} to="/garage-dashboard" className="mx-2">
+                  <>
+                    {/* 1. Dashboard Button */}
+                    <Nav.Link as={Link} to="/garage-dashboard" className="mx-2">
                       <Button variant="warning" size="sm" className="fw-bold text-dark">
                         Garage Dashboard
                       </Button>
-                   </Nav.Link>
+                    </Nav.Link>
+
+                    {/* 2. 🔥 Added Services & History for Garage Owner 🔥 */}
+                    <Nav.Link as={Link} to="/service" className="mx-2">Services</Nav.Link>
+                    <Nav.Link as={Link} to="/track-history" className="mx-2">History</Nav.Link>
+                  </>
                 )}
 
-                {userRole === "CUSTOMER" && (
-                   <Nav.Link as={Link} to="/appointments" className="mx-2 text-info fw-bold">
-                      My Appointments
-                   </Nav.Link>
-                )}
-                
-                {/* Profile */}
+                <div className="vr bg-white mx-2 d-none d-lg-block"></div> 
+
+                {/* Profile & Logout */}
                 <Nav.Link as={Link} to="/profile" className="mx-2 text-white">
                   <i className="bi bi-person-circle me-1"></i> {userName ? userName.split(" ")[0] : "Profile"}
                 </Nav.Link>
 
-                {/* Logout */}
                 <Button variant="outline-danger" size="sm" className="ms-3" onClick={handleLogout}>
                   Logout
                 </Button>
               </>
             ) : (
-              // 3. Login වී නැති නම් (Guest)
+              // Guest User
               <>
                 <Nav.Link as={Link} to="/login" className="mx-2">Login</Nav.Link>
                 <Button as={Link} to="/signup" variant="primary" size="sm" className="ms-2 px-4 rounded-pill">
