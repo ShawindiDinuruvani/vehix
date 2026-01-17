@@ -29,14 +29,13 @@ function App() {
             <Route path="/login" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             
-            {/* Protected Routes */}
+           
             <Route path="/appointments" element={<Appoinments />} />
             
             <Route path="/service" element={<Service />} />
             <Route path="/track-history" element={<TrackHistory />} />
             <Route path="/profile" element={<Profile />} />
 
-            {/* ✅ Garage Owner Dashboard Route */}
             <Route path="/garage-dashboard" element={<GarageDashboard />} /> 
             
           </Routes>
