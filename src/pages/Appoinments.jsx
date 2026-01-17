@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Col, Card, Badge, Toast, ToastContainer, Table, Modal } from "react-bootstrap";
-import axios from "axios";
+import axios from "../api/axios"; //axios 
 import "./Appoinments.css";
 
 const Appointments = () => {
   // --- STATE ---
-  const [garages, setGarages] = useState([]); // 🔥 Garages දැන් එන්නේ Database එකෙන්
+  const [garages, setGarages] = useState([]); 
   const [selectedGarage, setSelectedGarage] = useState(null);
   const [formData, setFormData] = useState({
     ownerName: "", vehicleNumber: "", vehicleModel: "", serviceType: "", appointmentDate: "", appointmentTime: "",
@@ -16,27 +16,30 @@ const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
-  // User Email (Login එකෙන් පස්සේ localStorage එකෙන් ගන්න)
-  const currentUserEmail = localStorage.getItem("userEmail") || "kasun@example.com"; 
-
-  // --- 1. LOAD DATA (Garages & Appointments) ---
+  // User Email & Role (LocalStorage )
+  const currentUserEmail = localStorage.getItem("userEmail");
+  
+  // --- 1. LOAD DATA ---
   useEffect(() => {
-    fetchGarages();      // Garage List එක ගන්න
-    fetchAppointments(); // Booking List එක ගන්න
-  }, []);
+    fetchGarages();      
+    if(currentUserEmail) {
+        fetchAppointments(); 
+    }
+  }, [currentUserEmail]);
 
-  // 🔥 1.1 Fetch Registered Garages from Backend
+  // 🔥 1.1 Fetch Registered Garages
   const fetchGarages = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/users/garages");
-      // Backend එකෙන් එන Data ටික සකස් කරගැනීම (Image/Rating නැති නිසා Default ඒවා දානවා)
+      const response = await axios.get("/api/users/garages");
+      
+      
       const formattedGarages = response.data.map(user => ({
         id: user.id,
-        name: user.garageName || "Unknown Garage", // garageName එක User table එකේ තියෙන්න ඕනේ
-        location: "Sri Lanka", // දැනට Default location එකක්
-        rating: 4.5, // Default rating
+        name: user.businessName || user.fullName || "Unnamed Garage", // businessName 
+        location: user.businessAddress || "Sri Lanka", // businessAddress 
+        rating: 4.5, 
         type: "General Service",
-        image: "https://cdn-icons-png.flaticon.com/512/1995/1995470.png" // Default Image
+        image: "https://cdn-icons-png.flaticon.com/512/1995/1995470.png"
       }));
       setGarages(formattedGarages);
     } catch (error) {
@@ -47,7 +50,7 @@ const Appointments = () => {
   // 1.2 Fetch My Appointments
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/appointments/my-appointments/${currentUserEmail}`);
+      const response = await axios.get(`/api/appointments/my-appointments/${currentUserEmail}`);
       setAppointmentHistory(response.data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -63,22 +66,29 @@ const Appointments = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --- 2. SUBMIT (CREATE / UPDATE) ---
+  // --- 2. SUBMIT ---
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Login 
+    if (!currentUserEmail) {
+        alert("Please Login First!");
+        return;
+    }
+
     const appointmentData = {
       ...formData,
-      garageName: selectedGarage.name,
+      garageName: selectedGarage.name, 
       userEmail: currentUserEmail,
       status: "Pending"
     };
 
     try {
       if (editingId) {
-        await axios.put(`http://localhost:8080/api/appointments/update/${editingId}`, appointmentData);
-        alert("Appointment Updated Successfully!");
+        await axios.put(`/api/appointments/update/${editingId}`, appointmentData);
+        alert("Appointment Updated!");
       } else {
-        await axios.post("http://localhost:8080/api/appointments/book", appointmentData);
+        await axios.post("/api/appointments/book", appointmentData);
         setShowToast(true);
       }
       setSelectedGarage(null);
@@ -86,13 +96,12 @@ const Appointments = () => {
       fetchAppointments();
     } catch (error) {
       console.error("Error saving appointment:", error);
-      alert("Operation failed! Check backend.");
+      alert("Failed to book appointment.");
     }
   };
 
-  // --- 3. EDIT HANDLER ---
+  // --- 3. EDIT & DELETE ---
   const handleEdit = (appt) => {
-    // Registered ලිස්ට් එකෙන් ගරාජ් එක හොයාගන්නවා
     const garage = garages.find(g => g.name === appt.garageName);
     setSelectedGarage(garage || { name: appt.garageName, location: "Unknown", rating: 0 });
 
@@ -110,10 +119,9 @@ const Appointments = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --- 4. DELETE & CLEAR ---
   const handleDelete = async (id) => {
     if(window.confirm("Cancel appointment?")) {
-      await axios.delete(`http://localhost:8080/api/appointments/delete/${id}`);
+      await axios.delete(`/api/appointments/delete/${id}`);
       fetchAppointments();
     }
   };
@@ -121,7 +129,7 @@ const Appointments = () => {
   const handleClearAll = async () => {
     if (window.confirm("Delete ALL appointments?")) {
         for (let app of appointmentHistory) {
-            await axios.delete(`http://localhost:8080/api/appointments/delete/${app.id}`);
+            await axios.delete(`/api/appointments/delete/${app.id}`);
         }
         fetchAppointments();
         setShowModal(false);
@@ -155,7 +163,7 @@ const Appointments = () => {
           <p className="lead text-white-50">Select a registered garage below to book your service.</p>
         </div>
 
-        {/* --- GARAGE LIST (Now from Database) --- */}
+        {/* --- GARAGE LIST --- */}
         {!selectedGarage && (
             <Row className="g-4 justify-content-center animate-fade">
                 {garages.length > 0 ? (
@@ -190,13 +198,13 @@ const Appointments = () => {
                         </div>
                         <div className="p-3 rounded bg-primary bg-opacity-25 mb-4 border border-primary">
                             <h5 className="text-white mb-0 fw-bold">{selectedGarage.name}</h5>
-                            <small className="text-white-50">Registered Garage</small>
+                            <small className="text-white-50">{selectedGarage.location}</small>
                         </div>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Control type="text" name="ownerName" placeholder="Your Name" value={formData.ownerName} onChange={handleChange} required className="mb-3"/>
-                            <Row><Col><Form.Control type="text" name="vehicleNumber" placeholder="Vehicle No" value={formData.vehicleNumber} onChange={handleChange} required className="mb-3"/></Col><Col><Form.Control type="text" name="vehicleModel" placeholder="Model" value={formData.vehicleModel} onChange={handleChange} required className="mb-3"/></Col></Row>
-                            <Form.Select name="serviceType" value={formData.serviceType} onChange={handleChange} required className="mb-3"><option value="">Select Service</option><option value="Full Service">Full Service</option><option value="Oil Change">Oil Change</option><option value="Repair">Repair</option></Form.Select>
-                            <Row><Col><Form.Control type="date" name="appointmentDate" value={formData.appointmentDate} onChange={handleChange} required className="mb-3"/></Col><Col><Form.Control type="time" name="appointmentTime" value={formData.appointmentTime} onChange={handleChange} required className="mb-3"/></Col></Row>
+                            <Form.Control type="text" name="ownerName" placeholder="Your Name" value={formData.ownerName} onChange={handleChange} required className="mb-3 custom-input"/>
+                            <Row><Col><Form.Control type="text" name="vehicleNumber" placeholder="Vehicle No" value={formData.vehicleNumber} onChange={handleChange} required className="mb-3 custom-input"/></Col><Col><Form.Control type="text" name="vehicleModel" placeholder="Model" value={formData.vehicleModel} onChange={handleChange} required className="mb-3 custom-input"/></Col></Row>
+                            <Form.Select name="serviceType" value={formData.serviceType} onChange={handleChange} required className="mb-3 custom-input"><option value="">Select Service</option><option value="Full Service">Full Service</option><option value="Oil Change">Oil Change</option><option value="Repair">Repair</option></Form.Select>
+                            <Row><Col><Form.Control type="date" name="appointmentDate" value={formData.appointmentDate} onChange={handleChange} required className="mb-3 custom-input"/></Col><Col><Form.Control type="time" name="appointmentTime" value={formData.appointmentTime} onChange={handleChange} required className="mb-3 custom-input"/></Col></Row>
                             <Button type="submit" className={`w-100 fw-bold py-2 ${editingId ? "btn-warning" : "btn-success"}`}>{editingId ? "UPDATE" : "CONFIRM"}</Button>
                         </Form>
                     </Card>
@@ -225,7 +233,7 @@ const Appointments = () => {
                             ))}
                         </tbody>
                     </Table>
-                ) : <p className="text-center text-white-50">No appointments.</p>}
+                ) : <p className="text-center text-white-50">No appointments yet.</p>}
             </Modal.Body>
             <Modal.Footer><Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>{appointmentHistory.length>0 && <Button variant="danger" onClick={handleClearAll}>Clear All</Button>}</Modal.Footer>
         </Modal>
