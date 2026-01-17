@@ -1,80 +1,78 @@
 import React from "react";
-import { Navbar, Container, Nav, Form, FormControl, Dropdown, Button } from "react-bootstrap";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./Navbar.css"; 
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavbarComponent = () => {
-  const location = useLocation(); 
   const navigate = useNavigate();
 
-  // Active Link logic
-  const isActive = (path) => location.pathname === path ? "active-link" : "";
+  const userRole = localStorage.getItem("userRole");
+  const isLoggedIn = !!localStorage.getItem("token");
+  const userName = localStorage.getItem("userName");
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   return (
-    <Navbar expand="lg" className="custom-navbar sticky-top">
-      <Container fluid>
-        {/* 1. Brand Logo */}
-        <Navbar.Brand as={Link} to="/" className="brand-logo">
-          VEH<span className="text-primary">IX</span>
+    <Navbar bg="dark" variant="dark" expand="lg" className="py-3 sticky-top shadow-sm">
+      <Container>
+        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-primary">
+          Vehix<span className="text-white">.lk</span>
         </Navbar.Brand>
-
-        <Navbar.Toggle aria-controls="navbarScroll" />
         
-        <Navbar.Collapse id="navbarScroll">
-          {/* 2. Centered Navigation Links */}
-          <Nav className="mx-auto my-2 my-lg-0" navbarScroll>
-            <Nav.Link as={Link} to="/" className={`nav-item ${isActive("/")}`}>Home</Nav.Link>
-            <Nav.Link as={Link} to="/service" className={`nav-item ${isActive("/service")}`}>Service</Nav.Link>
-            <Nav.Link as={Link} to="/track-history" className={`nav-item ${isActive("/track-history")}`}>Track History</Nav.Link>
-            <Nav.Link as={Link} to="/appoinments" className={`nav-item ${isActive("/appoinments")}`}>Appointments</Nav.Link>
-          </Nav>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto align-items-center">
+            
+            {/* 1. ඕනෑම කෙනෙක්ට පෙනෙන Link එක (Home විතරයි) */}
+            <Nav.Link as={Link} to="/" className="mx-2">Home</Nav.Link>
+            
+            {/* 2. Login වී ඇත්නම් පමණක් පෙනෙන Links */}
+            {isLoggedIn ? (
+              <>
+                {/* 👇 මේ Links දෙක දැන් පෙනෙන්නේ Login වුනාම විතරයි */}
+                <Nav.Link as={Link} to="/service" className="mx-2">Services</Nav.Link>
+                <Nav.Link as={Link} to="/track-history" className="mx-2">History</Nav.Link>
 
-          {/* 3. Right Side: Search & Profile */}
-          <div className="d-flex align-items-center gap-3">
-            {/* Search Bar */}
-            <Form className="d-flex search-form">
-              <div className="input-group">
-                <span className="input-group-text bg-transparent border-0 text-white">
-                  <i className="bi bi-search"></i>
-                </span>
-                <FormControl
-                  type="search"
-                  placeholder="Search mechanic..."
-                  className="bg-transparent border-0 text-white shadow-none"
-                  aria-label="Search"
-                />
-              </div>
-            </Form>
+                <div className="vr bg-white mx-2 d-none d-lg-block"></div> 
 
-            {/* Profile Dropdown (Modern Avatar) */}
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="link" id="dropdown-profile" className="p-0 border-0 remove-arrow">
-                 {/* Profile Picture Placeholder */}
-                 <div className="profile-icon">
-                    <i className="bi bi-person-circle display-6 text-white"></i>
-                 </div>
-              </Dropdown.Toggle>
+                {/* Dashboard Button */}
+                {userRole === "GARAGE_OWNER" && (
+                   <Nav.Link as={Link} to="/garage-dashboard" className="mx-2">
+                      <Button variant="warning" size="sm" className="fw-bold text-dark">
+                        Garage Dashboard
+                      </Button>
+                   </Nav.Link>
+                )}
 
-              <Dropdown.Menu className="dropdown-menu-dark shadow-lg">
-                <Dropdown.Header>Welcome, User!</Dropdown.Header>
+                {userRole === "CUSTOMER" && (
+                   <Nav.Link as={Link} to="/appointments" className="mx-2 text-info fw-bold">
+                      My Appointments
+                   </Nav.Link>
+                )}
                 
-                {/* 👇 Fixed the path here to match App.js */}
-                <Dropdown.Item as={Link} to="/profile">My Profile</Dropdown.Item>
-                
-                <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }} className="text-danger">
+                {/* Profile */}
+                <Nav.Link as={Link} to="/profile" className="mx-2 text-white">
+                  <i className="bi bi-person-circle me-1"></i> {userName ? userName.split(" ")[0] : "Profile"}
+                </Nav.Link>
+
+                {/* Logout */}
+                <Button variant="outline-danger" size="sm" className="ms-3" onClick={handleLogout}>
                   Logout
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                </Button>
+              </>
+            ) : (
+              // 3. Login වී නැති නම් (Guest)
+              <>
+                <Nav.Link as={Link} to="/login" className="mx-2">Login</Nav.Link>
+                <Button as={Link} to="/signup" variant="primary" size="sm" className="ms-2 px-4 rounded-pill">
+                  Sign Up
+                </Button>
+              </>
+            )}
 
-             {/* Mobile Login Button (If needed explicitly) */}
-             {/* <Button variant="primary" className="btn-glow">Login</Button> */}
-          </div>
+          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
