@@ -1,180 +1,99 @@
 /* =========================================
-   1. Navbar Base Style (Dark Glass Theme)
+   1. Glassmorphism Navbar Base
    ========================================= */
 .custom-navbar {
-  /* Dark background with slight transparency for glass effect */
-  background: rgba(33, 37, 41, 0.95) !important;
-  backdrop-filter: blur(10px); /* Blurs content behind the navbar */
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 15, 15, 0.85); /* Semi-transparent Black */
+  backdrop-filter: blur(15px); /* Blur Effect */
+  -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  padding: 0.8rem 1rem;
-  font-family: 'Poppins', sans-serif;
-  transition: all 0.3s ease;
-}
-
-/* Optional: Make it stick to the top */
-.sticky-top {
-  position: fixed;
-  top: 0;
-  z-index: 1020;
+  padding: 15px 0;
+  transition: all 0.3s ease-in-out;
 }
 
 /* =========================================
-   2. Brand Text
+   2. Brand Logo Style
    ========================================= */
-.custom-navbar .navbar-brand {
-  color: #ffffff !important;
+.brand-logo {
   font-size: 1.8rem;
-  font-weight: 800; /* Extra Bold */
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(13, 110, 253, 0.5); /* Subtle Blue Glow */
-}
-
-.custom-navbar .navbar-brand span {
-  color: #0d6efd; /* Primary Blue Accent */
-}
-
-/* =========================================
-   3. Navbar Links
-   ========================================= */
-.custom-navbar .nav-link {
-  color: rgba(255, 255, 255, 0.8) !important;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0 5px;
-  padding: 8px 15px !important;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-/* Hover Effect: Light background + Blue Text */
-.custom-navbar .nav-link:hover,
-.custom-navbar .nav-link.active {
+  font-weight: 800;
+  letter-spacing: 2px;
   color: #fff !important;
-  background: rgba(13, 110, 253, 0.2); /* Semi-transparent blue */
-  text-shadow: 0 0 5px rgba(13, 110, 253, 0.8);
-  transform: translateY(-1px);
+  text-transform: uppercase;
 }
 
 /* =========================================
-   4. Dropdown Styling
+   3. Navigation Links (Center)
    ========================================= */
-.custom-navbar .dropdown-menu {
-  background: #2b3035; /* Dark grey */
+.nav-item {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  margin: 0 10px;
+  padding: 8px 15px !important;
+  position: relative;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+/* Hover Effect: Text Glow & White Color */
+.nav-item:hover {
+  color: #fff !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Active Link Style (The page you are on) */
+.active-link {
+  color: #fff !important;
+  background: rgba(13, 110, 253, 0.2); /* Soft Blue Background */
+  border-radius: 20px; /* Pill Shape */
+  box-shadow: 0 0 15px rgba(13, 110, 253, 0.4); /* Blue Glow */
+  font-weight: 600;
+}
+
+/* =========================================
+   4. Search Bar (Modern & Round)
+   ========================================= */
+.search-form .input-group {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.search-form .input-group:hover,
+.search-form .input-group:focus-within {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #0d6efd;
+  box-shadow: 0 0 10px rgba(13, 110, 253, 0.3);
+}
+
+.search-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   5. Profile Dropdown
+   ========================================= */
+.remove-arrow::after {
+  display: none !important; /* Hide default dropdown arrow */
+}
+
+.profile-icon i {
+  transition: transform 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.profile-icon i:hover {
+  transform: scale(1.1);
+  color: #0d6efd !important;
+}
+
+/* Dropdown Menu Style */
+.dropdown-menu-dark {
+  background: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  margin-top: 10px;
-}
-
-.custom-navbar .dropdown-item {
-  color: #e0e0e0 !important;
-  padding: 10px 20px;
-  transition:  background 0.3s ease, color 0.3s ease;
-}
-
-.custom-navbar .dropdown-item:hover {
-  background: #0d6efd; /* Blue background on hover */
-  color: #ffffff !important;
-}
-
-/* =========================================
-   5. Search Bar (Dark Mode)
-   ========================================= */
-.custom-navbar .form-control {
-  background-color: #1a1d20; /* Very dark grey */
-  border: 1px solid #495057;
-  color: #fff; /* White text */
-  border-radius: 50px;
-  padding: 0.5rem 1.2rem;
-  width: 250px;
-  transition: all 0.3s ease;
-}
-
-.custom-navbar .form-control::placeholder {
-  color: #adb5bd;
-}
-
-.custom-navbar .form-control:focus {
-  background-color: #000;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
-}
-
-/* Search Button */
-.custom-navbar .btn-outline-light {
-  border-radius: 50px;
-  border: 1px solid #0d6efd;
-  color: #0d6efd;
-  font-weight: 600;
-  padding: 0.4rem 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.custom-navbar .btn-outline-light:hover {
-  background: #0d6efd;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(13, 110, 253, 0.5);
-}
-
-/* =========================================
-   6. Hamburger Icon (Mobile)
-   ========================================= */
-.custom-toggler .navbar-toggler-icon {
-  filter: invert(1); /* Ensures the icon is white */
-}
-.navbar-toggler {
-  border-color: rgba(255,255,255,0.5);
-}
-
-/* =========================================
-   7. Mechanic Search Results Dropdown
-   ========================================= */
-.search-results {
-  position: absolute;
-  top: 75px; /* Adjust based on navbar height */
-  right: 0; /* Aligned to right or left as needed */
-  width: 100%;
-  max-width: 500px; /* Limit width on desktop */
-  background: rgba(33, 37, 41, 0.98); /* Solid dark background */
-  border: 1px solid rgba(13, 110, 253, 0.3);
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-  padding: 20px;
-  max-height: 500px;
-  overflow-y: auto;
-  z-index: 9999;
-  animation: slideDown 0.3s ease forwards;
-}
-
-/* Animation */
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* The Mechanic Cards inside results */
-.search-results .card {
-  background: #212529; /* Dark card */
-  border: 1px solid #495057;
-  border-left: 5px solid #0d6efd; /* Blue accent */
-  color: #fff;
-  margin-bottom: 10px;
-}
-
-.search-results .card:hover {
-  transform: translateX(5px);
-  border-color: #0d6efd;
-}
-
-/* Close Button inside search results */
-.search-results button.btn-danger {
-  border-radius: 20px;
-  font-size: 0.8rem;
-  padding: 5px 15px;
-  background: #dc3545;
-  border: none;
+  margin-top: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }

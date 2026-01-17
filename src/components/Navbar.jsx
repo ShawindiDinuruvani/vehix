@@ -1,108 +1,83 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Container,
-  Form,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Card,
-} from "react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import "./Navbar.css";
+import React from "react";
+import { Navbar, Container, Nav, Form, FormControl, Dropdown, Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./Navbar.css"; 
 
 const NavbarComponent = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [mechanics, setMechanics] = useState([]);
-  const [showResults, setShowResults] = useState(false);
+  const location = useLocation(); 
+  const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    if (!searchTerm.trim()) return;
-
-    try {
-      // 🔹 Call backend API to search mechanics
-      const response = await axios.get("http://localhost:8080/api/mechanics/search", {
-        params: { city: searchTerm, type: searchTerm },
-      });
-      setMechanics(response.data);
-      setShowResults(true);
-    } catch (error) {
-      console.error("Error fetching mechanics:", error);
-      alert("Could not fetch mechanic data. Check your backend connection.");
-    }
-  };
+  // Active Link logic
+  const isActive = (path) => location.pathname === path ? "active-link" : "";
 
   return (
-    <div className="navbar-container position-relative">
-      <Navbar expand="lg" className="custom-navbar" variant="dark" fixed="top">
-        <Container fluid>
-          <Navbar.Brand as={Link} to="/" className="fw-bold text-white">
-            Vehix
-          </Navbar.Brand>
+    <Navbar expand="lg" className="custom-navbar sticky-top">
+      <Container fluid>
+        {/* 1. Brand Logo */}
+        <Navbar.Brand as={Link} to="/" className="brand-logo">
+          VEH<span className="text-primary">IX</span>
+        </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="navbarScroll" className="custom-toggler" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/service">Service</Nav.Link>
-              <Nav.Link as={Link} to="/track-history">Track History</Nav.Link>
-              <Nav.Link as={Link} to="/appoinments">Appointments</Nav.Link>
+        <Navbar.Toggle aria-controls="navbarScroll" />
+        
+        <Navbar.Collapse id="navbarScroll">
+          {/* 2. Centered Navigation Links */}
+          <Nav className="mx-auto my-2 my-lg-0" navbarScroll>
+            <Nav.Link as={Link} to="/" className={`nav-item ${isActive("/")}`}>Home</Nav.Link>
+            <Nav.Link as={Link} to="/service" className={`nav-item ${isActive("/service")}`}>Service</Nav.Link>
+            <Nav.Link as={Link} to="/track-history" className={`nav-item ${isActive("/track-history")}`}>Track History</Nav.Link>
+            <Nav.Link as={Link} to="/appoinments" className={`nav-item ${isActive("/appoinments")}`}>Appointments</Nav.Link>
+          </Nav>
 
-              <NavDropdown title="Account" id="navbarScrollingDropdown">
-                <NavDropdown.Item as={Link} to="/login">Signin</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/signup">Signup</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#">Help</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-
-            {/* 🔍 Search Bar */}
-            <Form className="d-flex" onSubmit={handleSearch}>
-              <Form.Control
-                type="search"
-                placeholder="Search mechanic by city or service"
-                className="me-2"
-                aria-label="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Button type="submit" variant="outline-light">Search</Button>
+          {/* 3. Right Side: Search & Profile */}
+          <div className="d-flex align-items-center gap-3">
+            {/* Search Bar */}
+            <Form className="d-flex search-form">
+              <div className="input-group">
+                <span className="input-group-text bg-transparent border-0 text-white">
+                  <i className="bi bi-search"></i>
+                </span>
+                <FormControl
+                  type="search"
+                  placeholder="Search mechanic..."
+                  className="bg-transparent border-0 text-white shadow-none"
+                  aria-label="Search"
+                />
+              </div>
             </Form>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
 
-      {/* 🔽 Dropdown Search Results */}
-      {showResults && mechanics.length > 0 && (
-        <div className="search-results bg-white shadow rounded p-3 mt-5 position-absolute w-100">
-          <Container>
-            <h5 className="fw-bold text-primary mb-3">🔧 Mechanics Found</h5>
-            {mechanics.slice(0, 5).map((m, index) => (
-              <Card key={index} className="mb-2 p-2">
-                <Card.Body>
-                  <Card.Title>{m.name}</Card.Title>
-                  <Card.Text>
-                    <strong>Service:</strong> {m.serviceType} <br />
-                    <strong>City:</strong> {m.city} <br />
-                    <strong>Contact:</strong> {m.contactNumber}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            ))}
-            <Button
-              variant="primary"
-              className="w-100 mt-2"
-              onClick={() => setShowResults(false)}
-            >
-              Close
-            </Button>
-          </Container>
-        </div>
-      )}
-    </div>
+            {/* Profile Dropdown (Modern Avatar) */}
+            <Dropdown align="end">
+              <Dropdown.Toggle variant="link" id="dropdown-profile" className="p-0 border-0 remove-arrow">
+                 {/* Profile Picture Placeholder */}
+                 <div className="profile-icon">
+                    <i className="bi bi-person-circle display-6 text-white"></i>
+                 </div>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu className="dropdown-menu-dark shadow-lg">
+                <Dropdown.Header>Welcome, User!</Dropdown.Header>
+                
+                {/* 👇 Fixed the path here to match App.js */}
+                <Dropdown.Item as={Link} to="/profile">My Profile</Dropdown.Item>
+                
+                <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }} className="text-danger">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+
+             {/* Mobile Login Button (If needed explicitly) */}
+             {/* <Button variant="primary" className="btn-glow">Login</Button> */}
+          </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
