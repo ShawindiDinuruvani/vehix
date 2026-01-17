@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Row, Col, Spinner, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api/axios"; // Import your axios instance
-import "./Signup.css"; // Ensure you create this file
+import api from "../api/axios"; 
+import "./Signup.css"; 
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -10,8 +10,7 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "CUSTOMER", // Default role
-    // Garage specific fields
+    role: "CUSTOMER", 
     businessName: "",
     businessAddress: "",
     locationLink: "", 
@@ -24,11 +23,11 @@ const Signup = () => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // --- THE NEW SUBMIT LOGIC ---
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError(""); 
 
-    // 1. Basic Validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
       return;
@@ -36,24 +35,48 @@ const Signup = () => {
 
     setLoading(true);
 
-    try {
-      // 2. Send Data to Backend
-      // We send the whole formData object. The backend should ignore extra fields 
-      // if the role is CUSTOMER, or you can filter them here if needed.
-      const response = await api.post("/api/users/signup", formData); 
-      
-      console.log("Registration Success:", response.data);
-      alert("Account created successfully! Please Login.");
-      
-      // 3. Redirect to Login Page
-      navigate("/login");
+    // Internal function to send data to Spring Boot
+    const sendRequest = async (data) => {
+      try {
+        const response = await api.post("/api/users/signup", data); 
+        console.log("Registration Success:", response.data);
+        alert("Account created successfully! Please Login.");
+        navigate("/login");
+      } catch (err) {
+        console.error("Signup Error:", err);
+        setError(err.response?.data?.message || "Registration failed. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    } catch (err) {
-      console.error("Signup Error:", err);
-      // Display backend error message or default message
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
-    } finally {
-      setLoading(false);
+    // If Garage Owner, we MUST get the GPS coordinates
+    if (formData.role === "GARAGE_OWNER") {
+      if (!navigator.geolocation) {
+        setError("Geolocation is not supported by your browser.");
+        setLoading(false);
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Success: We got the lat/lng from the browser
+          const finalData = {
+            ...formData,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          sendRequest(finalData);
+        },
+        (geoError) => {
+          // Error: User denied location access
+          setLoading(false);
+          setError("Location access is required for Garages so users can find you on the map.");
+        }
+      );
+    } else {
+      // If Customer, just send the form data normally
+      sendRequest(formData);
     }
   };
 
@@ -67,7 +90,6 @@ const Signup = () => {
             <p className="text-white-50">Join Vehix to manage or service vehicles</p>
           </div>
 
-          {/* Error Alert */}
           {error && <Alert variant="danger" dismissible onClose={() => setError("")}>{error}</Alert>}
 
           <Form onSubmit={handleSubmit}>
@@ -115,7 +137,7 @@ const Signup = () => {
               </Col>
             </Row>
 
-            {/* Conditional Rendering: GARAGE OWNER EXTRA FIELDS */}
+            {/* Garage specific fields */}
             {formData.role === "GARAGE_OWNER" && (
               <div className="garage-section p-3 mb-4 rounded border border-secondary">
                 <h5 className="text-primary mb-3"><i className="bi bi-tools me-2"></i>Business Details</h5>
@@ -159,6 +181,10 @@ const Signup = () => {
                         </Form.Group>
                     </Col>
                 </Row>
+                <p className="text-info small mt-2">
+                  <i className="bi bi-geo-alt-fill me-1"></i>
+                  Note: Your current GPS location will be saved for the map.
+                </p>
               </div>
             )}
 
@@ -196,7 +222,7 @@ const Signup = () => {
                 className="btn-primary w-100 mt-3 py-2 fw-bold"
                 disabled={loading}
             >
-               {loading ? <Spinner animation="border" size="sm" /> : "Create Account"}
+                {loading ? <Spinner animation="border" size="sm" /> : "Create Account"}
             </Button>
 
             <div className="text-center mt-3">
