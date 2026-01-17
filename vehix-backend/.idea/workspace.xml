@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AppointmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/Appointment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/repository/AppointmentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/pages/Appoinments.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Appoinments.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AppointmentController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

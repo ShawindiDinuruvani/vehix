@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Col, Card, Badge, Toast, ToastContainer, Table, Modal, Spinner } from "react-bootstrap";
-import axios from "../api/axios"; // ඔබේ API ෆයිල් එක
+import axios from "../api/axios"; 
 import "./Appoinments.css";
 
 const Appointments = () => {
-  // --- STATE VARIABLES ---
   const [garages, setGarages] = useState([]); 
   const [selectedGarage, setSelectedGarage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,10 +17,9 @@ const Appointments = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
-  // User Email (LocalStorage)
   const currentUserEmail = localStorage.getItem("userEmail");
   
-  // --- 1. DATA LOAD (Initial Fetch) ---
+  // --- 1.  ---
   useEffect(() => {
     fetchGarages();      
     if(currentUserEmail) {
@@ -29,17 +27,14 @@ const Appointments = () => {
     }
   }, [currentUserEmail]);
 
-  // 🔥 Garage Owners List එක Backend එකෙන් ගැනීම
   const fetchGarages = async () => {
     try {
       const response = await axios.get("/api/users/garages");
-      
       const formattedGarages = response.data.map(user => ({
         id: user.id,
-        // Business Name එක නැත්නම් Full Name එක පෙන්වනවා
         name: user.businessName || user.fullName || "Unnamed Garage", 
         location: user.businessAddress || "Location Not Available",
-        rating: 4.5, // Default Rating
+        rating: 4.5, 
         type: "General Service",
         image: "https://cdn-icons-png.flaticon.com/512/1995/1995470.png"
       }));
@@ -51,7 +46,7 @@ const Appointments = () => {
     }
   };
 
-  // My Appointments History ගැනීම
+  
   const fetchAppointments = async () => {
     try {
       const response = await axios.get(`/api/appointments/my-appointments/${currentUserEmail}`);
@@ -70,10 +65,9 @@ const Appointments = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --- 2. SUBMIT BOOKING (වැදගත්ම කොටස) ---
+  // --- 2. Booking ---
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!currentUserEmail) {
         alert("Please Login First!");
         return;
@@ -81,44 +75,39 @@ const Appointments = () => {
 
     const appointmentData = {
       ...formData,
-      garageName: selectedGarage.name, // Garage Name එක යවනවා
+      garageName: selectedGarage.name, 
       userEmail: currentUserEmail,
-      status: "Pending"
+      status: "Pending" // Pending
     };
-
-    console.log("Sending Data to Backend:", appointmentData); // Console එකේ බලාගන්න
 
     try {
       if (editingId) {
-        // Edit කිරීමක් නම්
         await axios.put(`/api/appointments/update/${editingId}`, appointmentData);
         alert("Updated Successfully!");
       } else {
-        // අලුත් Booking එකක් නම්
         await axios.post("/api/appointments/book", appointmentData);
-        setShowToast(true); // Success Toast එක පෙන්වනවා
+        setShowToast(true);
       }
-      
-      // Reset කිරීම
       setSelectedGarage(null);
       setEditingId(null);
-      fetchAppointments(); // History එක අලුත් කරනවා
+      fetchAppointments(); // List
     } catch (error) {
-      console.error("Full Error:", error);
-
-      // 👇 Error එක හරියටම User ට පෙන්වන කොටස
       if (error.response) {
           alert("SERVER ERROR: " + JSON.stringify(error.response.data));
-      } else if (error.request) {
-          alert("CONNECTION ERROR: Backend එක Run වෙන්නේ නෑ වගේ. (mvnw spring-boot:run කරන්න)");
       } else {
-          alert("ERROR: " + error.message);
+          alert("Connection Error!");
       }
     }
   };
 
-  // --- 3. ACTIONS (Edit & Delete) ---
+  // --- 3. Actions (Edit / Delete) ---
   const handleEdit = (appt) => {
+    // Garage Owner Accept 
+    if (appt.status !== 'Pending') {
+        alert("You cannot edit this appointment because it is already processed by the garage.");
+        return;
+    }
+
     const garage = garages.find(g => g.name === appt.garageName);
     setSelectedGarage(garage || { name: appt.garageName, location: "Unknown", rating: 0 });
 
@@ -137,7 +126,7 @@ const Appointments = () => {
   };
 
   const handleDelete = async (id) => {
-    if(window.confirm("Cancel appointment?")) {
+    if(window.confirm("Are you sure you want to cancel this booking?")) {
       try {
           await axios.delete(`/api/appointments/delete/${id}`);
           fetchAppointments();
@@ -148,8 +137,7 @@ const Appointments = () => {
   };
 
   const handleClearAll = async () => {
-      if(window.confirm("Are you sure you want to clear all history?")) {
-          // Loop through and delete all (Backend එකේ delete all නැති නිසා)
+      if(window.confirm("Clear all history?")) {
           for (let appt of appointmentHistory) {
              await axios.delete(`/api/appointments/delete/${appt.id}`);
           }
@@ -158,18 +146,29 @@ const Appointments = () => {
       }
   };
 
-  // Stars Design
+  // Stars
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
       <i key={i} className={`bi bi-star${i < Math.round(rating) ? "-fill text-warning" : " text-white-50"} me-1`}></i>
     ));
   };
 
+
+  const getStatusBadge = (status) => {
+      switch (status) {
+          case 'Pending': return 'warning';    
+          case 'Confirmed': return 'primary';  
+          case 'Rejected': return 'danger';    
+          case 'Completed': return 'success'; 
+          default: return 'secondary';
+      }
+  };
+
   return (
     <div className="appointment-page min-vh-100 py-5 position-relative">
       <Container>
         
-        {/* BELL ICON (History Button) */}
+        {/* BELL ICON (History) */}
         <div className="position-fixed end-0 me-4 p-2 cursor-pointer notification-bell" style={{ zIndex: 1050, top: '90px' }} onClick={() => setShowModal(true)}>
             <div className="bg-dark bg-opacity-75 p-3 rounded-circle border border-secondary shadow-lg position-relative">
                 <i className="bi bi-bell-fill text-white fs-4"></i>
@@ -179,11 +178,10 @@ const Appointments = () => {
             </div>
         </div>
 
-        {/* Success Toast Message */}
         <ToastContainer position="top-center" className="p-3">
             <Toast onClose={() => setShowToast(false)} show={showToast} delay={3000} autohide bg="success">
                 <Toast.Header><strong className="me-auto">Vehix</strong></Toast.Header>
-                <Toast.Body className="text-white">Booking Sent to Garage Successfully!</Toast.Body>
+                <Toast.Body className="text-white">Booking Sent to Garage!</Toast.Body>
             </Toast>
         </ToastContainer>
 
@@ -228,7 +226,7 @@ const Appointments = () => {
                     <Card className="p-4 shadow-lg glass-card">
                         <div className="d-flex justify-content-between mb-4">
                             <h3 className="text-white">{editingId ? "Edit Appointment" : "Book Appointment"}</h3>
-                            <Button variant="outline-light" size="sm" onClick={() => { setSelectedGarage(null); setEditingId(null); }}>Back</Button>
+                            <Button variant="outline-light" size="sm" onClick={() => setSelectedGarage(null)}>Back</Button>
                         </div>
                         <div className="p-3 rounded bg-primary bg-opacity-25 mb-4 border border-primary">
                             <h5 className="text-white mb-0 fw-bold">{selectedGarage.name}</h5>
@@ -257,7 +255,7 @@ const Appointments = () => {
             </Row>
         )}
 
-        {/* --- MODAL (HISTORY) --- */}
+        {/* --- HISTORY MODAL --- */}
         <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered contentClassName="bg-dark text-white border-0 glass-card">
             <Modal.Header closeButton closeVariant="white"><Modal.Title>My Appointments</Modal.Title></Modal.Header>
             <Modal.Body>
@@ -269,10 +267,24 @@ const Appointments = () => {
                                 <tr key={appt.id}>
                                     <td><span className="text-info">{appt.garageName}</span><br/><small>{appt.appointmentDate}</small></td>
                                     <td>{appt.vehicleNumber}<br/><small>{appt.serviceType}</small></td>
-                                    <td><Badge bg={appt.status==='Pending'?'warning': appt.status==='Confirmed'?'primary':'success'}>{appt.status}</Badge></td>
+                                    
+                                  
                                     <td>
-                                        {appt.status === 'Pending' && <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEdit(appt)}><i className="bi bi-pencil"></i></Button>}
-                                        <Button variant="outline-danger" size="sm" onClick={() => handleDelete(appt.id)}><i className="bi bi-trash"></i></Button>
+                                        <Badge bg={getStatusBadge(appt.status)} className="px-3 py-2">
+                                            {appt.status === 'Confirmed' ? 'Accepted' : appt.status}
+                                        </Badge>
+                                    </td>
+
+                                    <td>
+                                        
+                                        {appt.status === 'Pending' && (
+                                            <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEdit(appt)}>
+                                                <i className="bi bi-pencil"></i>
+                                            </Button>
+                                        )}
+                                        <Button variant="outline-danger" size="sm" onClick={() => handleDelete(appt.id)}>
+                                            <i className="bi bi-trash"></i>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
