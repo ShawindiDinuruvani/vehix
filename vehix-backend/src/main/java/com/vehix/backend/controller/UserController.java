@@ -1,6 +1,5 @@
 package com.vehix.backend.controller;
 
-
 import com.vehix.backend.entity.User;
 import com.vehix.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -21,25 +21,27 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // 2. Add this GET method to fetch only garages
-    @GetMapping("/garages")
-    public ResponseEntity<List<User>> getGarages() {
-        List<User> garages = userRepository.findByRole("GARAGE_OWNER");
-        return ResponseEntity.ok(garages);
-    }
-
+    // 1. SIGNUP API (JSON Data Only)
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
+
+        // Check Email
         if (userRepository.existsByEmail(user.getEmail())) {
             return ResponseEntity.badRequest().body(Map.of("message", "Email already exists"));
         }
 
-        // Hash the password before saving
+        // Hash Password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // Save user
+        // Save User
         User savedUser = userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "User registered successfully", "userId", savedUser.getId()));
+    }
+
+    // 2. GET GARAGES API
+    @GetMapping("/garages")
+    public List<User> getAllGarages() {
+        return userRepository.findByRole("GARAGE_OWNER");
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Spinner, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import api from '../api/axios'; // Ensure you have this file created
+import api from '../api/axios'; 
 import "./Signin.css";
 
 const Signin = () => {
@@ -9,7 +9,7 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,7 +17,7 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Clear previous errors
+    setError("");
 
     try {
         // 1. Send login request to backend
@@ -28,21 +28,23 @@ const Signin = () => {
         
         console.log("Login Success:", response.data);
 
-        // 2. Save Token (Optional - if your backend sends a token)
+        // 2. Save Token
         if (response.data.token) {
             localStorage.setItem("token", response.data.token);
         }
 
-        // 3. Redirect to Home Page
+        
+        localStorage.setItem("userEmail", formData.email);
+
+      
         alert("Login Successful!");
         navigate("/"); 
         
     } catch (err) {
         console.error("Login Error:", err);
-        // Show error message from backend or a default one
         setError(err.response?.data?.message || "Invalid email or password. Please try again.");
     } finally {
-        setLoading(false); // Stop loading spinner
+        setLoading(false);
     }
   };
 
@@ -55,7 +57,6 @@ const Signin = () => {
              <p className="text-white-50">Sign in to manage your vehicle services</p>
           </div>
 
-          {/* Error Message Box */}
           {error && <Alert variant="danger">{error}</Alert>}
 
           <Form onSubmit={handleSubmit}>
