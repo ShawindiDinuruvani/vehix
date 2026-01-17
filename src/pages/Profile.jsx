@@ -1,157 +1,169 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Button, Form, Badge, Alert } from "react-bootstrap";
-import "./Profile.css";
+import { Container, Row, Col, Card, Button, Table, Badge } from "react-bootstrap";
+import "./GarageDashboard.css";
 
-const Profile = () => {
-  // --- USER DATA STATE ---
-  const [user, setUser] = useState({
-    fullName: "Kasun Perera",
-    email: "kasun@example.com",
-    phone: "",
-    nic: "",
-    role: "CUSTOMER", // Can be "CUSTOMER" or "GARAGE_OWNER"
-    isEmailVerified: false,
-    isPhoneVerified: false
-  });
+const GarageDashboard = () => {
+  // Default tab එක Appointments ලෙස තබමු
+  const [activeTab, setActiveTab] = useState("appointments");
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempData, setTempData] = useState(user);
-  const [showSuccess, setShowSuccess] = useState(false);
+  // --- MOCK DATA ---
+  const [appointments, setAppointments] = useState([
+    { id: 1, customer: "Amal Perera", contact: "077-1112233", vehicle: "Toyota Prius (WP ABC-1234)", type: "Full Service", date: "2025-02-20", time: "10:00 AM", status: "Pending" },
+    { id: 2, customer: "Nimal Silva", contact: "071-4433221", vehicle: "Honda Grace (WP CAR-5566)", type: "Oil Change", date: "2025-02-21", time: "02:00 PM", status: "Confirmed" },
+    { id: 3, customer: "Sunil Rathnayake", contact: "075-9988776", vehicle: "Nissan Leaf (WP CBA-9988)", type: "Battery Check", date: "2025-02-22", time: "09:30 AM", status: "Completed" },
+    { id: 4, customer: "Kamal Gunarathne", contact: "076-1234567", vehicle: "Suzuki WagonR (WP CAD-8899)", type: "Scan", date: "2025-02-23", time: "11:00 AM", status: "Pending" },
+  ]);
 
-  // Handle Input Change
-  const handleChange = (e) => {
-    setTempData({ ...tempData, [e.target.name]: e.target.value });
-  };
+  const [services] = useState([
+    { id: 1, name: "Full Service Package (Engine, Gear, Body)", price: "15,000", description: "Complete vehicle checkup and servicing." },
+    { id: 2, name: "Express Oil Change & Filter Replacement", price: "5,000", description: "Quick oil change with premium synthetic oil." },
+    { id: 3, name: "Computerized Scan & Diagnostic", price: "3,000", description: "Full system scan to identify error codes." },
+  ]);
 
-  // Save Changes
-  const handleSave = () => {
-    setUser(tempData);
-    setIsEditing(false);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-  };
-
-  // Simulate Verification Process
-  const handleVerify = (type) => {
-    alert(`Verification code sent to your ${type}! (Demo)`);
-    if(type === 'email') setUser({...user, isEmailVerified: true});
-    if(type === 'phone') setUser({...user, isPhoneVerified: true});
+  const handleStatusChange = (id, newStatus) => {
+    const updatedApps = appointments.map(app => 
+      app.id === id ? { ...app, status: newStatus } : app
+    );
+    setAppointments(updatedApps);
   };
 
   return (
-    <div className="profile-page min-vh-100 py-5">
-      <Container>
+    <div className="garage-dashboard min-vh-100 py-5">
+      <Container fluid className="px-4">
         
-        <h2 className="text-white text-center mb-4">My Account Profile</h2>
+        {/* HEADER & NAVIGATION */}
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 text-white gap-3">
+            <div>
+                <h2 className="fw-bold display-6 mb-0">Garage Dashboard</h2>
+                <p className="text-white-50 mb-0">Manage your business efficiently.</p>
+            </div>
+            <div className="d-flex flex-wrap gap-2 justify-content-center">
+                <Button variant={activeTab === "overview" ? "primary" : "outline-light"} onClick={() => setActiveTab("overview")}>Overview</Button>
+                <Button variant={activeTab === "appointments" ? "primary" : "outline-light"} onClick={() => setActiveTab("appointments")}>Appointments</Button>
+                <Button variant={activeTab === "services" ? "primary" : "outline-light"} onClick={() => setActiveTab("services")}>My Services</Button>
+                <Button variant={activeTab === "emergency" ? "danger" : "outline-danger"} onClick={() => setActiveTab("emergency")}>🚨 Emergency</Button>
+            </div>
+        </div>
 
-        {showSuccess && <Alert variant="success">Profile updated successfully!</Alert>}
+        {/* --- APPOINTMENTS TAB (UPDATED: FULL WIDTH & CLEAR) --- */}
+        {activeTab === "appointments" && (
+            <Card className="glass-card p-0 border-0 shadow-lg animate-fade w-100 overflow-hidden">
+                <div className="p-4 border-bottom border-secondary d-flex justify-content-between align-items-center bg-dark bg-opacity-25">
+                    <h4 className="text-white mb-0"><i className="bi bi-calendar-check me-2"></i>Customer Appointments</h4>
+                    <Badge bg="primary" className="fs-6">{appointments.length} Bookings</Badge>
+                </div>
 
-        <Row className="justify-content-center">
-          <Col md={8} lg={6}>
-            <Card className="p-4 glass-card shadow-lg">
-              
-              <div className="text-center mb-4">
-                 <div className="profile-icon-large mx-auto bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-3">
-                    <span className="display-4 fw-bold">{user.fullName.charAt(0)}</span>
-                 </div>
-                 <h3 className="text-white">{user.fullName}</h3>
-                 <Badge bg="info">{user.role === "CUSTOMER" ? "Vehicle Owner" : "Garage Owner"}</Badge>
-              </div>
-
-              <Form>
-                {/* 1. Full Name */}
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white-50">Full Name</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="fullName"
-                    value={isEditing ? tempData.fullName : user.fullName} 
-                    onChange={handleChange}
-                    disabled={!isEditing} 
-                    className="custom-input"
-                  />
-                </Form.Group>
-
-                {/* 2. Email Verification Section */}
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white-50">Email Address</Form.Label>
-                  <div className="d-flex gap-2">
-                    <Form.Control 
-                        type="email" 
-                        value={user.email} 
-                        disabled 
-                        className="custom-input"
-                    />
-                    {user.isEmailVerified ? (
-                        <Button variant="success" disabled><i className="bi bi-check-circle-fill"></i> Verified</Button>
-                    ) : (
-                        <Button variant="warning" onClick={() => handleVerify('email')}>Verify</Button>
-                    )}
-                  </div>
-                </Form.Group>
-
-                {/* 3. Phone Number Verification */}
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white-50">Mobile Number</Form.Label>
-                  <div className="d-flex gap-2">
-                    <Form.Control 
-                        type="text" 
-                        name="phone"
-                        placeholder="077-xxxxxxx"
-                        value={isEditing ? tempData.phone : user.phone} 
-                        onChange={handleChange}
-                        disabled={!isEditing}
-                        className="custom-input"
-                    />
-                     {/* Only show verify button if phone is saved but not verified */}
-                     {!isEditing && user.phone && !user.isPhoneVerified && (
-                        <Button variant="warning" onClick={() => handleVerify('phone')}>Verify</Button>
-                     )}
-                     {user.isPhoneVerified && (
-                        <Button variant="success" disabled><i className="bi bi-check-circle"></i></Button>
-                     )}
-                  </div>
-                </Form.Group>
-
-                {/* 4. NIC Number */}
-                <Form.Group className="mb-4">
-                  <Form.Label className="text-white-50">NIC Number</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="nic"
-                    placeholder="Enter NIC for identity check"
-                    value={isEditing ? tempData.nic : user.nic} 
-                    onChange={handleChange}
-                    disabled={!isEditing} 
-                    className="custom-input"
-                  />
-                  <Form.Text className="text-white-50 small">
-                    Required for identity verification.
-                  </Form.Text>
-                </Form.Group>
-
-                {/* Action Buttons */}
-                {isEditing ? (
-                    <div className="d-flex gap-2">
-                        <Button variant="success" className="w-100" onClick={handleSave}>Save Changes</Button>
-                        <Button variant="secondary" className="w-100" onClick={() => setIsEditing(false)}>Cancel</Button>
-                    </div>
-                ) : (
-                    <Button variant="primary" className="w-100 py-2" onClick={() => {
-                        setTempData(user);
-                        setIsEditing(true);
-                    }}>
-                        Edit Profile Details
-                    </Button>
-                )}
-
-              </Form>
+                <div className="table-responsive">
+                    <Table className="table-dark-glass align-middle mb-0 w-100" hover>
+                        <thead className="bg-dark bg-opacity-50">
+                            <tr className="text-uppercase text-white-50 small">
+                                <th className="py-3 ps-4">Customer Details</th>
+                                <th className="py-3">Vehicle Info</th>
+                                <th className="py-3">Service Type</th>
+                                <th className="py-3">Date & Time</th>
+                                <th className="py-3 text-center">Status</th>
+                                <th className="py-3 pe-4 text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {appointments.map((app) => (
+                                <tr key={app.id}>
+                                    <td className="ps-4 py-3">
+                                        <div className="fw-bold text-white fs-5">{app.customer}</div>
+                                        <div className="text-primary small"><i className="bi bi-telephone-fill me-1"></i>{app.contact}</div>
+                                    </td>
+                                    <td className="py-3">
+                                        <span className="text-white-50 fw-medium">{app.vehicle}</span>
+                                    </td>
+                                    <td className="py-3">
+                                        <Badge bg="info" text="dark" className="px-3 py-2 rounded-pill">{app.type}</Badge>
+                                    </td>
+                                    <td className="py-3">
+                                        <div className="text-white fw-bold">{app.time}</div>
+                                        <div className="text-white-50 small">{app.date}</div>
+                                    </td>
+                                    <td className="py-3 text-center">
+                                        <Badge bg={
+                                            app.status === "Confirmed" ? "success" : 
+                                            app.status === "Pending" ? "warning" : "secondary"
+                                        } className="px-3 py-2 rounded-pill text-uppercase">
+                                            {app.status}
+                                        </Badge>
+                                    </td>
+                                    <td className="pe-4 py-3 text-end">
+                                        {app.status === "Pending" && (
+                                            <div className="d-flex gap-2 justify-content-end">
+                                                <Button variant="success" size="sm" className="fw-bold px-3" onClick={() => handleStatusChange(app.id, "Confirmed")}>
+                                                    <i className="bi bi-check-lg me-1"></i> Accept
+                                                </Button>
+                                                <Button variant="outline-danger" size="sm" className="px-3">
+                                                    <i className="bi bi-x-lg"></i>
+                                                </Button>
+                                            </div>
+                                        )}
+                                        {app.status === "Confirmed" && (
+                                            <Button variant="primary" size="sm" className="fw-bold w-100" onClick={() => handleStatusChange(app.id, "Completed")}>
+                                                <i className="bi bi-check2-circle me-1"></i> Mark Done
+                                            </Button>
+                                        )}
+                                        {app.status === "Completed" && <span className="text-white-50 fw-bold small text-uppercase">Closed</span>}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
             </Card>
-          </Col>
-        </Row>
+        )}
+
+        {/* --- MY SERVICES TAB (UPDATED: HORIZONTAL LIST VIEW) --- */}
+        {activeTab === "services" && (
+            <Card className="glass-card p-4 border-0 animate-fade w-100">
+                <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
+                    <div>
+                        <h4 className="text-white mb-1">Services You Offer</h4>
+                        <p className="text-white-50 mb-0 small">Manage the services visible to customers.</p>
+                    </div>
+                    <Button variant="primary" className="fw-bold px-4 py-2">
+                        <i className="bi bi-plus-lg me-2"></i> Add New Service
+                    </Button>
+                </div>
+                
+                <div className="d-flex flex-column gap-3">
+                    {services.map((svc) => (
+                        <div key={svc.id} className="service-item-horizontal p-4 rounded-3 d-flex justify-content-between align-items-center">
+                            <div className="d-flex align-items-center gap-4">
+                                <div className="icon-box bg-primary bg-opacity-25 text-primary rounded-circle p-3 d-flex align-items-center justify-content-center" style={{width: '60px', height: '60px'}}>
+                                    <i className="bi bi-tools fs-4"></i>
+                                </div>
+                                <div>
+                                    <h4 className="text-white mb-1">{svc.name}</h4>
+                                    <p className="text-white-50 mb-0 small">{svc.description}</p>
+                                </div>
+                            </div>
+                            <div className="d-flex align-items-center gap-4">
+                                <div className="text-end">
+                                    <small className="text-white-50 d-block mb-1">Price</small>
+                                    <h4 className="text-success mb-0 fw-bold">LKR {svc.price}</h4>
+                                </div>
+                                <div className="d-flex gap-2">
+                                    <Button variant="outline-light" className="px-3"><i className="bi bi-pencil-fill"></i></Button>
+                                    <Button variant="outline-danger" className="px-3"><i className="bi bi-trash-fill"></i></Button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </Card>
+        )}
+
+        {/* Placeholders for other tabs */}
+        {activeTab === "overview" && <h4 className="text-white text-center mt-5 animate-fade">Overview Section...</h4>}
+        {activeTab === "emergency" && <h4 className="text-white text-center mt-5 animate-fade">Emergency Section...</h4>}
+
       </Container>
     </div>
   );
 };
 
-export default Profile;
+export default GarageDashboard;

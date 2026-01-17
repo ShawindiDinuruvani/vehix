@@ -4,13 +4,15 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
-import Appoinments from "./pages/Appoinments"; // File name එකේ spelling බලන්න (Appointments ද? Appoinments ද?)
+import Appoinments from "./pages/Appoinments"; // Appoinments Import)
 import NavbarComponent from "./components/Navbar";
 import Service from "./pages/Service";
 import TrackHistory from "./pages/TrackHistory";
 import 'leaflet/dist/leaflet.css';
 import axiosInstance from './api/axios';
 import Profile from "./pages/Profile"; // Profile Import 
+import GarageDashboard from "./pages/GarageDashboard";
+
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
             <Route path="/appoinments" element={<Appoinments />} />
             <Route path="/service" element={<Service />} />
             <Route path="/track-history" element={<TrackHistory />} />
+            <Route path="/garage-dashboard" element={<GarageDashboard />} />  
             
             
             <Route path="/profile" element={<Profile />} />
