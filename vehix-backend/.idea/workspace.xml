@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="" />
+    <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../src/pages/Appoinments.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Appoinments.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/pages/Signin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Signin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/pages/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Signup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/entity/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/repository/UserRepository.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,6 +41,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Tharushawakwella"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ShawindiDinuruvani/vehix.git",
+    "accountId": "ad5f348a-e5a7-49aa-959c-e791d3da79bc"
+  }
+}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -37,6 +64,9 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="38LgJyHNIf2h1edOWUzHHm7RKVq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -46,11 +76,24 @@
     "Application.VehixBackendApplication.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "th2",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/2nd year/REACT/vehix/vehix-backend"
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/2nd year/REACT/vehix/vehix-backend",
+    "to.speed.mode.migration.done": "true"
   }
 }]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28539.33" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="" />
