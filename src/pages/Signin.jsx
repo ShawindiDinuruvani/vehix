@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Spinner, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import api from '../api/axios'; 
+import api from "../api/axios"; 
 import "./Signin.css";
 
 const Signin = () => {
@@ -20,29 +20,33 @@ const Signin = () => {
     setError("");
 
     try {
-        // 1. Send login request to backend
-        const response = await api.post('/api/auth/login', {
-            email: formData.email,
-            password: formData.password
-        });
+       
+        const response = await api.post('/api/auth/login', formData);
         
-        console.log("Login Success:", response.data);
+        console.log("Login Data:", response.data);
+        const userData = response.data;
 
-        // 2. Save Token
-        if (response.data.token) {
-            localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", userData.token);
+        localStorage.setItem("userEmail", userData.email);
+        localStorage.setItem("userRole", userData.role);
+        localStorage.setItem("userName", userData.fullName);
+
+        if (userData.role === "GARAGE_OWNER" && userData.businessName) {
+            localStorage.setItem("myGarageName", userData.businessName);
         }
 
-        
-        localStorage.setItem("userEmail", formData.email);
-
-      
         alert("Login Successful!");
-        navigate("/"); 
+
+        
+        if (userData.role === "GARAGE_OWNER") {
+            navigate("/garage-dashboard"); 
+        } else {
+            navigate("/appointments"); 
+        }
         
     } catch (err) {
         console.error("Login Error:", err);
-        setError(err.response?.data?.message || "Invalid email or password. Please try again.");
+        setError(err.response?.data?.message || "Invalid email or password.");
     } finally {
         setLoading(false);
     }
@@ -62,43 +66,16 @@ const Signin = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label className="text-white">Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="custom-input"
-              />
+              <Form.Control type="email" name="email" placeholder="Enter email" onChange={handleChange} required className="custom-input" />
             </Form.Group>
 
             <Form.Group className="mb-4">
               <Form.Label className="text-white">Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="custom-input"
-              />
+              <Form.Control type="password" name="password" placeholder="Enter password" onChange={handleChange} required className="custom-input" />
             </Form.Group>
 
-            <Button 
-                type="submit" 
-                className="btn-primary w-100 mb-3 py-2 fw-bold" 
-                disabled={loading}
-            >
-              {loading ? (
-                 <>
-                   <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                   &nbsp; Signing In...
-                 </>
-              ) : (
-                 "Sign In"
-              )}
+            <Button type="submit" className="btn-primary w-100 mb-3 py-2 fw-bold" disabled={loading}>
+              {loading ? <Spinner animation="border" size="sm" /> : "Sign In"}
             </Button>
           </Form>
 
