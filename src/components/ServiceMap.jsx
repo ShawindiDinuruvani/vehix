@@ -16,7 +16,7 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// සිතියම User ඉන්න තැනට Auto Center වීමට
+// Component to auto-center map on user location
 const RecenterAutomatically = ({ lat, lng }) => {
   const map = useMap();
   useEffect(() => {
@@ -26,15 +26,13 @@ const RecenterAutomatically = ({ lat, lng }) => {
 };
 
 const ServiceMap = ({ serviceCenters, userLocation }) => {
-  // Default Location: Colombo (User Location නැති නම්)
+  // Default Location: Colombo (Used if User Location is missing)
   const defaultPosition = [6.9271, 79.8612];
   const position = userLocation ? [userLocation.lat, userLocation.lng] : defaultPosition;
 
   return (
-    // 👇 UPDATE 1: Height eka 100% kala (Full screen penenna)
     <div className="map-container" style={{ height: "100%", width: "100%", overflow: "hidden" }}>
       
-      {/* 👇 UPDATE 2: scrollWheelZoom={true} kala */}
       <MapContainer center={position} zoom={13} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
         
         {/* OpenStreetMap Layer */}
@@ -43,7 +41,7 @@ const ServiceMap = ({ serviceCenters, userLocation }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* 1. User ගේ Location එක */}
+        {/* 1. User Location Marker */}
         {userLocation && (
            <>
              <Marker position={position}>
@@ -56,26 +54,47 @@ const ServiceMap = ({ serviceCenters, userLocation }) => {
         )}
 
         {/* 2. Registered Garage Locations */}
-        {serviceCenters.map((center, index) => (
-          <Marker key={index} position={[center.lat, center.lng]}>
-            <Popup>
-              <div style={{ textAlign: "center" }}>
-                <h6 style={{ margin: "0", color: "#0d6efd", fontWeight: "bold" }}>{center.name}</h6>
-                <p style={{ margin: "5px 0", fontSize: "12px" }}>{center.address}</p>
-                
-                {/* 👇 UPDATE 3: Correct Google Maps Direction Link */}
-                <a 
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${center.lat},${center.lng}`} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  style={{ fontSize: "12px", color: "blue", textDecoration: "underline", fontWeight: "bold" }}
-                >
-                  <i className="bi bi-cursor-fill me-1"></i> Get Directions
-                </a>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {serviceCenters && serviceCenters.map((center, index) => {
+            // --- SAFETY CHECK (Prevents the crash) ---
+            // 1. Try to read latitude/longitude (standard names) OR lat/lng (short names)
+            // 2. Ensure they are treated as Numbers
+            const lat = parseFloat(center.latitude || center.lat);
+            const lng = parseFloat(center.longitude || center.lng);
+
+            // If coordinates are invalid or missing, SKIP this garage (return null)
+            // This prevents "Invalid LatLng object" error
+            if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+                return null; 
+            }
+
+            return (
+              <Marker key={index} position={[lat, lng]}>
+                <Popup>
+                  <div style={{ textAlign: "center" }}>
+                    {/* Fallback for Name: Try 'businessName', if missing try 'name', if missing show 'Garage' */}
+                    <h6 style={{ margin: "0", color: "#0d6efd", fontWeight: "bold" }}>
+                      {center.businessName || center.name || "Unknown Garage"}
+                    </h6>
+
+                    {/* Fallback for Address */}
+                    <p style={{ margin: "5px 0", fontSize: "12px" }}>
+                      {center.businessAddress || center.address || "No address provided"}
+                    </p>
+                    
+                    {/* Corrected Google Maps Direction Link */}
+                    <a 
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      style={{ fontSize: "12px", color: "blue", textDecoration: "underline", fontWeight: "bold" }}
+                    >
+                      <i className="bi bi-cursor-fill me-1"></i> Get Directions
+                    </a>
+                  </div>
+                </Popup>
+              </Marker>
+            );
+        })}
       </MapContainer>
     </div>
   );
