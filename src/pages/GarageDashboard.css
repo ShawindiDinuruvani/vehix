@@ -1,53 +1,119 @@
-/* Background */
-.garage-dashboard {
-  background: linear-gradient(135deg, #111111 0%, #1e2a3a 100%);
-  padding-top: 80px;
+/* GarageDashboard.css - Force Dark Theme */
+
+/* 1. පසුබිම (Background) */
+.dashboard-bg {
+  background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed !important;
+  background-size: cover !important;
+  min-height: 100vh;
+  width: 100%;
+  position: absolute; /* Screen එකේ කොනටම යන්න */
+  top: 0;
+  left: 0;
+  padding-top: 80px; /* Navbar එකට ඉඩ */
 }
 
-/* Glass Effect */
+/* GarageDashboard.css - Navbar Fix Included */
+
+/* 1. පසුබිම (Background) - Navbar Fix */
+.dashboard-bg {
+  background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed !important;
+  background-size: cover !important;
+  min-height: 100vh;
+  width: 100%;
+  
+  /* 🔥 වෙනස්කම 1: Absolute වෙනුවට Relative දැම්මා (Scroll වෙන්න පහසුයි) */
+  position: relative; 
+  
+  /* 🔥 වෙනස්කම 2: උඩින් ලොකු ඉඩක් තිබ්බා (Navbar එකට යට නොවෙන්න) */
+  padding-top: 130px !important; 
+  
+  /* වම් පැත්තට තද වෙලා තියෙන්න */
+  left: 0;
+  top: 0;
+}
+
+/* Background Overlay (අඳුරු කිරීම) */
+.dashboard-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); 
+  z-index: -1; /* Content එකට පිටුපසින් */
+}
+
+/* ... පහළින් ඇති අනිත් CSS Styles එලෙසම තියෙන්න අරින්න ... */
+
+/* 2. Glass Cards (වීදුරු පෙට්ටි) */
 .glass-card {
+  background: rgba(20, 20, 20, 0.7) !important; /* තද කළු වීදුරු */
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: white !important;
+}
+
+/* 3. Stats Cards */
+.stat-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%);
+  border-radius: 15px;
+  padding: 20px;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.3s;
+}
+.stat-card:hover { transform: translateY(-5px); }
+.stat-border-danger { border-color: #ff416c; }
+.stat-border-primary { border-color: #00c6ff; }
+.stat-border-success { border-color: #00f260; }
+
+/* 4. Table Styling (Force Dark) */
+/* Bootstrap වල සුදු පාට බලෙන්ම අයින් කිරීම */
+.table {
+  --bs-table-bg: transparent !important; 
+  --bs-table-color: white !important;
+  color: white !important;
+}
+
+.custom-table thead th {
   background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 12px;
+  color: #bbb !important;
+  border: none;
+  padding: 15px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
 }
 
-/* Table Styles */
-.table-dark-glass {
+.custom-table tbody tr {
+  background: rgba(0, 0, 0, 0.6) !important; /* පේළි කලු පාටයි */
+  border-bottom: 5px solid transparent; /* පේළි අතර පරතරය */
+}
+
+.custom-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.custom-table td {
+  padding: 15px;
+  vertical-align: middle;
+  border: none;
+  color: white !important; /* අකුරු අනිවාර්යයෙන්ම සුදු */
+}
+
+/* Row Corners */
+.custom-table tbody tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+.custom-table tbody tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+
+/* 5. Tabs */
+.custom-tabs .nav-link {
+  color: rgba(255, 255, 255, 0.5) !important;
   background: transparent !important;
-  color: white;
+  border: none !important;
 }
-.table-dark-glass th {
-  background: rgba(255,255,255,0.1);
-  color: #ccc;
-}
-.table-dark-glass td {
-  background: transparent;
-  color: white;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-/* Card Borders for Stats */
-.border-left-success { border-left: 4px solid #198754 !important; }
-.border-left-warning { border-left: 4px solid #ffc107 !important; }
-.border-left-info { border-left: 4px solid #0dcaf0 !important; }
-.border-left-primary { border-left: 4px solid #0d6efd !important; }
-
-/* Pulse Animation for Emergency */
-.animate-pulse {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-/* Fade In */
-.animate-fade {
-    animation: fadeIn 0.4s ease-in-out;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.custom-tabs .nav-link.active {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 20px;
 }
