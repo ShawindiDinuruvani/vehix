@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="" />
+    <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/ServiceRequestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/dto/AuthResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/ServiceRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/repository/ServiceRequestRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/components/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/pages/Service.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Service.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/pages/Signin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Signin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/pages/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/Signup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/entity/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/vehix/backend/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/vehix/backend/repository/UserRepository.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,7 +79,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;h3&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#18 on h3&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
