@@ -4,6 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="" />
+=======
     <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" afterDir="false" />
@@ -15,6 +18,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/ServiceRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/ServiceRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" afterDir="false" />
     </list>
+>>>>>>> c76ce77efeb93ab942703c8905793542044a886b
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
