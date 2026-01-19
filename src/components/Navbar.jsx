@@ -1,70 +1,88 @@
 import React from "react";
-import { Navbar, Container, Nav, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
-const NavigationBar = () => {
+const NavbarComponent = () => {
   const navigate = useNavigate();
-  
-  // localStorage එකෙන් විස්තර ගන්නවා
+
+  // LocalStorage එකෙන් User ගේ විස්තර ගන්නවා
+  const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role"); 
-  const fullName = localStorage.getItem("fullName") || "User";
+  const garageName = localStorage.getItem("myGarageName"); // Garage Owner නම් නම
 
   const handleLogout = () => {
-    localStorage.clear(); 
+    // Logout වුනාම සියලු Data මකලා දානවා
+    localStorage.clear();
+    alert("Logged out successfully!");
     navigate("/login");
   };
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="py-3 shadow-sm sticky-top">
+    <Navbar expand="lg" variant="dark" className="py-3 shadow-sm" style={{ background: "rgba(0, 0, 0, 0.9)" }}>
       <Container>
-        {/* LOGO */}
-        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-primary">
-          Vehix<span className="text-white">.lk</span>
+        {/* Logo / Brand Name */}
+        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-warning">
+          <i className="bi bi-car-front-fill me-2"></i>Vehix.lk
         </Navbar.Brand>
-        
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             
-            <Nav.Link as={Link} to="/" className="mx-2">Home</Nav.Link>
+            {/* 1. හැමෝටම පෙනෙන Home Link එක */}
+            <Nav.Link as={Link} to="/" className="text-white mx-2">Home</Nav.Link>
 
-            {/* ✅ Customer හෝ Garage Owner යන දෙදෙනාටම මේවා පෙන්වනවා */}
-            {token && (role === "CUSTOMER" || role === "GARAGE_OWNER") && (
+            {/* 2. Log වෙලා නැති අයට පෙනෙන Links */}
+            {!token && (
               <>
-                <Nav.Link as={Link} to="/service" className="mx-2">Find Services</Nav.Link>
-                <Nav.Link as={Link} to="/history" className="mx-2">History</Nav.Link>
-                <Nav.Link as={Link} to="/appointments" className="mx-2">My Appointments</Nav.Link>
+                
+                <Link to="/login">
+                  <Button variant="outline-light" className="ms-2 rounded-pill px-4">Login</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="warning" className="ms-2 rounded-pill px-4 text-dark fw-bold">Sign Up</Button>
+                </Link>
               </>
             )}
 
-            {/* ✅ Garage Owner ට විතරක් Dashboard එක අමතරව පෙන්වනවා */}
-            {token && role === "GARAGE_OWNER" && (
-              <Nav.Link as={Link} to="/garage-dashboard" className="mx-2 text-warning fw-bold border border-warning rounded px-3">
-                Garage Dashboard
-              </Nav.Link>
-            )}
+            {/* 3. Log වුන අය සඳහා Links */}
+            {token && (
+              <>
+                {/* 🔥 ADMIN නම් මේක පෙන්වන්න */}
+                {role === "ADMIN" && (
+                    <Nav.Link as={Link} to="/admin-dashboard" className="text-warning fw-bold mx-2">
+                        <i className="bi bi-shield-lock me-1"></i> Admin Dashboard
+                    </Nav.Link>
+                )}
 
-            {/* Login වී ඇති විට නම සහ Logout Button */}
-            {token ? (
-              <div className="d-flex align-items-center ms-3">
-                <span className="text-white me-3 border-end pe-3">
-                  <i className="bi bi-person-circle me-2"></i> {fullName}
-                </span>
-                <Button variant="outline-danger" size="sm" onClick={handleLogout}>
+                {/* GARAGE OWNER නම් මේක පෙන්වන්න */}
+                {role === "GARAGE_OWNER" && (
+                  <Nav.Link as={Link} to="/garage-dashboard" className="text-warning fw-bold mx-2">
+                    <i className="bi bi-tools me-1"></i> {garageName || "My Garage"}
+                  </Nav.Link>
+                )}
+
+                {/* CUSTOMER නම් මේක පෙන්වන්න */}
+                {role === "CUSTOMER" && (
+                  <>
+                    <Nav.Link as={Link} to="/find-services" className="text-white mx-2">Find Garages</Nav.Link>
+                    <Nav.Link as={Link} to="/appointments" className="text-white mx-2">My Appointments</Nav.Link>
+                  </>
+                )}
+
+                {/* Profile Link (Admin ට හැර අනිත් අයට) */}
+                {role !== "ADMIN" && (
+                    <Nav.Link as={Link} to="/profile" className="text-white mx-2">
+                        <i className="bi bi-person-circle"></i>
+                    </Nav.Link>
+                )}
+
+                {/* Logout Button */}
+                <Button variant="danger" size="sm" className="ms-3 rounded-pill px-3" onClick={handleLogout}>
                   Logout
                 </Button>
-              </div>
-            ) : (
-              /* Login වී නැති විට */
-              <div className="ms-3">
-                <Link to="/login">
-                  <Button variant="outline-light" className="me-2">Login</Button>
-                </Link>
-                <Link to="/signup">
-                  <Button variant="primary">Sign Up</Button>
-                </Link>
-              </div>
+              </>
             )}
 
           </Nav>
@@ -74,4 +92,4 @@ const NavigationBar = () => {
   );
 };
 
-export default NavigationBar;
+export default NavbarComponent;
