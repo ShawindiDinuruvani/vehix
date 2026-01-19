@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2619b8a5-68ac-4180-a687-acc468c205fc" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../src/pages/GarageDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/pages/GarageDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AppointmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/ServiceRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/ServiceRequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/dto/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/dto/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/ServiceRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/ServiceRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/vehix/backend/entity/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

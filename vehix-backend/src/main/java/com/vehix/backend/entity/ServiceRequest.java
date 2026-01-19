@@ -26,6 +26,5 @@ public class ServiceRequest {
 
     private String status; // "Pending"
 
-    // 🔥 අලුතින් එකතු කළ කොටස: ගරාජ් එකේ ID එක
     private Long garageId;
 }

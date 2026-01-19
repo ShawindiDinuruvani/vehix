@@ -17,7 +17,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    // 👇 අපි AuthController එකේ පාවිච්චි කළේ මේ නමයි. ඒ නිසා mobileNumber වෙනුවට මේක දාන්න.
+    // AuthController  mobileNumber 
     private String contactNumber;
 
     private String password;
@@ -27,7 +27,7 @@ public class User {
     private String businessName;
     private String businessAddress;
 
-    // 👇 Location Data
+    //  Location Data
     private Double latitude;
     private Double longitude;
 }

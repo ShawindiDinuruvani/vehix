@@ -36,7 +36,7 @@ public class AuthController {
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setRole(user.getRole());
 
-        // Garage Owner නම් Business විස්තර සහ Location Save කරනවා
+        // Garage Owner  Business  Location Save
         if ("GARAGE_OWNER".equals(user.getRole())) {
             newUser.setBusinessName(user.getBusinessName());
             newUser.setBusinessAddress(user.getBusinessAddress());
@@ -60,24 +60,22 @@ public class AuthController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            // Password Match වෙනවද බලනවා
+            // Password Match
             if (passwordEncoder.matches(password, user.getPassword())) {
 
-                // Frontend එකට යවන Data ටික Map එකකට දානවා
+                // Frontend  Data  Map
                 Map<String, Object> response = new HashMap<>();
                 response.put("message", "Login Successful");
                 response.put("token", UUID.randomUUID().toString()); // Mock Token
 
-                // 🔥 වැදගත්ම කොටස: 'id' කියන නමින් User ID එක යවනවා
-                // Frontend එකේ response.data.id කියලා ඉල්ලන නිසා මේ නම ඕනේ.
                 response.put("id", user.getId());
-                response.put("userId", user.getId()); // පරණ ක්‍රමයටත් තියෙන්න අරිනවා (Safety එකට)
+                response.put("userId", user.getId());
 
                 response.put("email", user.getEmail());
                 response.put("fullName", user.getFullName());
                 response.put("role", user.getRole());
 
-                // Garage Owner නම් Business Name එකත් යවනවා
+                // Garage Owner  Business Name
                 if ("GARAGE_OWNER".equals(user.getRole())) {
                     response.put("businessName", user.getBusinessName());
                 }

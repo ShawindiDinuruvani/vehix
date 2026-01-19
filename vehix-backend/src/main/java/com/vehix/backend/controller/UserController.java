@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin("*") // 1. Frontend එකට සම්බන්ධ වීමට මෙය අත්‍යවශ්‍යයි
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -24,22 +24,22 @@ public class UserController {
     // --- 1. USER REGISTRATION (SIGNUP) ---
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        // Email එක කලින් තියෙනවද බලනවා
+        // Email
         if (userRepository.existsByEmail(user.getEmail())) {
             return ResponseEntity.badRequest().body(Map.of("message", "Email already exists"));
         }
 
-        // Password එක Hash කරලා Save කරනවා
+        // Password dash save
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // User Save කරනවා
+        // User Save
         User savedUser = userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "User registered successfully", "userId", savedUser.getId()));
     }
 
     // --- 2. GET GARAGE OWNERS LIST ---
-    // 👇 Appointment Page එකේ ගරාජ් පෙන්වන්න මේ කොටස අනිවාර්යයෙන්ම ඕනේ
+
     @GetMapping("/garages")
     public List<User> getAllGarages() {
         return userRepository.findByRole("GARAGE_OWNER");
