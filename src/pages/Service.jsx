@@ -178,7 +178,7 @@ const Service = () => {
                                 {/* 🔥 Phone Number Section - Highlighted */}
                                 <div className="d-flex align-items-center mb-3 p-2 rounded" style={{background: 'rgba(255, 255, 255, 0.1)'}}>
                                     <i className="bi bi-telephone-fill text-warning fs-5 me-2"></i>
-                                    {/* Click කළාම Call එක යන විදියට href="tel:" දැම්මා */}
+                                    
                                     <a href={`tel:${garage.phone}`} className="text-white fw-bold text-decoration-none fs-5 stretched-link" style={{position: 'relative', zIndex: 2}}>
                                         {garage.phone}
                                     </a>
@@ -190,7 +190,7 @@ const Service = () => {
                                     className="w-100 fw-bold py-2" 
                                     onClick={() => handleSendRequest(garage)}
                                     disabled={requestSending}
-                                    style={{position: 'relative', zIndex: 3}} // Link එකට උඩින් click වෙන්න
+                                    style={{position: 'relative', zIndex: 3}} 
                                 >
                                     {requestSending ? "SENDING..." : "REQUEST HELP HERE"} 
                                     <i className="bi bi-send-fill ms-2"></i>

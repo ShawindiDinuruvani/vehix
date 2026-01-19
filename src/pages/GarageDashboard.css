@@ -1,38 +1,35 @@
-/* GarageDashboard.css - Force Dark Theme */
 
-/* 1. පසුබිම (Background) */
 .dashboard-bg {
   background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed !important;
   background-size: cover !important;
   min-height: 100vh;
   width: 100%;
-  position: absolute; /* Screen එකේ කොනටම යන්න */
+  position: absolute; 
   top: 0;
   left: 0;
-  padding-top: 80px; /* Navbar එකට ඉඩ */
+  padding-top: 80px; 
 }
 
-/* GarageDashboard.css - Navbar Fix Included */
 
-/* 1. පසුබිම (Background) - Navbar Fix */
+
+
 .dashboard-bg {
   background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed !important;
   background-size: cover !important;
   min-height: 100vh;
   width: 100%;
   
-  /* 🔥 වෙනස්කම 1: Absolute වෙනුවට Relative දැම්මා (Scroll වෙන්න පහසුයි) */
+  
   position: relative; 
   
-  /* 🔥 වෙනස්කම 2: උඩින් ලොකු ඉඩක් තිබ්බා (Navbar එකට යට නොවෙන්න) */
+  
   padding-top: 130px !important; 
   
-  /* වම් පැත්තට තද වෙලා තියෙන්න */
+  
   left: 0;
   top: 0;
 }
 
-/* Background Overlay (අඳුරු කිරීම) */
 .dashboard-bg::before {
   content: "";
   position: absolute;
@@ -41,22 +38,16 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.85); 
-  z-index: -1; /* Content එකට පිටුපසින් */
+  z-index: -1; 
 }
-
-/* ... පහළින් ඇති අනිත් CSS Styles එලෙසම තියෙන්න අරින්න ... */
-
-/* 2. Glass Cards (වීදුරු පෙට්ටි) */
 .glass-card {
-  background: rgba(20, 20, 20, 0.7) !important; /* තද කළු වීදුරු */
-  backdrop-filter: blur(15px);
+  background: rgba(20, 20, 20, 0.7) !important; 
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   color: white !important;
 }
 
-/* 3. Stats Cards */
 .stat-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.5) 100%);
   border-radius: 15px;
@@ -69,8 +60,7 @@
 .stat-border-primary { border-color: #00c6ff; }
 .stat-border-success { border-color: #00f260; }
 
-/* 4. Table Styling (Force Dark) */
-/* Bootstrap වල සුදු පාට බලෙන්ම අයින් කිරීම */
+
 .table {
   --bs-table-bg: transparent !important; 
   --bs-table-color: white !important;
@@ -87,8 +77,8 @@
 }
 
 .custom-table tbody tr {
-  background: rgba(0, 0, 0, 0.6) !important; /* පේළි කලු පාටයි */
-  border-bottom: 5px solid transparent; /* පේළි අතර පරතරය */
+  background: rgba(0, 0, 0, 0.6) !important; 
+  border-bottom: 5px solid transparent; 
 }
 
 .custom-table tbody tr:hover {

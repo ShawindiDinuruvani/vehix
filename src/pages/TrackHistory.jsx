@@ -12,7 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler, // 🔥 1. මේක අලුතින් Import කළා (Chart එක පාට කරන්න)
+  Filler, 
 } from "chart.js";
 
 // Register Chart.js components
@@ -69,7 +69,7 @@ const TrackHistory = () => {
 
       setHistoryData(mergedData);
 
-      // 🔥 Summary ගණනය කිරීම
+      // Summary 
       const totalCost = mergedData.reduce((acc, curr) => acc + curr.cost, 0);
       setTotals({ cost: totalCost, count: mergedData.length });
 
@@ -87,7 +87,7 @@ const TrackHistory = () => {
       (item.type && item.type.toLowerCase().includes(search.toLowerCase()))
   );
 
-  // 🔥 2. ලස්සන Chart Data Configuration එක
+  //  Chart Data Configuration
   const chartData = {
     labels: historyData.map((s) => s.date).reverse(),
     datasets: [
@@ -95,19 +95,19 @@ const TrackHistory = () => {
         label: "Service Expenses (LKR)",
         data: historyData.map((s) => s.cost).reverse(),
         borderColor: "#00d4ff", // Neon Blue Line
-        backgroundColor: "rgba(0, 212, 255, 0.2)", // Transparent Blue Fill
-        pointBackgroundColor: "#ffffff", // White Dots
+        backgroundColor: "rgba(0, 212, 255, 0.2)", 
+        pointBackgroundColor: "#ffffff", 
         pointBorderColor: "#00d4ff",
         pointBorderWidth: 2,
         pointRadius: 5,
         pointHoverRadius: 8,
-        tension: 0.4, // Curve Line (වක්‍ර රේඛාව)
-        fill: true,   // යට පාට කරන්න
+        tension: 0.4, 
+        fill: true,  
       },
     ],
   };
 
-  // 🔥 3. Chart Options (Grid Lines අයින් කරලා Clean Look එකක් ගමු)
+  //  3. Chart Options (Grid Lines Clean Look)
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -142,7 +142,7 @@ const TrackHistory = () => {
       <Container className="py-5 track-history-page">
         <h2 className="text-center mb-4 text-white fw-bold">Your Service History</h2>
 
-        {/* 🔥 4. Summary Cards Section (අලුතින් එකතු කළ කොටස) */}
+        {/*  4. Summary Cards Section  */}
         <Row className="mb-4 g-3">
             <Col md={4}>
                 <Card className="p-3 shadow glass-card text-center border-0" style={{background: 'linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(0,212,255,0.05) 100%)'}}>

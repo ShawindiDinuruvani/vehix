@@ -8,7 +8,7 @@ const GarageDashboard = () => {
   const [requests, setRequests] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [search, setSearch] = useState(""); // Search සදහා
+  const [search, setSearch] = useState(""); 
 
   const prevRequestCount = useRef(0);
   const myGarageName = localStorage.getItem("myGarageName");

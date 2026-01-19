@@ -28,13 +28,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
-            
             <Route path="/appointments" element={<Appoinments />} />
             <Route path="/service" element={<Service />} />
-            
-            {/* 🔥 වෙනස් කළ තැන: මෙතන /track-history වෙනුවට /history දැම්මා */}
             <Route path="/history" element={<TrackHistory />} />
-            
             <Route path="/profile" element={<Profile />} />
             <Route path="/garage-dashboard" element={<GarageDashboard />} /> 
             
