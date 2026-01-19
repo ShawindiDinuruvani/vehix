@@ -18,15 +18,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. CSRF Disable කිරීම (Lambda විදියට)
+                // 1. CSRF Disable
                 .csrf(csrf -> csrf.disable())
 
-                // 2. CORS Disable කිරීම
+                // 2. CORS Disable
                 .cors(cors -> cors.disable())
 
-                // 3. API වලට අවසර දීම
+                // 3. API
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll() // API වලට ඕනෑම කෙනෙක්ට එන්න දෙනවා
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
                 );
 
