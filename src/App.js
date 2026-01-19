@@ -10,11 +10,11 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
-import Appoinments from "./pages/Appoinments"; // File 
+import Appoinments from "./pages/Appoinments"; 
 import Service from "./pages/Service";
 import TrackHistory from "./pages/TrackHistory";
 import Profile from "./pages/Profile";
-import GarageDashboard from "./pages/GarageDashboard"; // Garage Dashboard
+import GarageDashboard from "./pages/GarageDashboard"; 
 
 function App() {
   return (
@@ -29,13 +29,13 @@ function App() {
             <Route path="/login" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             
-           
             <Route path="/appointments" element={<Appoinments />} />
-            
             <Route path="/service" element={<Service />} />
-            <Route path="/track-history" element={<TrackHistory />} />
+            
+            {/* 🔥 වෙනස් කළ තැන: මෙතන /track-history වෙනුවට /history දැම්මා */}
+            <Route path="/history" element={<TrackHistory />} />
+            
             <Route path="/profile" element={<Profile />} />
-
             <Route path="/garage-dashboard" element={<GarageDashboard />} /> 
             
           </Routes>
