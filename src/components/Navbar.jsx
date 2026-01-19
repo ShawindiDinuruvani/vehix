@@ -1,28 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import "./Navbar.css"; 
 
 const NavbarComponent = () => {
   const navigate = useNavigate();
+  const location = useLocation(); 
+  const [scrolled, setScrolled] = useState(false);
 
-  // LocalStorage එකෙන් User ගේ විස්තර ගන්නවා
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
-  const garageName = localStorage.getItem("myGarageName"); // Garage Owner නම් නම
+  const garageName = localStorage.getItem("myGarageName");
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleLogout = () => {
-    // Logout වුනාම සියලු Data මකලා දානවා
     localStorage.clear();
-    alert("Logged out successfully!");
     navigate("/login");
   };
 
   return (
-    <Navbar expand="lg" variant="dark" className="py-3 shadow-sm" style={{ background: "rgba(0, 0, 0, 0.9)" }}>
+    <Navbar 
+      expand="lg" 
+      fixed="top" 
+      className={scrolled ? "custom-navbar scrolled" : "custom-navbar"}
+    >
       <Container>
-        {/* Logo / Brand Name */}
-        <Navbar.Brand as={Link} to="/" className="fw-bold fs-4 text-warning">
-          <i className="bi bi-car-front-fill me-2"></i>Vehix.lk
+        {/* Brand Logo */}
+        <Navbar.Brand as={Link} to="/" className="brand-logo">
+          <i className="bi bi-car-front-fill me-2 text-warning"></i>
+          Veh<span className="text-warning">ix</span>
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -30,61 +47,86 @@ const NavbarComponent = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             
-            {/* 1. හැමෝටම පෙනෙන Home Link එක */}
-            <Nav.Link as={Link} to="/" className="text-white mx-2">Home</Nav.Link>
+            {/* Home Link (හැමෝටම) */}
+            <Nav.Link as={Link} to="/" className={`nav-link-custom ${location.pathname === "/" ? "active" : ""}`}>
+              Home
+            </Nav.Link>
 
-            {/* 2. Log වෙලා නැති අයට පෙනෙන Links */}
+            {/* Login නැති අයට */}
             {!token && (
               <>
-                
-                <Link to="/login">
-                  <Button variant="outline-light" className="ms-2 rounded-pill px-4">Login</Button>
+                <Link to="/login" className="ms-2">
+                  <Button variant="outline-light" className="auth-btn-outline">Login</Button>
                 </Link>
-                <Link to="/signup">
-                  <Button variant="warning" className="ms-2 rounded-pill px-4 text-dark fw-bold">Sign Up</Button>
+                <Link to="/signup" className="ms-2">
+                  <Button variant="warning" className="auth-btn-solid">Sign Up</Button>
                 </Link>
               </>
             )}
 
-            {/* 3. Log වුන අය සඳහා Links */}
+            {/* Log වුන අයට */}
             {token && (
               <>
-                {/* 🔥 ADMIN නම් මේක පෙන්වන්න */}
+                {/* 1. ADMIN Links */}
                 {role === "ADMIN" && (
-                    <Nav.Link as={Link} to="/admin-dashboard" className="text-warning fw-bold mx-2">
-                        <i className="bi bi-shield-lock me-1"></i> Admin Dashboard
+                    <Nav.Link as={Link} to="/admin-dashboard" className={`nav-link-custom ${location.pathname === "/admin-dashboard" ? "active" : ""}`}>
+                        <i className="bi bi-shield-lock-fill me-1"></i> Admin
                     </Nav.Link>
                 )}
 
-                {/* GARAGE OWNER නම් මේක පෙන්වන්න */}
+                {/* 2. GARAGE OWNER Links (Customer Options + Dashboard) */}
                 {role === "GARAGE_OWNER" && (
-                  <Nav.Link as={Link} to="/garage-dashboard" className="text-warning fw-bold mx-2">
-                    <i className="bi bi-tools me-1"></i> {garageName || "My Garage"}
-                  </Nav.Link>
-                )}
-
-                {/* CUSTOMER නම් මේක පෙන්වන්න */}
-                {role === "CUSTOMER" && (
                   <>
-                    <Nav.Link as={Link} to="/find-services" className="text-white mx-2">Find Garages</Nav.Link>
-                    <Nav.Link as={Link} to="/appointments" className="text-white mx-2">My Appointments</Nav.Link>
+                    {/* Garage Dashboard */}
+                    
+                    
+                   
+                    <Nav.Link as={Link} to="/service" className={`nav-link-custom ${location.pathname === "/service" ? "active" : ""}`}>
+                        Services
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/history" className={`nav-link-custom ${location.pathname === "/history" ? "active" : ""}`}>
+                        History
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/appointments" className={`nav-link-custom ${location.pathname === "/appointments" ? "active" : ""}`}>
+                        Appointments
+                    </Nav.Link>
+                    
+                    <Nav.Link as={Link} to="/garage-dashboard" className={`nav-link-custom highlight ${location.pathname === "/garage-dashboard" ? "active" : ""}`}>
+                        <i className="bi bi-tools me-1"></i> {garageName ? garageName.split(' ')[0] : "My Garage"}
+                    </Nav.Link>
                   </>
                 )}
 
-                {/* Profile Link (Admin ට හැර අනිත් අයට) */}
+                {/* 3. CUSTOMER Links */}
+                {role === "CUSTOMER" && (
+                  <>
+                    <Nav.Link as={Link} to="/service" className={`nav-link-custom ${location.pathname === "/service" ? "active" : ""}`}>
+                      Services
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/history" className={`nav-link-custom ${location.pathname === "/history" ? "active" : ""}`}>
+                      History
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/appointments" className={`nav-link-custom ${location.pathname === "/appointments" ? "active" : ""}`}>
+                      My Bookings
+                    </Nav.Link>
+                    
+                    
+                  </>
+                )}
+
+                
                 {role !== "ADMIN" && (
-                    <Nav.Link as={Link} to="/profile" className="text-white mx-2">
-                        <i className="bi bi-person-circle"></i>
+                    <Nav.Link as={Link} to="/profile" className={`nav-link-custom ${location.pathname === "/profile" ? "active" : ""}`}>
+                        <i className="bi bi-person-circle fs-5"></i>
                     </Nav.Link>
                 )}
 
                 {/* Logout Button */}
-                <Button variant="danger" size="sm" className="ms-3 rounded-pill px-3" onClick={handleLogout}>
+                <Button variant="danger" size="sm" className="ms-3 rounded-pill px-3 fw-bold" onClick={handleLogout}>
                   Logout
                 </Button>
               </>
             )}
-
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -56,7 +56,7 @@ const AdminDashboard = () => {
       <Container>
         <div className="d-flex justify-content-between align-items-center mb-4 glass-panel">
             <h2>Admin Dashboard</h2>
-            <Button variant="danger" onClick={handleLogout}>Logout</Button>
+            
         </div>
 
         <Row className="mb-4 g-3">

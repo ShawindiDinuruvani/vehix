@@ -1,74 +1,159 @@
-/* Hero Section */
+/* General Page Styling */
+.home-page {
+    background-color: #0f0f0f;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* 1. Navbar Glass Effect */
+.glass-navbar {
+    background: rgba(0, 0, 0, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.brand-text {
+    letter-spacing: 1px;
+}
+
+.nav-item-custom {
+    color: rgba(252, 249, 249, 0.8) !important;
+    font-weight: 500;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.nav-item-custom:hover {
+    color: #ffc107 !important; /* Gold Hover */
+}
+
+/* 2. Parallax Hero Section */
 .hero-section {
-  background: url('https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
-  height: 80vh; /* Takes up 80% of the screen height */
-  position: relative;
+    background: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed; /* Parallax Effect */
+    height: 100vh;
+    position: relative;
+    margin-top: -76px; 
 }
 
 .hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Darkens the image so text pops */
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.9)); /* Gradient Fade */
 }
 
 .hero-title {
-  font-weight: 700;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-.z-index-1 {
-  z-index: 1; /* Ensures text is above the overlay */
+.btn-glow {
+    background: linear-gradient(45deg, #ffc107, #ffdb4d);
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+    transition: all 0.3s ease;
 }
 
-/* Feature Cards */
+.btn-glow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(255, 193, 7, 0.6);
+}
+
+/* 3. Features Section */
+.section-bg {
+    background: #121212;
+}
+
+/* Feature Cards Fix */
 .feature-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 15px;
+    
+    background: rgba(255, 255, 255, 0.05) !important; 
+   
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: white !important; 
 }
+
 
 .feature-card:hover {
-  transform: translateY(-10px); /* Moves up slightly on hover */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 193, 7, 0.5) !important; 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+/* Icon Styling */
+.icon-box {
+    width: 80px; height: 80px;
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto;
+    transition: all 0.4s ease;
 }
 
-.icon-wrapper {
-  background-color: #f8f9fa;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
+.feature-card:hover .icon-box {
+    background: #ffc107;
+    color: #000;
+    transform: scale(1.1) rotate(5deg);
 }
 
-/* Steps Section */
+/* Different Colors for Icons */
+.color-2 { background: rgba(13, 110, 253, 0.1); color: #0d6efd; }
+.feature-card:hover .color-2 { background: #0d6efd; color: #f7f3f3; }
+
+.color-3 { background: rgba(25, 135, 84, 0.1); color: #198754; }
+.feature-card:hover .color-3 { background: #198754; color: #f8f6f6; }
+
+/* 4. Steps Section */
+.bg-darker { background: #0a0a0a; }
+
 .step-circle {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: bold;
+    width: 70px; height: 70px;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    color: #ffc107;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
 }
 
-/* Footer */
-footer a:hover {
-  color: #fff !important;
-}
-/* Make cards look clickable */
-.clickable-card {
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.step-line {
+    position: absolute;
+    top: 35px; left: 15%; right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #333, transparent);
+    z-index: 0;
 }
 
-.clickable-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
-  border-color: #0d6efd !important; /* Blue border on hover */
+/* 5. Footer */
+.footer-dark {
+    background: #050505;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }
+
+.footer-link {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: #ffc107;
+    padding-left: 5px; 
+}
+
+/* Scroll Bar Styling (Optional) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #121212; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
