@@ -1,254 +1,134 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Card, Row, Col, Spinner, Alert } from "react-bootstrap";
+import { Container, Form, Button, Card, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api/axios"; 
-import "./Signup.css"; 
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import axios from "../api/axios";
+
+// Map  Location
+const LocationMarker = ({ setLocation }) => {
+  const [position, setPosition] = useState(null);
+  useMapEvents({
+    click(e) {
+      setPosition(e.latlng);
+      setLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
+    },
+  });
+  return position === null ? null : <Marker position={position}></Marker>;
+};
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    mobileNumber: "", // <--- NEW: Added Mobile Number
-    password: "",
-    confirmPassword: "",
-    role: "CUSTOMER", 
-    // Garage specific fields
-    businessName: "",
-    businessAddress: "",
-    locationLink: "", 
+    fullName: "", 
+    email: "", 
+    password: "", 
+    confirmPassword: "", 
+    role: "CUSTOMER",
+    businessName: "", 
+    businessAddress: "", 
+    contactNumber: "",
+    latitude: null, 
+    longitude: null
   });
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleLocationSelect = (latlng) => {
+      setFormData({ ...formData, latitude: latlng.lat, longitude: latlng.lng });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); 
+    setError("");
 
-    // 1. Basic Validation
+    //  1. Validation: 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match!");
-      return;
+        setError("Passwords do not match!");
+        return;
     }
 
-    setLoading(true);
+    // Garage Owner  Location 
+    if (formData.role === "GARAGE_OWNER" && !formData.latitude) {
+        setError("Please select your Garage Location on the map!");
+        return;
+    }
 
-    // --- INTERNAL FUNCTION TO SEND DATA ---
-    const sendRequest = async (dataPayload) => {
-        try {
-            const response = await api.post("/api/users/signup", dataPayload);
-            console.log("Registration Success:", response.data);
-            alert("Account created successfully! Please Login.");
-            navigate("/login");
-        } catch (err) {
-            console.error("Signup Error:", err);
-            setError(err.response?.data?.message || "Registration failed. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      const { confirmPassword, ...dataToSend } = formData;
 
-    // --- GEOLOCATION LOGIC (Crucial for Map) ---
-    if (formData.role === "GARAGE_OWNER") {
-        if (!navigator.geolocation) {
-            setError("Geolocation is not supported by your browser.");
-            setLoading(false);
-            return;
-        }
-
-        // Get Current GPS Location
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const finalData = {
-                    ...formData,
-                    latitude: position.coords.latitude,   // Save Lat
-                    longitude: position.coords.longitude  // Save Lng
-                };
-                sendRequest(finalData);
-            },
-            (geoError) => {
-                console.error(geoError);
-                setError("Location access is required for Garages so users can find you on the map.");
-                setLoading(false);
-            }
-        );
-    } else {
-        // If Customer, just send data without GPS
-        sendRequest(formData);
+      await axios.post("/api/auth/register", dataToSend);
+      alert("Registration Successful! Please Login.");
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration Failed");
     }
   };
 
   return (
-    <div className="signup-page">
-      <Container className="d-flex justify-content-center align-items-center min-vh-100 py-5">
-        <Card className="p-4 shadow-lg glass-card" style={{ maxWidth: '700px', width: '100%' }}>
+    <div className="d-flex justify-content-center align-items-center min-vh-100" style={{ background: "#121212" }}>
+      <Container>
+        <Card className="p-4 mx-auto shadow-lg glass-card" style={{ maxWidth: "500px", background: "rgba(255,255,255,0.1)", color: "white" }}>
+          <h2 className="text-center fw-bold mb-3">Create Account</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
           
-          <div className="text-center mb-4">
-            <h2 className="fw-bold text-white">Create Account</h2>
-            <p className="text-white-50">Join Vehix to manage or service vehicles</p>
-          </div>
-
-          {error && <Alert variant="danger" dismissible onClose={() => setError("")}>{error}</Alert>}
-
           <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control name="fullName" onChange={handleChange} required />
+            </Form.Group>
             
-            <Form.Group className="mb-4">
-              <Form.Label className="text-white fw-bold">I am a:</Form.Label>
-              <Form.Select 
-                name="role" 
-                value={formData.role} 
-                onChange={handleChange}
-                className="custom-input"
-              >
-                <option value="CUSTOMER">Vehicle Owner (Customer)</option>
-                <option value="GARAGE_OWNER">Garage Owner (Mechanic)</option>
-              </Form.Select>
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" name="email" onChange={handleChange} required />
+            </Form.Group>
+            
+            {/*  Password Field */}
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" name="password" onChange={handleChange} required />
             </Form.Group>
 
-            {/* --- PERSONAL DETAILS SECTION --- */}
-            <Row>
-              <Col md={12}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white">Full Name</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="fullName" 
-                    placeholder="Enter full name"
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+            {/*  Confirm Password Field  */}
+            <Form.Group className="mb-3">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type="password" name="confirmPassword" onChange={handleChange} required placeholder="Re-enter password" />
+            </Form.Group>
 
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white">Email Address</Form.Label>
-                  <Form.Control 
-                    type="email" 
-                    name="email" 
-                    placeholder="Enter email"
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-              </Col>
-              {/* --- NEW MOBILE NUMBER FIELD --- */}
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white">Mobile Number</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="mobileNumber" 
-                    placeholder="077xxxxxxx"
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label>Role</Form.Label>
+              <Form.Select name="role" onChange={handleChange}>
+                <option value="CUSTOMER">Vehicle Owner (Customer)</option>
+                <option value="GARAGE_OWNER">Garage Owner</option>
+              </Form.Select>
+            </Form.Group>``
 
-            {/* --- GARAGE SPECIFIC FIELDS --- */}
+            /* Garage Owner */
             {formData.role === "GARAGE_OWNER" && (
-              <div className="garage-section p-3 mb-4 rounded border border-secondary">
-                <h5 className="text-primary mb-3"><i className="bi bi-tools me-2"></i>Business Details</h5>
+              <div className="p-3 border border-secondary rounded mb-3 bg-dark bg-opacity-50">
+                <h5 className="text-warning mb-3">Garage Details</h5>
                 
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white-50">Garage Name</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    name="businessName" 
-                    placeholder="E.g. Saman's Motors" 
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-
-                <Row>
-                    <Col md={6}>
-                        <Form.Group className="mb-3">
-                        <Form.Label className="text-white-50">Address</Form.Label>
-                        <Form.Control 
-                            type="text"
-                            name="businessAddress" 
-                            placeholder="City, Street"
-                            onChange={handleChange} 
-                            required 
-                            className="custom-input"
-                        />
-                        </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                        <Form.Group className="mb-3">
-                        <Form.Label className="text-white-50">Google Maps Link</Form.Label>
-                        <Form.Control 
-                            type="text" 
-                            name="locationLink" 
-                            placeholder="Optional" 
-                            onChange={handleChange} 
-                            className="custom-input"
-                        />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <p className="text-info small mt-2">
-                  <i className="bi bi-geo-alt-fill me-1"></i>
-                  Note: Your current GPS location will be saved for the map.
-                </p>
+                <Form.Group className="mb-2"><Form.Control name="businessName" placeholder="Garage Name" onChange={handleChange} required /></Form.Group>
+                <Form.Group className="mb-2"><Form.Control name="businessAddress" placeholder="Address" onChange={handleChange} required /></Form.Group>
+                <Form.Group className="mb-3"><Form.Control name="contactNumber" placeholder="Phone Number" onChange={handleChange} required /></Form.Group>
+                
+                <Form.Label className="text-info">Tap on the map to set location:</Form.Label>
+                <div style={{ height: "200px", borderRadius: "8px", overflow: "hidden", border: "1px solid #666" }}>
+                    <MapContainer center={[6.9271, 79.8612]} zoom={13} style={{ height: "100%", width: "100%" }}>
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                        <LocationMarker setLocation={handleLocationSelect} />
+                    </MapContainer>
+                </div>
+                {formData.latitude && <small className="text-success d-block mt-1">Location Selected! ✅</small>}
               </div>
             )}
 
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white">Password</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    name="password" 
-                    placeholder="Create password"
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="text-white">Confirm Password</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    name="confirmPassword" 
-                    placeholder="Confirm password"
-                    onChange={handleChange} 
-                    required 
-                    className="custom-input"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Button 
-                type="submit" 
-                className="btn-primary w-100 mt-3 py-2 fw-bold"
-                disabled={loading}
-            >
-                {loading ? <Spinner animation="border" size="sm" /> : "Create Account"}
-            </Button>
-
-            <div className="text-center mt-3">
-                <span className="text-white-50">Already have an account? </span>
-                <Link to="/login" className="text-primary fw-bold text-decoration-none">Log In</Link>
-            </div>
+            <Button type="submit" className="w-100 btn-primary mt-2">Register</Button>
           </Form>
+          <p className="text-center mt-3 text-white-50">Already have an account? <Link to="/login" className="text-warning">Login</Link></p>
         </Card>
       </Container>
     </div>
