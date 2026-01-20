@@ -30,4 +30,7 @@ public class User {
     //  Location Data
     private Double latitude;
     private Double longitude;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean isActive = true;
 }

@@ -1,180 +1,168 @@
 import React from "react";
 import { Container, Row, Col, Navbar, Nav, Button, Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom"; // useNavigate එකතු කළා
+import { Link, useNavigate } from "react-router-dom"; 
 import "./Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token"); 
 
-  // 🔐 Login වී ඇත්දැයි පරීක්ෂා කර අදාළ පිටුවට යවන Function එක
   const handleNavigation = (destination) => {
-    const token = localStorage.getItem("token"); // Token එක තිබේදැයි බලන්න
-
     if (token) {
-      // Login වී ඇත්නම් කෙලින්ම අදාළ පිටුවට යන්න
       navigate(destination);
     } else {
-      // Login වී නැත්නම්, Login page එකට යන්න (Login වූ පසු යන්න ඕන තැන state එකක් ලෙස යවමු)
       navigate("/login", { state: { from: destination } });
     }
   };
 
   return (
     <div className="home-page d-flex flex-column min-vh-100">
-      
-    
-          
 
-      {/* 2. Hero Section */}
+      {/* 1. Navbar (Glass Effect) */}
+      
+              
+      
+
+      {/* 2. Hero Section (Parallax) */}
       <section className="hero-section d-flex align-items-center text-center text-white">
         <div className="hero-overlay"></div>
         <Container className="position-relative z-index-1">
-          <h1 className="display-3 fw-bold hero-title">Care For Your Car, <span className="text-primary">The Right Way</span></h1>
-          <p className="lead hero-subtitle mb-4">
-            Find nearby garages, schedule appointments, and track vehicle health instantly.
+          <span className="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill text-uppercase tracking-wider">
+            Premium Car Care
+          </span>
+          <h1 className="display-2 fw-bold hero-title mb-3">
+            Your Car Deserves <br/> <span className="text-warning">The Best Care</span>
+          </h1>
+          <p className="lead hero-subtitle mb-5 text-white-50 mx-auto" style={{maxWidth: '700px'}}>
+            Find top-rated garages, schedule repairs instantly, and keep your vehicle running like new. All in one place.
           </p>
           <div className="hero-buttons">
-            {/* Find a Garage Button - Smart Navigation */}
             <Button 
-                className="btn btn-primary btn-lg me-3 px-5 py-3 fw-bold"
+                className="btn-glow btn-lg me-3 px-5 py-3 rounded-pill fw-bold border-0"
                 onClick={() => handleNavigation("/service")}
             >
-                Find a Garage
+                Find a Garage <i className="bi bi-arrow-right ms-2"></i>
             </Button>
-            
-            <Link to="/login">
-              <button className="btn btn-outline-light btn-lg px-5 py-3">Login</button>
-            </Link>
           </div>
         </Container>
       </section>
 
-      {/* 3. Features Section (Clickable Cards) */}
-      <section id="features" className="py-5 bg-light">
+      {/* 3. Features Section */}
+      <section id="features" className="py-5 section-bg">
         <Container>
           <div className="text-center mb-5">
-            <h2 className="fw-bold section-title">Why Choose Vehix?</h2>
-            <p className="text-muted">Tap on any feature below to get started.</p>
+            <h6 className="text-warning text-uppercase fw-bold ls-2">Our Services</h6>
+            <h2 className="fw-bold text-white display-5">Why Choose Vehix?</h2>
           </div>
           
-          <Row className="justify-content-center">
-            
-            {/* Feature 1: Garage Locator -> Goes to /service */}
-            <Col md={4} className="mb-4">
-              <Card 
-                className="feature-card h-100 border-0 shadow-sm text-center p-4 clickable-card"
-                onClick={() => handleNavigation("/service")}
-              >
+          <Row className="g-4">
+            {/* Feature 1 */}
+            <Col md={4}>
+              <Card className="feature-card h-100 text-center p-4" onClick={() => handleNavigation("/service")}>
+                <div className="card-glow"></div>
                 <Card.Body>
-                  <div className="icon-wrapper mb-3">
-                    <i className="bi bi-geo-alt-fill display-4 text-primary"></i>
+                  <div className="icon-box mb-4">
+                    <i className="bi bi-geo-alt-fill"></i>
                   </div>
-                  <Card.Title className="fw-bold">Garage Locator</Card.Title>
-                  <Card.Text>
-                    Broke down? Tap here to find the nearest reliable garage using GPS instantly.
+                  <Card.Title className="fw-bold text-white h4">Garage Locator</Card.Title>
+                  <Card.Text className="text-white-50 mt-3">
+                    Stuck on the road? Use our GPS locator to find the nearest mechanic instantly.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
 
-            {/* Feature 2: Appointments -> Goes to /appointments */}
-            <Col md={4} className="mb-4">
-              <Card 
-                className="feature-card h-100 border-0 shadow-sm text-center p-4 clickable-card"
-                onClick={() => handleNavigation("/appointments")}
-              >
+            {/* Feature 2 */}
+            <Col md={4}>
+              <Card className="feature-card h-100 text-center p-4" onClick={() => handleNavigation("/appointments")}>
+                <div className="card-glow"></div>
                 <Card.Body>
-                  <div className="icon-wrapper mb-3">
-                    <i className="bi bi-calendar-check-fill display-4 text-primary"></i>
+                  <div className="icon-box mb-4 color-2">
+                    <i className="bi bi-calendar-check-fill"></i>
                   </div>
-                  <Card.Title className="fw-bold">Book Service</Card.Title>
-                  <Card.Text>
-                    Schedule maintenance slots online without calling. Click to book now.
+                  <Card.Title className="fw-bold text-white h4">Easy Booking</Card.Title>
+                  <Card.Text className="text-white-50 mt-3">
+                    No more waiting calls. Book your service slot online in just a few clicks.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
 
-            {/* Feature 3: History -> Goes to /track-history */}
-            <Col md={4} className="mb-4">
-              <Card 
-                className="feature-card h-100 border-0 shadow-sm text-center p-4 clickable-card"
-                onClick={() => handleNavigation("/track-history")}
-              >
+            {/* Feature 3 */}
+            <Col md={4}>
+              <Card className="feature-card h-100 text-center p-4" onClick={() => handleNavigation("/track-history")}>
+                <div className="card-glow"></div>
                 <Card.Body>
-                  <div className="icon-wrapper mb-3">
-                    <i className="bi bi-clock-history display-4 text-primary"></i>
+                  <div className="icon-box mb-4 color-3">
+                    <i className="bi bi-clock-history"></i>
                   </div>
-                  <Card.Title className="fw-bold">Service History</Card.Title>
-                  <Card.Text>
-                    View your past repairs and maintenance logs. Click to track history.
+                  <Card.Title className="fw-bold text-white h4">Service History</Card.Title>
+                  <Card.Text className="text-white-50 mt-3">
+                    Keep a digital log of all your repairs and maintenance for better resale value.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
-
           </Row>
         </Container>
       </section>
 
-      {/* 4. How It Works Section */}
-      <section id="how-it-works" className="py-5">
+      {/* 4. How It Works (Steps) */}
+      <section className="py-5 bg-darker text-white position-relative">
         <Container>
-          <h2 className="text-center mb-5 fw-bold section-title">How It Works</h2>
-          <Row className="text-center">
-            <Col md={3}>
-              <div className="step-circle bg-primary text-white mx-auto mb-3">1</div>
-              <h5>Register</h5>
-              <p className="text-muted">Create an account and add your vehicle details.</p>
-            </Col>
-            <Col md={1} className="d-none d-md-block pt-2">
-              <i className="bi bi-arrow-right fs-1 text-muted"></i>
-            </Col>
-            <Col md={3}>
-              <div className="step-circle bg-primary text-white mx-auto mb-3">2</div>
-              <h5>Find Garage</h5>
-              <p className="text-muted">Search for nearby services or breakdown help.</p>
-            </Col>
-            <Col md={1} className="d-none d-md-block pt-2">
-              <i className="bi bi-arrow-right fs-1 text-muted"></i>
-            </Col>
-            <Col md={3}>
-              <div className="step-circle bg-primary text-white mx-auto mb-3">3</div>
-              <h5>Book & Relax</h5>
-              <p className="text-muted">Confirm your appointment and get your car fixed.</p>
-            </Col>
-          </Row>
+          <h2 className="text-center mb-5 fw-bold">How It Works</h2>
+          <div className="steps-container">
+              <div className="step-line d-none d-md-block"></div> {/* Connecting Line */}
+              
+              <Row className="text-center position-relative z-index-1">
+                <Col md={4} className="mb-4">
+                  <div className="step-circle mx-auto mb-3">1</div>
+                  <h4 className="fw-bold">Register</h4>
+                  <p className="text-white-50 px-4">Create your account and add your vehicle details securely.</p>
+                </Col>
+                <Col md={4} className="mb-4">
+                  <div className="step-circle mx-auto mb-3">2</div>
+                  <h4 className="fw-bold">Find & Book</h4>
+                  <p className="text-white-50 px-4">Search nearby garages and confirm your appointment.</p>
+                </Col>
+                <Col md={4} className="mb-4">
+                  <div className="step-circle mx-auto mb-3">3</div>
+                  <h4 className="fw-bold">Get Fixed</h4>
+                  <p className="text-white-50 px-4">Visit the garage, get serviced, and leave a review.</p>
+                </Col>
+              </Row>
+          </div>
         </Container>
       </section>
 
       {/* 5. Footer */}
-      <footer className="bg-dark text-white py-4 mt-auto">
+      <footer className="footer-dark py-5 mt-auto">
         <Container>
-          <Row>
-            <Col md={6}>
-              <h4 className="fw-bold text-primary">Vehix</h4>
-              <p className="small text-white-50">
-                The smart way to manage vehicle maintenance.
+          <Row className="gy-4">
+            <Col md={5}>
+              <h3 className="fw-bold text-white brand-text">Veh<span className="text-warning">ix</span></h3>
+              <p className="text-white-50 mt-3">
+                Connecting vehicle owners with the best mechanics in town. Reliable, Fast, and Secure.
               </p>
             </Col>
             <Col md={3}>
-              <h6 className="fw-bold">Quick Links</h6>
-              <ul className="list-unstyled small">
-                <li><Link to="/" className="text-white-50 text-decoration-none">Home</Link></li>
-                <li><Link to="/service" className="text-white-50 text-decoration-none">Services</Link></li>
-                <li><Link to="/login" className="text-white-50 text-decoration-none">Login</Link></li>
+              <h5 className="text-white fw-bold mb-3">Navigation</h5>
+              <ul className="list-unstyled text-white-50">
+                <li className="mb-2"><Link to="/" className="footer-link">Home</Link></li>
+                <li className="mb-2"><Link to="/login" className="footer-link">Login</Link></li>
               </ul>
             </Col>
-            <Col md={3}>
-              <h6 className="fw-bold">Contact</h6>
-              <p className="small text-white-50">
-                <i className="bi bi-envelope me-2"></i> support@vehix.com <br/>
-                <i className="bi bi-telephone me-2"></i> +94 77 123 4567
+            <Col md={4}>
+              <h5 className="text-white fw-bold mb-3">Contact Us</h5>
+              <p className="text-white-50">
+                <i className="bi bi-geo-alt me-2 text-warning"></i> Colombo, Sri Lanka <br/>
+                <i className="bi bi-envelope me-2 text-warning"></i> help@vehix.lk <br/>
+                <i className="bi bi-phone me-2 text-warning"></i> +94 77 123 4567
               </p>
             </Col>
           </Row>
-          <hr className="border-secondary" />
-          <p className="text-center small text-white-50 mb-0">&copy; 2026 Vehix. All Rights Reserved.</p>
+          <hr className="border-secondary my-4" />
+          <p className="text-center text-white-50 small mb-0">&copy; 2026 Vehix.lk | Built for Sri Lanka</p>
         </Container>
       </footer>
 

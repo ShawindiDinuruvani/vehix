@@ -106,7 +106,7 @@ const Signup = () => {
               </Form.Select>
             </Form.Group>``
 
-            /* Garage Owner */
+            
             {formData.role === "GARAGE_OWNER" && (
               <div className="p-3 border border-secondary rounded mb-3 bg-dark bg-opacity-50">
                 <h5 className="text-warning mb-3">Garage Details</h5>
