@@ -71,13 +71,13 @@ const AdminDashboard = () => {
                         <thead><tr><th>Biz Name</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody>
                             {garages.map(u => (
-                                <tr key={u.id} style={{opacity: u.isActive?1:0.5}}>
+                                <tr key={u.id} style={{opacity: u.active?1:0.5}}>
                                     <td onClick={()=>viewHistory(u)} style={{cursor:'pointer', fontWeight:'bold', color:'#ffc107'}}>{u.businessName}</td>
                                     <td>{u.fullName}<br/><small>{u.contactNumber}</small></td>
-                                    <td><Badge bg={u.isActive?"success":"danger"}>{u.isActive?"Active":"Banned"}</Badge></td>
+                                    <td><Badge bg={u.active?"success":"danger"}>{u.active?"Active":"Banned"}</Badge></td>
                                     <td>
                                         <Button size="sm" variant="info" className="me-2" onClick={()=>viewHistory(u)}>History</Button>
-                                        <Button size="sm" variant={u.isActive?"warning":"success"} className="me-2" onClick={()=>toggleStatus(u.id)}>{u.isActive?"Ban":"Activate"}</Button>
+                                        <Button size="sm" variant={u.active?"warning":"success"} className="me-2" onClick={()=>toggleStatus(u.id)}>{u.active?"Ban":"Activate"}</Button>
                                         <Button size="sm" variant="danger" onClick={()=>deleteUser(u.id)}>Del</Button>
                                     </td>
                                 </tr>
@@ -90,13 +90,13 @@ const AdminDashboard = () => {
                         <thead><tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody>
                             {customers.map(u => (
-                                <tr key={u.id} style={{opacity: u.isActive?1:0.5}}>
+                                <tr key={u.id} style={{opacity: u.isactive?1:0.5}}>
                                     <td onClick={()=>viewHistory(u)} style={{cursor:'pointer', fontWeight:'bold'}}>{u.fullName}</td>
                                     <td>{u.email}</td>
-                                    <td><Badge bg={u.isActive?"success":"danger"}>{u.isActive?"Active":"Banned"}</Badge></td>
+                                    <td><Badge bg={u.active?"success":"danger"}>{u.active?"Active":"Banned"}</Badge></td>
                                     <td>
                                         <Button size="sm" variant="info" className="me-2" onClick={()=>viewHistory(u)}>History</Button>
-                                        <Button size="sm" variant={u.isActive?"warning":"success"} className="me-2" onClick={()=>toggleStatus(u.id)}>{u.isActive?"Ban":"Activate"}</Button>
+                                        <Button size="sm" variant={u.active?"warning":"success"} className="me-2" onClick={()=>toggleStatus(u.id)}>{u.active?"Ban":"Activate"}</Button>
                                         <Button size="sm" variant="danger" onClick={()=>deleteUser(u.id)}>Del</Button>
                                     </td>
                                 </tr>
