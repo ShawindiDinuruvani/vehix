@@ -1,37 +1,23 @@
 package com.vehix.backend.controller;
 
 import com.vehix.backend.entity.User;
-import com.vehix.backend.repository.AppointmentRepository;
-import com.vehix.backend.repository.ServiceRequestRepository;
-import com.vehix.backend.repository.UserRepository;
-import com.vehix.backend.service.UserService;
+import com.vehix.backend.entity.Appointment;
+import com.vehix.backend.entity.ServiceRequest;
+import com.vehix.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin("*") // React එකට සම්බන්ධ වෙන්න
+@CrossOrigin("*")
 public class AdminController {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private AppointmentRepository appointmentRepository;
+    @Autowired private ServiceRequestRepository serviceRequestRepository;
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private ServiceRequestRepository serviceRequestRepository;
-
-    // අලුතින් එකතු කළ කොටස: Service එක inject කරගන්න
-    @Autowired
-    private UserService userService;
-
-    // --- (Customers සහ Garages ගන්න methods වෙනසක් නෑ) ---
     @GetMapping("/customers")
     public List<User> getCustomers() {
         return userRepository.findAll().stream().filter(u -> "USER".equals(u.getRole()) || "CUSTOMER".equals(u.getRole())).toList();
@@ -42,19 +28,13 @@ public class AdminController {
         return userRepository.findAll().stream().filter(u -> "GARAGE_OWNER".equals(u.getRole())).toList();
     }
 
-    // --- වෙනස් කළ කොටස (Ban Logic එක Service එකට යැවීම) ---
     @PutMapping("/toggle-status/{id}")
-    public ResponseEntity<?> toggleStatus(@PathVariable Long id) {
-        try {
-            // Controller එක දන්නේ නෑ බෑන් කරන්නේ කොහොමද කියලා. එයා ඒක Service එකට කියනවා.
-            userService.toggleUserStatus(id);
-            return ResponseEntity.ok("User status updated successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error updating status");
-        }
+    public User toggleStatus(@PathVariable Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setActive(!user.isActive());
+        return userRepository.save(user);
     }
 
-    // --- (අනිත් methods - deleteUser, getHistory වෙනසක් නෑ) ---
     @DeleteMapping("/delete/{id}")
     public Map<String,String> deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
@@ -63,7 +43,6 @@ public class AdminController {
 
     @GetMapping("/user-history/{id}")
     public ResponseEntity<?> getHistory(@PathVariable Long id) {
-        // (කලින් code එකම තියන්න)
         User user = userRepository.findById(id).orElseThrow();
         Map<String, Object> resp = new HashMap<>();
 

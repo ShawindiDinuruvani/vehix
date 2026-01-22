@@ -1,11 +1,10 @@
-/* 1. පසුබිම (New Luxury Dark Background) */
 .admin-bg {
-    /* අලුත් High Quality Dark Image එකක් */
+    
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), 
                 url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1920&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Scroll කරනකොට පින්තූරය හෙලවෙන්නේ නෑ */
+    background-attachment: fixed; 
     min-height: 100vh;
     padding-bottom: 50px;
     color: #e0e0e0;
@@ -14,17 +13,17 @@
 
 /* 2. Modern Glass Panels (Main Containers) */
 .glass-panel {
-    background: rgba(20, 20, 20, 0.75); /* අඳුරු පසුබිම */
-    backdrop-filter: blur(16px); /* වීදුරු වගේ බොඳ වෙන්න */
+    background: rgba(20, 20, 20, 0.75); 
+    backdrop-filter: blur(16px); 
     -webkit-backdrop-filter: blur(16px);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08); /* ඉතා සියුම් සුදු ඉරක් */
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); /* කළු සෙවනැල්ල */
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
     padding: 25px;
     margin-bottom: 20px;
 }
 
-/* 3. Stat Cards (උඩ තියෙන ගණන් පෙන්වන කොටු) */
+
 .stat-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     border-radius: 16px;
@@ -36,11 +35,11 @@
     cursor: pointer;
 }
 
-/* Mouse එක උඩට ගෙනාවම උඩට එන ගැම්ම */
+
 .stat-card:hover {
-    transform: translateY(-8px); /* උඩට එනවා */
+    transform: translateY(-8px); 
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
-    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.2); /* රත්තරන් පාට Glow එකක් */
+    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.2); 
     border-color: rgba(255, 193, 7, 0.5);
 }
 
@@ -56,7 +55,7 @@
     color: white !important;
     background: transparent !important;
     border-collapse: separate;
-    border-spacing: 0 10px; /* පේළි අතර පරතරය */
+    border-spacing: 0 10px; 
 }
 
 .custom-table thead th {
@@ -76,7 +75,7 @@
 }
 
 .custom-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.08); /* Row එක උඩට ගියාම පාට වෙනස් වෙන්න */
+    background-color: rgba(255, 255, 255, 0.08); 
 }
 
 .custom-table td {
@@ -111,12 +110,12 @@
 .nav-tabs .nav-link.active {
     color: white !important;
     background: linear-gradient(to top, rgba(13, 110, 253, 0.2), transparent) !important;
-    border-bottom: 3px solid #0d6efd; /* නිල් පාට ඉරක් යටින් */
+    border-bottom: 3px solid #0d6efd; 
 }
 
 /* 6. Buttons Styling */
 .btn-sm {
-    border-radius: 50px; /* රවුම් බොත්තම් */
+    border-radius: 50px; 
     padding: 5px 15px;
     font-size: 0.85rem;
     font-weight: 600;

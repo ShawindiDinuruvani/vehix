@@ -5,7 +5,7 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  font-family: 'Poppins', 'Segoe UI', sans-serif; /* Clean modern font */
+  font-family: 'Poppins', 'Segoe UI', sans-serif; 
   min-height: 100vh;
   padding-bottom: 50px;
 }
@@ -36,7 +36,7 @@
   box-shadow: none;
 }
 
-/* Issue Cards (The Grid Buttons) */
+/* Issue Cards */
 .issue-card {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -54,12 +54,11 @@
 }
 
 .issue-card i {
-  color: #0d6efd; /* Blue Icon */
+  color: #0d6efd;
 }
 
-/* Active State (When Selected) */
 .issue-card.active-issue {
-  background: #0d6efd; /* Blue Background */
+  background: #0d6efd; 
   border-color: #0d6efd;
   color: white;
   box-shadow: 0 0 15px rgba(13, 110, 253, 0.5);
@@ -69,12 +68,11 @@
   color: white;
 }
 
-/* Info Box */
 .info-alert {
-  background: rgba(13, 202, 240, 0.1); /* Slight blue tint */
+  background: rgba(13, 202, 240, 0.1); 
 }
 
-/* Fade In Animation for Map */
+
 .fade-in {
   animation: fadeIn 0.8s ease-in-out;
 }
@@ -83,8 +81,8 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-/* Dropdown එක ඇතුලේ තියෙන Options පැහැදිලිව පෙනෙන්න */
+
 .custom-input option {
-    color: black;  /* අකුරු කළු පාටින් */
-    background: white; /* පසුබිම සුදු පාටින් */
+    color: black;  
+    background: white; 
 }

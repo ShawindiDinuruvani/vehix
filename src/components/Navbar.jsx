@@ -47,12 +47,12 @@ const NavbarComponent = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             
-            {/* Home Link (හැමෝටම) */}
+            {/* Home Link  */}
             <Nav.Link as={Link} to="/" className={`nav-link-custom ${location.pathname === "/" ? "active" : ""}`}>
               Home
             </Nav.Link>
 
-            {/* Login නැති අයට */}
+            {/* Login */}
             {!token && (
               <>
                 <Link to="/login" className="ms-2">
