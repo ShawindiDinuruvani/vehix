@@ -1,238 +1,228 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card, Button, Form, Badge, ProgressBar, Nav } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import { Container, Row, Col, Card, Button, Form, Badge, ProgressBar, Spinner, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 import "./Profile.css";
 
 const Profile = () => {
-  // --- STATE MANAGEMENT ---
-  const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, vehicles, settings
-  const [user, setUser] = useState({
-    role: "CUSTOMER", // Toggle this to "GARAGE_OWNER" to test
-    fullName: "Kasun Perera",
-    email: "kasun@example.com",
-    phone: "077-1234567",
-    nic: "981234567V",
-    address: "No 10, Colombo Rd, Kandy",
-    profilePic: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-    
-    // Customer Data
-    vehicles: [
-      { id: 1, number: "WP CAB-1234", model: "Toyota Axio", type: "Car", nextService: "2026-02-15", health: 80 },
-      { id: 2, number: "WP BC-5566", model: "Honda Dio", type: "Bike", nextService: "2026-03-10", health: 95 }
-    ],
-    // Garage Data
-    businessName: "Kasun's Auto Care",
-    rating: 4.8,
-    totalServices: 120,
-    earnings: "LKR 450,000"
-  });
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
-  const toggleRole = () => {
-    setUser({ 
-        ...user, 
-        role: user.role === "CUSTOMER" ? "GARAGE_OWNER" : "CUSTOMER",
-        profilePic: user.role === "CUSTOMER" 
-            ? "https://cdn-icons-png.flaticon.com/512/10484/10484252.png" 
-            : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-    });
+  // State (කලින් කෝඩ් එකේ තිබුණ විදියටම)
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [user, setUser] = useState({
+      fullName: "", email: "", contactNumber: "", role: "", profileImage: "", businessName: "",
+      businessAddress: "", vehicles: [], rating: 0, totalServices: 0, isActive: true
+  });
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  // Data Fetching
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const email = localStorage.getItem("email") || localStorage.getItem("userEmail");
+        const token = localStorage.getItem("token");
+
+        if (!token || !email) {
+          navigate("/login");
+          return;
+        }
+
+        const response = await axios.get(`/api/profile/${email}`);
+        setUser({
+            ...response.data,
+            profileImage: response.data.profileImage || "", 
+            contactNumber: response.data.contactNumber || "",
+            businessName: response.data.businessName || "",
+            businessAddress: response.data.businessAddress || "",
+            rating: 4.8, // Default
+            totalServices: 12 // Default
+        });
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load profile.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserProfile();
+  }, [navigate]);
+
+  // Handle Changes
+  const handleInputChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  
+  const handleImageClick = () => fileInputRef.current.click();
+
+  const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => setUser((prev) => ({ ...prev, profileImage: reader.result }));
+          reader.readAsDataURL(file);
+      }
   };
 
-  return (
-    <div className="profile-page min-vh-100 py-5">
-      <Container>
-        
-        {/* --- HEADER SECTION --- */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="text-white fw-bold">User Profile</h2>
-            <Button variant="outline-warning" size="sm" onClick={toggleRole}>
-                Switch View ({user.role === "CUSTOMER" ? "Owner" : "Customer"})
-            </Button>
-        </div>
+  const handleSaveChanges = async () => {
+      setUpdating(true);
+      setError("");
+      setSuccessMsg("");
+      try {
+          await axios.put("/api/profile/update", user);
+          setSuccessMsg("Profile Updated Successfully!");
+          localStorage.setItem("fullName", user.fullName);
+          setTimeout(() => setSuccessMsg(""), 3000);
+      } catch (err) {
+          setError("Failed to update.");
+      } finally {
+          setUpdating(false);
+      }
+  };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
+  if (loading) return <div className="d-flex justify-content-center align-items-center min-vh-100 bg-dark"><Spinner animation="border" variant="warning" /></div>;
+
+  return (
+    <div className="profile-page">
+      
+      {/* 🔥 1. HERO COVER SECTION */}
+      <div className="profile-cover">
+         {/* මෙතන අවශ්‍ය නම් "Welcome Back" කියලා ලොකුවට දාන්න පුළුවන් */}
+      </div>
+
+      <Container>
         <Row className="g-4">
           
-          {/* =======================
-              LEFT SIDEBAR (MENU)
-             ======================= */}
-          <Col lg={3}>
-            <Card className="glass-card text-center p-4 h-100 border-0">
-                <div className="position-relative mx-auto mb-3" style={{ width: "100px" }}>
-                    <img src={user.profilePic} alt="Profile" className="profile-img shadow-lg" />
-                    <span className="position-absolute bottom-0 end-0 p-2 bg-success border border-light rounded-circle"></span>
+          {/* 🔥 2. LEFT SIDEBAR (Profile Card) - Overlaps Cover */}
+          <Col lg={4} className="profile-sidebar">
+            <Card className="glass-card text-center p-4 border-0 mb-4">
+                
+                {/* Profile Image with Ring */}
+                <div className="profile-img-container" onClick={handleImageClick}>
+                    <img 
+                        src={user.profileImage || "https://cdn-icons-png.flaticon.com/512/3209/3209265.png"} 
+                        alt="Profile" 
+                        className="profile-img" 
+                    />
+                    <div className="camera-icon"><i className="bi bi-camera-fill"></i></div>
+                    <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleFileChange} />
                 </div>
-                <h5 className="text-white fw-bold mb-0">{user.fullName}</h5>
-                <p className="text-white-50 small mb-2">{user.email}</p>
-                <Badge bg={user.role === "CUSTOMER" ? "primary" : "warning"} className="mb-4 py-2 px-3">
+
+                <h4 className="fw-bold text-white mb-1">{user.fullName}</h4>
+                <p className="text-white-50 small mb-3">{user.email}</p>
+                
+                <Badge bg={user.role === "CUSTOMER" ? "info" : "warning"} className="mb-4 px-3 py-2 rounded-pill text-dark fw-bold">
                     {user.role === "CUSTOMER" ? "Vehicle Owner" : "Garage Manager"}
                 </Badge>
 
-                {/* Navigation Menu */}
-                <div className="d-grid gap-2 text-start">
-                    <Button 
-                        variant={activeTab === "dashboard" ? "primary" : "outline-light"} 
-                        className="text-start border-0"
-                        onClick={() => setActiveTab("dashboard")}
-                    >
-                        <i className="bi bi-speedometer2 me-2"></i> Dashboard
-                    </Button>
-                    
-                    <Button 
-                        variant={activeTab === "vehicles" ? "primary" : "outline-light"} 
-                        className="text-start border-0"
-                        onClick={() => setActiveTab("vehicles")}
-                    >
-                        {user.role === "CUSTOMER" 
-                            ? <><i className="bi bi-car-front me-2"></i> My Vehicles</> 
-                            : <><i className="bi bi-tools me-2"></i> My Garage</>}
-                    </Button>
+                {/* Status Badges */}
+                <div className="d-flex justify-content-center gap-3 mb-4">
+                    <div className="text-center">
+                        <h5 className="mb-0 fw-bold text-success">{user.isActive ? "Active" : "Banned"}</h5>
+                        <small className="text-secondary">Status</small>
+                    </div>
+                    <div className="border-end border-secondary"></div>
+                    <div className="text-center">
+                        <h5 className="mb-0 fw-bold text-warning">4.8</h5>
+                        <small className="text-secondary">Rating</small>
+                    </div>
+                </div>
 
-                    <Button 
-                        variant={activeTab === "settings" ? "primary" : "outline-light"} 
-                        className="text-start border-0"
-                        onClick={() => setActiveTab("settings")}
-                    >
-                        <i className="bi bi-gear me-2"></i> Settings
-                    </Button>
-                    
-                    <hr className="border-secondary my-3" />
-                    
-                    <Button variant="danger" className="text-start">
-                        <i className="bi bi-box-arrow-right me-2"></i> Logout
-                    </Button>
+                {/* Navigation Menu */}
+                <div className="d-grid gap-2">
+                    <button className={`nav-btn ${activeTab === "dashboard" ? "active" : ""}`} onClick={() => setActiveTab("dashboard")}>
+                        <i className="bi bi-grid-fill"></i> Dashboard
+                    </button>
+                    <button className={`nav-btn ${activeTab === "settings" ? "active" : ""}`} onClick={() => setActiveTab("settings")}>
+                        <i className="bi bi-gear-fill"></i> Settings / Edit Profile
+                    </button>
+                    <button className={`nav-btn text-danger`} onClick={handleLogout}>
+                        <i className="bi bi-box-arrow-left"></i> Logout
+                    </button>
                 </div>
             </Card>
           </Col>
 
-      
-          <Col lg={9}>
-            <Card className="glass-card p-4 h-100 border-0">
+          {/* 🔥 3. RIGHT CONTENT SECTION */}
+          <Col lg={8} className="mt-lg-4">
+            
+            {/* Alerts */}
+            {successMsg && <Alert variant="success" className="text-center fw-bold rounded-pill">{successMsg}</Alert>}
+            {error && <Alert variant="danger" className="text-center rounded-pill">{error}</Alert>}
+
+            <Card className="glass-card p-4 border-0">
                 
-                {/* --- TAB 1: DASHBOARD OVERVIEW --- */}
+                {/* --- TAB: DASHBOARD --- */}
                 {activeTab === "dashboard" && (
                     <div className="fade-in">
-                        <h3 className="text-white mb-4">Overview</h3>
+                        <h3 className="fw-bold mb-4 text-warning">Overview</h3>
+                        
+                        {/* Stats Cards */}
                         <Row className="g-3 mb-4">
-                            <Col md={4}>
-                                <div className="stat-card bg-primary bg-opacity-25 p-3 rounded">
-                                    <h2 className="text-primary fw-bold">
-                                        {user.role === "CUSTOMER" ? user.vehicles.length : user.totalServices}
-                                    </h2>
-                                    <p className="text-white-50 mb-0">
-                                        {user.role === "CUSTOMER" ? "Total Vehicles" : "Total Services"}
-                                    </p>
+                            <Col md={6}>
+                                <div className="stat-card">
+                                    <i className="bi bi-tools fs-1 text-info mb-2"></i>
+                                    <h3 className="fw-bold text-white">{user.role === "CUSTOMER" ? "2" : user.totalServices}</h3>
+                                    <p className="text-white-50 mb-0">{user.role === "CUSTOMER" ? "Active Vehicles" : "Total Services Done"}</p>
                                 </div>
                             </Col>
-                            <Col md={4}>
-                                <div className="stat-card bg-success bg-opacity-25 p-3 rounded">
-                                    <h2 className="text-success fw-bold">2</h2>
-                                    <p className="text-white-50 mb-0">Upcoming Bookings</p>
-                                </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="stat-card bg-warning bg-opacity-25 p-3 rounded">
-                                    <h2 className="text-warning fw-bold">
-                                        {user.role === "CUSTOMER" ? "Good" : "4.8"}
-                                    </h2>
-                                    <p className="text-white-50 mb-0">
-                                        {user.role === "CUSTOMER" ? "Account Status" : "User Rating"}
-                                    </p>
+                            <Col md={6}>
+                                <div className="stat-card">
+                                    <i className="bi bi-calendar-check fs-1 text-success mb-2"></i>
+                                    <h3 className="fw-bold text-white">5</h3>
+                                    <p className="text-white-50 mb-0">Upcoming Appointments</p>
                                 </div>
                             </Col>
                         </Row>
 
-                        <h5 className="text-white mb-3">Recent Activity</h5>
-                        <div className="activity-list">
-                            <div className="d-flex align-items-center p-3 mb-2 rounded bg-dark bg-opacity-50">
-                                <div className="icon-box bg-primary text-white rounded-circle p-2 me-3">
-                                    <i className="bi bi-calendar-check"></i>
-                                </div>
-                                <div>
-                                    <h6 className="text-white mb-0">Service Booked</h6>
-                                    <small className="text-white-50">Toyota Axio - Oil Change</small>
-                                </div>
-                                <span className="ms-auto text-white-50 small">2 hours ago</span>
-                            </div>
-                            <div className="d-flex align-items-center p-3 rounded bg-dark bg-opacity-50">
-                                <div className="icon-box bg-success text-white rounded-circle p-2 me-3">
-                                    <i className="bi bi-check-lg"></i>
-                                </div>
-                                <div>
-                                    <h6 className="text-white mb-0">Profile Updated</h6>
-                                    <small className="text-white-50">Phone number verified</small>
-                                </div>
-                                <span className="ms-auto text-white-50 small">Yesterday</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* --- TAB 2: VEHICLES (CUSTOMER) OR GARAGE (OWNER) --- */}
-                {activeTab === "vehicles" && (
-                    <div className="fade-in">
-                        <div className="d-flex justify-content-between mb-4">
-                            <h3 className="text-white">{user.role === "CUSTOMER" ? "My Vehicles" : "Garage Details"}</h3>
-                            <Button variant="primary" size="sm">
-                                <i className="bi bi-plus-lg me-1"></i> {user.role === "CUSTOMER" ? "Add Vehicle" : "Add Service"}
-                            </Button>
-                        </div>
-
-                        {user.role === "CUSTOMER" ? (
-                            <Row className="g-3">
-                                {user.vehicles.map((v) => (
-                                    <Col md={6} key={v.id}>
-                                        <div className="vehicle-card-pro p-3 rounded border border-secondary position-relative">
-                                            <div className="d-flex justify-content-between align-items-start">
-                                                <div>
-                                                    <h5 className="text-primary fw-bold mb-0">{v.number}</h5>
-                                                    <p className="text-white mb-2">{v.model}</p>
-                                                </div>
-                                                <i className="bi bi-car-front-fill fs-3 text-white-50"></i>
-                                            </div>
-                                            <div className="mt-3">
-                                                <div className="d-flex justify-content-between text-white-50 small mb-1">
-                                                    <span>Condition</span>
-                                                    <span>{v.health}%</span>
-                                                </div>
-                                                <ProgressBar variant="success" now={v.health} height="5px" className="mb-2" />
-                                                <small className="text-warning">
-                                                    <i className="bi bi-clock-history me-1"></i> Next Service: {v.nextService}
-                                                </small>
-                                            </div>
-                                        </div>
+                        <h5 className="text-white mb-3">Quick Info</h5>
+                        <div className="bg-dark bg-opacity-50 p-4 rounded-3 border border-secondary">
+                            <Row>
+                                <Col sm={6} className="mb-3">
+                                    <small className="text-secondary d-block">Full Name</small>
+                                    <span className="fw-bold">{user.fullName}</span>
+                                </Col>
+                                <Col sm={6} className="mb-3">
+                                    <small className="text-secondary d-block">Phone</small>
+                                    <span className="fw-bold">{user.contactNumber || "Not Set"}</span>
+                                </Col>
+                                {user.role === "GARAGE_OWNER" && (
+                                    <Col sm={12}>
+                                        <small className="text-secondary d-block">Garage Address</small>
+                                        <span className="fw-bold text-warning">{user.businessAddress || "N/A"}</span>
                                     </Col>
-                                ))}
+                                )}
                             </Row>
-                        ) : (
-                            <div>
-                                <div className="p-3 mb-3 bg-dark bg-opacity-50 rounded">
-                                    <h5 className="text-warning">{user.businessName}</h5>
-                                    <p className="text-white-50">Authorized Service Center</p>
-                                    <Badge bg="info" className="me-2">Hybrid Specialist</Badge>
-                                    <Badge bg="info">Engine Repair</Badge>
-                                </div>
-                                <h6 className="text-white mt-4">Business Performance</h6>
-                                <h1 className="text-success fw-bold">{user.earnings}</h1>
-                                <p className="text-white-50">Total Earnings this month</p>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 )}
 
-                {/* --- TAB 3: SETTINGS --- */}
+                {/* --- TAB: SETTINGS (EDIT) --- */}
                 {activeTab === "settings" && (
                     <div className="fade-in">
-                        <h3 className="text-white mb-4">Account Settings</h3>
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+                            <h3 className="fw-bold text-warning">Edit Profile</h3>
+                            <Badge bg="secondary">Editable</Badge>
+                        </div>
+                        
                         <Form>
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-white-50">Full Name</Form.Label>
-                                        <Form.Control type="text" defaultValue={user.fullName} className="custom-input" />
+                                        <Form.Control type="text" name="fullName" value={user.fullName} onChange={handleInputChange} className="custom-input" />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="text-white-50">NIC Number</Form.Label>
-                                        <Form.Control type="text" defaultValue={user.nic} className="custom-input" />
+                                        <Form.Label className="text-white-50">Role (Locked)</Form.Label>
+                                        <Form.Control type="text" value={user.role} className="custom-input text-white-50" disabled />
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -240,24 +230,43 @@ const Profile = () => {
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label className="text-white-50">Email Address</Form.Label>
-                                        <Form.Control type="email" defaultValue={user.email} className="custom-input" disabled />
+                                        <Form.Label className="text-white-50">Email Address (Locked)</Form.Label>
+                                        <Form.Control type="email" name="email" value={user.email} className="custom-input text-white-50" disabled />
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label className="text-white-50">Phone Number</Form.Label>
-                                        <Form.Control type="text" defaultValue={user.phone} className="custom-input" />
+                                        <Form.Control type="text" name="contactNumber" value={user.contactNumber} onChange={handleInputChange} className="custom-input" placeholder="07x-xxxxxxx" />
                                     </Form.Group>
                                 </Col>
                             </Row>
 
-                            <Form.Group className="mb-4">
-                                <Form.Label className="text-white-50">Address</Form.Label>
-                                <Form.Control as="textarea" rows={2} defaultValue={user.address} className="custom-input" />
-                            </Form.Group>
+                            {user.role === "GARAGE_OWNER" && (
+                                <>
+                                    <h5 className="text-info mt-4 mb-3"><i className="bi bi-shop"></i> Business Details</h5>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label className="text-white-50">Garage Name</Form.Label>
+                                                <Form.Control type="text" name="businessName" value={user.businessName} onChange={handleInputChange} className="custom-input" />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label className="text-white-50">Address</Form.Label>
+                                                <Form.Control type="text" name="businessAddress" value={user.businessAddress} onChange={handleInputChange} className="custom-input" />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                </>
+                            )}
 
-                            <Button variant="success" className="px-4 fw-bold">Save Changes</Button>
+                            <div className="d-flex justify-content-end mt-4">
+                                <Button variant="warning" size="lg" className="px-5 fw-bold rounded-pill" onClick={handleSaveChanges} disabled={updating}>
+                                    {updating ? <Spinner animation="border" size="sm" /> : "Save Changes"}
+                                </Button>
+                            </div>
                         </Form>
                     </div>
                 )}

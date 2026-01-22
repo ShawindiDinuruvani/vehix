@@ -1,59 +1,74 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Card, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom"; 
+import { Container, Form, Button, Card, Alert, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom"; 
 import axios from "../api/axios";
+
+// 🔥 වැදගත්ම දේ: CSS එක Import කරන්න
+import "./Signin.css";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      
       const response = await axios.post("/api/auth/login", { email, password });
 
-    
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userEmail", response.data.email);
+      localStorage.setItem("email", response.data.email);
       localStorage.setItem("fullName", response.data.fullName);
       localStorage.setItem("role", response.data.role); 
 
       if (response.data.role === "GARAGE_OWNER") {
-          
           localStorage.setItem("myGarageName", response.data.businessName);
-          
-          
           localStorage.setItem("garageId", response.data.id); 
+      }
 
-          
-          window.location.href = "/garage-dashboard";
+      if (response.data.role === "ADMIN") {
+          navigate("/admin-dashboard");
+      } else if (response.data.role === "GARAGE_OWNER") {
+          navigate("/garage-dashboard");
       } else {
-          
-          window.location.href = "/"; 
+          navigate("/");
       }
 
     } catch (err) {
       console.error(err);
-      setError("Login Failed. Please check email & password.");
+      if (err.response && err.response.data && err.response.data.message) {
+          setError(err.response.data.message);
+      } else {
+          setError("Login Failed. Please check email & password.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100" style={{ background: "#121212" }}>
+    // 🔥 මෙතන className="signin-bg" තියෙනවද බලන්න
+    <div className="signin-bg">
       <Container>
-        <Card className="p-4 mx-auto shadow-lg glass-card" style={{ maxWidth: "400px", background: "rgba(255,255,255,0.1)", color: "white" }}>
-          <h2 className="text-center fw-bold mb-3">Welcome Back</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
+        <Card className="glass-card mx-auto shadow-lg" style={{ maxWidth: "400px" }}>
+          <div className="text-center mb-4">
+            <h2 className="fw-bold text-white">Welcome Back</h2>
+            <p className="text-white-50">Please login to your account</p>
+          </div>
+          
+          {error && <Alert variant="danger" className="text-center">{error}</Alert>}
           
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Email Address</Form.Label>
+              <Form.Label className="text-white">Email Address</Form.Label>
               <Form.Control 
+                className="auth-input"
                 type="email" 
                 placeholder="Enter email" 
                 value={email} 
@@ -62,9 +77,10 @@ const Signin = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
+            <Form.Group className="mb-4">
+              <Form.Label className="text-white">Password</Form.Label>
               <Form.Control 
+                className="auth-input"
                 type="password" 
                 placeholder="Password" 
                 value={password} 
@@ -73,12 +89,16 @@ const Signin = () => {
               />
             </Form.Group>
 
-            <Button type="submit" className="w-100 btn-primary mt-2">Login</Button>
+            <Button type="submit" className="w-100 btn-primary fw-bold" disabled={loading}>
+              {loading ? <Spinner animation="border" size="sm" /> : "Login"}
+            </Button>
           </Form>
           
-          <p className="text-center mt-3 text-white-50">
-            New here? <Link to="/signup" className="text-warning">Create Account</Link>
-          </p>
+          <div className="text-center mt-4">
+            <p className="text-white-50 mb-0">
+              New here? <Link to="/signup" className="text-warning text-decoration-none fw-bold">Create Account</Link>
+            </p>
+          </div>
         </Card>
       </Container>
     </div>

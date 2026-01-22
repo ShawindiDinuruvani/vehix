@@ -19,7 +19,7 @@ const Appointments = () => {
 
   const currentUserEmail = localStorage.getItem("userEmail");
   
-  // --- 1.  ---
+  // --- 1. DATA FETCHING ---
   useEffect(() => {
     fetchGarages();      
     if(currentUserEmail) {
@@ -29,15 +29,19 @@ const Appointments = () => {
 
   const fetchGarages = async () => {
     try {
-      const response = await axios.get("/api/users/garages");
+      const response = await axios.get("/api/admin/garages");
+      
+      // 🔥 UPDATE: Backend එකෙන් එන profileImage එක මෙතනට සම්බන්ධ කළා
       const formattedGarages = response.data.map(user => ({
         id: user.id,
         name: user.businessName || user.fullName || "Unnamed Garage", 
         location: user.businessAddress || "Location Not Available",
         rating: 4.5, 
         type: "General Service",
-        image: "https://cdn-icons-png.flaticon.com/512/1995/1995470.png"
+        // Image එක තියෙනවා නම් ගන්න, නැත්නම් Default Icon එක
+        image: user.profileImage || "https://cdn-icons-png.flaticon.com/512/3209/3209265.png"
       }));
+      
       setGarages(formattedGarages);
     } catch (error) {
       console.error("Error fetching garages:", error);
@@ -46,7 +50,6 @@ const Appointments = () => {
     }
   };
 
-  
   const fetchAppointments = async () => {
     try {
       const response = await axios.get(`/api/appointments/my-appointments/${currentUserEmail}`);
@@ -65,7 +68,7 @@ const Appointments = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --- 2. Booking ---
+  // --- 2. Booking Logic ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!currentUserEmail) {
@@ -77,7 +80,7 @@ const Appointments = () => {
       ...formData,
       garageName: selectedGarage.name, 
       userEmail: currentUserEmail,
-      status: "Pending" // Pending
+      status: "Pending" 
     };
 
     try {
@@ -90,7 +93,7 @@ const Appointments = () => {
       }
       setSelectedGarage(null);
       setEditingId(null);
-      fetchAppointments(); // List
+      fetchAppointments(); 
     } catch (error) {
       if (error.response) {
           alert("SERVER ERROR: " + JSON.stringify(error.response.data));
@@ -102,7 +105,6 @@ const Appointments = () => {
 
   // --- 3. Actions (Edit / Delete) ---
   const handleEdit = (appt) => {
-    // Garage Owner Accept 
     if (appt.status !== 'Pending') {
         alert("You cannot edit this appointment because it is already processed by the garage.");
         return;
@@ -146,13 +148,11 @@ const Appointments = () => {
       }
   };
 
-  // Stars
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
       <i key={i} className={`bi bi-star${i < Math.round(rating) ? "-fill text-warning" : " text-white-50"} me-1`}></i>
     ));
   };
-
 
   const getStatusBadge = (status) => {
       switch (status) {
@@ -198,15 +198,26 @@ const Appointments = () => {
                 ) : garages.length > 0 ? (
                     garages.map((garage) => (
                         <Col xl={3} lg={4} md={6} key={garage.id}>
-                            <Card className="glass-card h-100 text-center p-3 service-card-hover">
-                                <div className="mx-auto bg-white rounded-circle p-2 mb-3" style={{width:'80px', height:'80px'}}>
-                                    <img src={garage.image} alt="garage" width="100%" />
+                            <Card className="glass-card h-100 text-center p-3 service-card-hover border border-secondary shadow-lg">
+                                
+                                {/* 🔥 UPDATE: Image Styling (Circle with Border) */}
+                                <div 
+                                  className="mx-auto mb-3 bg-white rounded-circle d-flex align-items-center justify-content-center shadow"
+                                  style={{ width: "90px", height: "90px", overflow: "hidden", border: "3px solid #ffc107" }}
+                                >
+                                  <img 
+                                    src={garage.image} 
+                                    alt={garage.name}
+                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                  />
                                 </div>
+
                                 <h5 className="text-white fw-bold mb-1">{garage.name}</h5>
-                                <p className="text-white-50 small mb-2"><i className="bi bi-geo-alt-fill text-danger"></i> {garage.location}</p>
+                                <p className="text-white-50 small mb-2"><i className="bi bi-geo-alt-fill text-danger me-1"></i> {garage.location}</p>
                                 <div className="mb-2">{renderStars(garage.rating)}</div>
-                                <Badge bg="info" text="dark" className="mb-3 d-inline-block mx-auto">{garage.type}</Badge>
-                                <Button variant="primary" className="w-100 fw-bold mt-auto" onClick={() => handleBookNow(garage)}>Book Now</Button>
+                                <Badge bg="info" text="dark" className="mb-3 d-inline-block mx-auto rounded-pill px-3">{garage.type}</Badge>
+                                
+                                <Button variant="primary" className="w-100 fw-bold mt-auto rounded-pill" onClick={() => handleBookNow(garage)}>Book Now</Button>
                             </Card>
                         </Col>
                     ))
@@ -228,9 +239,13 @@ const Appointments = () => {
                             <h3 className="text-white">{editingId ? "Edit Appointment" : "Book Appointment"}</h3>
                             <Button variant="outline-light" size="sm" onClick={() => setSelectedGarage(null)}>Back</Button>
                         </div>
-                        <div className="p-3 rounded bg-primary bg-opacity-25 mb-4 border border-primary">
-                            <h5 className="text-white mb-0 fw-bold">{selectedGarage.name}</h5>
-                            <small className="text-white-50">{selectedGarage.location}</small>
+                        <div className="p-3 rounded bg-primary bg-opacity-25 mb-4 border border-primary d-flex align-items-center">
+                            {/* Selected Garage Image in Form */}
+                            <img src={selectedGarage.image} alt="garage" className="rounded-circle me-3 border border-white" width="50" height="50" style={{objectFit:"cover"}} />
+                            <div>
+                                <h5 className="text-white mb-0 fw-bold">{selectedGarage.name}</h5>
+                                <small className="text-white-50">{selectedGarage.location}</small>
+                            </div>
                         </div>
                         <Form onSubmit={handleSubmit}>
                             <Form.Control type="text" name="ownerName" placeholder="Your Name" value={formData.ownerName} onChange={handleChange} required className="mb-3 custom-input"/>
@@ -267,16 +282,12 @@ const Appointments = () => {
                                 <tr key={appt.id}>
                                     <td><span className="text-info">{appt.garageName}</span><br/><small>{appt.appointmentDate}</small></td>
                                     <td>{appt.vehicleNumber}<br/><small>{appt.serviceType}</small></td>
-                                    
-                                  
                                     <td>
                                         <Badge bg={getStatusBadge(appt.status)} className="px-3 py-2">
                                             {appt.status === 'Confirmed' ? 'Accepted' : appt.status}
                                         </Badge>
                                     </td>
-
                                     <td>
-                                        
                                         {appt.status === 'Pending' && (
                                             <Button variant="outline-warning" size="sm" className="me-2" onClick={() => handleEdit(appt)}>
                                                 <i className="bi bi-pencil"></i>

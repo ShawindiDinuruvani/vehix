@@ -1,40 +1,58 @@
-/* Page Background */
-.auth-page {
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%),
-              url('https://images.unsplash.com/photo-1493238792015-164e850496cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-blend-mode: overlay;
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
+/* 1. පසුබිම (Full Screen Dark Background) */
+.signin-bg {
+    background-color: #121212; /* රූපය නැති වුනොත් කළු පාට */
+    
+    /* පසුබිම් රූපය */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), 
+                      url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop');
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* 🔥 වැදගත්ම කොටස: තිරය පුරාම විහිදෙන්න */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw; /* මුළු පළලම */
+    height: 100vh; /* මුළු උසම */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    z-index: 0;
+    padding-top: 60px; /* Navbar එකට ඉඩ */
 }
 
-/* Glass Card */
+/* 2. Glass Card Design (මැද කොටුව) */
 .glass-card {
-  background: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  width: 100%;
-  max-width: 450px; /* Limits width nicely */
+    background: rgba(30, 30, 30, 0.8) !important; /* කළු වීදුරු */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 15px !important;
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    color: white;
 }
 
-/* Custom Inputs */
-.custom-input {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 12px;
-  border-radius: 10px;
+/* 3. Inputs Styling */
+.auth-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    padding: 12px 15px !important;
+    border-radius: 8px !important;
 }
 
-.custom-input:focus {
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  border-color: #0d6efd;
-  box-shadow: none;
+.auth-input:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    border-color: #ffc107 !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25) !important;
 }
 
-.custom-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+.auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }

@@ -37,4 +37,8 @@ public class User {
 
     @Column(columnDefinition = "boolean default true")
     private boolean isActive = true;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String profileImage;
 }

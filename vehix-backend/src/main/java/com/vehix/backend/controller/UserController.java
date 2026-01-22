@@ -68,4 +68,7 @@ public class UserController {
     public List<User> getAllGarages() {
         return userRepository.findByRole("GARAGE_OWNER");
     }
+
+
+
 }
