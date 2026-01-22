@@ -7,34 +7,33 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  // navigate අයින් කළා, මොකද අපි window.location.href පාවිච්චි කරනවා
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      // 1. Backend එකට Login Request එක යවනවා
+      
       const response = await axios.post("/api/auth/login", { email, password });
 
-      // 2. 🔥 Data Browser එකේ Save කරගන්නවා
+    
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userEmail", response.data.email);
       localStorage.setItem("fullName", response.data.fullName);
       localStorage.setItem("role", response.data.role); 
 
-      // 3. Role එක අනුව අදාළ පිටුවට යවනවා (Refresh වෙමින්)
       if (response.data.role === "GARAGE_OWNER") {
-          // Garage Owner සඳහා විශේෂ දත්ත Save කිරීම
+          
           localStorage.setItem("myGarageName", response.data.businessName);
           
-          // 🔥 Dashboard එකේ Emergency Request වැඩ කරන්න මේ ID එක අනිවාර්යයි
+          
           localStorage.setItem("garageId", response.data.id); 
 
-          // 🔥 Page එක Refresh වී Dashboard එකට යයි (එවිට Navbar එක Update වේ)
+          
           window.location.href = "/garage-dashboard";
       } else {
-          // Customer නම් Home Page එකට යයි
+          
           window.location.href = "/"; 
       }
 

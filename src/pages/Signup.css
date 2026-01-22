@@ -1,51 +1,77 @@
-/* Page Background */
-.signup-page {
-  background: linear-gradient(135deg, #000000 0%, #202020 100%),
-              url('https://images.unsplash.com/photo-1493238792015-164e850496cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-  background-blend-mode: overlay;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 100vh;
+
+.signup-bg {
+    
+    background-color: #121212; 
+    
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                      url('https://images.unsplash.com/photo-1493238792015-1a419acdc924?q=80&w=1920&auto=format&fit=crop');
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh; 
+    
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    z-index: 0; 
+    padding-top: 60px; 
+    overflow-y: auto; 
 }
 
-/* Glass Card */
+
 .glass-card {
-  background: rgba(255, 255, 255, 0.05) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+    background: rgba(30, 30, 30, 0.85); 
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    width: 100%;
+    position: relative;
+    z-index: 1; 
+}
+ 
+.auth-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 10px 15px !important;
 }
 
-/* Custom Inputs (Dark transparent) */
-.custom-input {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
+.auth-input:focus {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25) !important; /* Gold Glow */
+    border-color: #ffc107 !important;
 }
 
-.custom-input:focus {
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  border-color: #0d6efd;
-  box-shadow: none;
+.auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
-/* Fix Placeholder Color */
-.custom-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Dropdown Options (Since select options can't be transparent in some browsers, we make them dark) */
-.custom-input option {
-    background-color: #333;
+/* Dropdown Options */
+.auth-input option {
+    background-color: #222;
     color: white;
 }
 
-/* Garage Section specific styling */
-.garage-section {
-    background: rgba(255, 255, 255, 0.05);
+/* 4. Map Styling */
+.map-container {
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 10px;
 }

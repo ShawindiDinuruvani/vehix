@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Card, Alert } from "react-bootstrap";
+import { Container, Form, Button, Card, Alert, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import axios from "../api/axios";
 
-// Map  Location
+//CSS 
+import "./Signup.css";
+
+// Map Location Component
 const LocationMarker = ({ setLocation }) => {
   const [position, setPosition] = useState(null);
   useMapEvents({
@@ -31,6 +34,7 @@ const Signup = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading State 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -44,16 +48,19 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true); // Load
 
-    //  1. Validation: 
+    // 1. Validation: 
     if (formData.password !== formData.confirmPassword) {
         setError("Passwords do not match!");
+        setLoading(false);
         return;
     }
 
-    // Garage Owner  Location 
+    // Garage Owner Location Validation
     if (formData.role === "GARAGE_OWNER" && !formData.latitude) {
         setError("Please select your Garage Location on the map!");
+        setLoading(false);
         return;
     }
 
@@ -64,56 +71,69 @@ const Signup = () => {
       alert("Registration Successful! Please Login.");
       navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration Failed");
+      // UPDATE: Backend Validation Errors 
+      if (err.response && err.response.data) {
+        if (typeof err.response.data === "object") {
+           // List
+           const firstError = Object.values(err.response.data)[0];
+           setError(firstError || "Registration Failed");
+        } else {
+           
+           setError(err.response.data); 
+        }
+      } else {
+        setError("Registration Failed. Please try again.");
+      }
+    } finally {
+      setLoading(false); // Loading
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100" style={{ background: "#121212" }}>
+    //  CSS Clas (Inline Style )
+    <div className="signup-bg">
       <Container>
-        <Card className="p-4 mx-auto shadow-lg glass-card" style={{ maxWidth: "500px", background: "rgba(255,255,255,0.1)", color: "white" }}>
+        <Card className="glass-card mx-auto" style={{ maxWidth: "500px" }}>
           <h2 className="text-center fw-bold mb-3">Create Account</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Full Name</Form.Label>
-              <Form.Control name="fullName" onChange={handleChange} required />
+              <Form.Control className="auth-input" name="fullName" onChange={handleChange} required />
             </Form.Group>
             
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" name="email" onChange={handleChange} required />
+              <Form.Control className="auth-input" type="email" name="email" onChange={handleChange} required />
             </Form.Group>
             
-            {/*  Password Field */}
             <Form.Group className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" name="password" onChange={handleChange} required />
+              <Form.Control className="auth-input" type="password" name="password" onChange={handleChange} required />
             </Form.Group>
 
-            {/*  Confirm Password Field  */}
             <Form.Group className="mb-3">
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" name="confirmPassword" onChange={handleChange} required placeholder="Re-enter password" />
+              <Form.Control className="auth-input" type="password" name="confirmPassword" onChange={handleChange} required placeholder="Re-enter password" />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Role</Form.Label>
-              <Form.Select name="role" onChange={handleChange}>
+              <Form.Select className="auth-input" name="role" onChange={handleChange}>
                 <option value="CUSTOMER">Vehicle Owner (Customer)</option>
                 <option value="GARAGE_OWNER">Garage Owner</option>
               </Form.Select>
-            </Form.Group>``
+            </Form.Group>
 
-            
+            {/* Garage Owner Details */}
             {formData.role === "GARAGE_OWNER" && (
               <div className="p-3 border border-secondary rounded mb-3 bg-dark bg-opacity-50">
                 <h5 className="text-warning mb-3">Garage Details</h5>
                 
-                <Form.Group className="mb-2"><Form.Control name="businessName" placeholder="Garage Name" onChange={handleChange} required /></Form.Group>
-                <Form.Group className="mb-2"><Form.Control name="businessAddress" placeholder="Address" onChange={handleChange} required /></Form.Group>
-                <Form.Group className="mb-3"><Form.Control name="contactNumber" placeholder="Phone Number" onChange={handleChange} required /></Form.Group>
+                <Form.Group className="mb-2"><Form.Control className="auth-input" name="businessName" placeholder="Garage Name" onChange={handleChange} required /></Form.Group>
+                <Form.Group className="mb-2"><Form.Control className="auth-input" name="businessAddress" placeholder="Address" onChange={handleChange} required /></Form.Group>
+                <Form.Group className="mb-3"><Form.Control className="auth-input" name="contactNumber" placeholder="Phone Number" onChange={handleChange} required /></Form.Group>
                 
                 <Form.Label className="text-info">Tap on the map to set location:</Form.Label>
                 <div style={{ height: "200px", borderRadius: "8px", overflow: "hidden", border: "1px solid #666" }}>
@@ -126,9 +146,12 @@ const Signup = () => {
               </div>
             )}
 
-            <Button type="submit" className="w-100 btn-primary mt-2">Register</Button>
+            {/*  Loading Spinner Button */}
+            <Button type="submit" className="w-100 btn-primary mt-2 fw-bold" disabled={loading}>
+                {loading ? <Spinner animation="border" size="sm" /> : "Register"}
+            </Button>
           </Form>
-          <p className="text-center mt-3 text-white-50">Already have an account? <Link to="/login" className="text-warning">Login</Link></p>
+          <p className="text-center mt-3 text-white-50">Already have an account? <Link to="/login" className="text-warning text-decoration-none fw-bold">Login</Link></p>
         </Card>
       </Container>
     </div>

@@ -102,9 +102,7 @@ const Profile = () => {
             </Card>
           </Col>
 
-          {/* =======================
-              RIGHT CONTENT AREA
-             ======================= */}
+      
           <Col lg={9}>
             <Card className="glass-card p-4 h-100 border-0">
                 

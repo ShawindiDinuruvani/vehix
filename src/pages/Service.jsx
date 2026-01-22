@@ -47,7 +47,7 @@ const Service = () => {
         id: user.id,
         name: user.businessName || "Garage",
         address: user.businessAddress,
-        phone: user.contactNumber || "Not Available", // 🔥 Phone Number එක ගන්නවා
+        phone: user.contactNumber || "Not Available", 
         lat: user.latitude || 6.9271, 
         lng: user.longitude || 79.8612
       }));
@@ -175,7 +175,7 @@ const Service = () => {
                                     <Badge bg="success">Online</Badge>
                                 </div>
                                 
-                                {/* 🔥 Phone Number Section - Highlighted */}
+                                {/*  Phone Number Section - Highlighted */}
                                 <div className="d-flex align-items-center mb-3 p-2 rounded" style={{background: 'rgba(255, 255, 255, 0.1)'}}>
                                     <i className="bi bi-telephone-fill text-warning fs-5 me-2"></i>
                                     

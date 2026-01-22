@@ -1,6 +1,6 @@
 /* 1. Navbar Container (Glassmorphism) */
 .custom-navbar {
-  background: rgba(15, 15, 15, 0.6); /* ටිකක් විනිවිද පෙනෙන කළු */
+  background: rgba(15, 15, 15, 0.6); 
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -8,7 +8,7 @@
   transition: all 0.3s ease-in-out;
 }
 
-/* Scroll කළාම තද පාට වෙනවා */
+/* Scroll  */
 .custom-navbar.scrolled {
   background: rgba(10, 10, 10, 0.95);
   padding: 10px 0;
@@ -27,28 +27,28 @@
 
 /* 3. Nav Items (Home, Services, etc.) */
 .nav-link-custom {
-  color: rgba(255, 255, 255, 0.7) !important; /* අකුරු අළු පාටින් */
+  color: rgba(255, 255, 255, 0.7) !important; 
   font-weight: 500;
   margin: 0 5px;
   padding: 8px 18px !important;
   position: relative;
   transition: all 0.3s ease;
   font-size: 0.95rem;
-  border-radius: 20px; /* රවුම් හැඩය */
+  border-radius: 20px; 
 }
 
-/* Mouse එක ගෙනිච්චම (Hover) */
+/* Mouse  (Hover) */
 .nav-link-custom:hover {
   color: #fff !important;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* 4. Active Link (ඔබ ඉල්ලපු Blue Glow Effect එක) */
+/* 4. Active Link  */
 .nav-link-custom.active {
-  color: #fff !important; /* අනිවාර්යයෙන් සුදු පාට */
-  background: rgba(13, 110, 253, 0.2); /* නිල් පසුබිම */
-  box-shadow: 0 0 15px rgba(13, 110, 253, 0.4); /* නිල් එළිය (Glow) */
+  color: #fff !important; 
+  background: rgba(13, 110, 253, 0.2);
+  box-shadow: 0 0 15px rgba(13, 110, 253, 0.4); 
   border: 1px solid rgba(13, 110, 253, 0.3);
   font-weight: 600;
 }
@@ -90,5 +90,5 @@
 }
 
 .navbar-toggler-icon {
-  filter: invert(1); /* සුදු පාට කරන්න */
+  filter: invert(1); 
 }

@@ -16,7 +16,7 @@ import TrackHistory from "./pages/TrackHistory";
 import Profile from "./pages/Profile";
 import GarageDashboard from "./pages/GarageDashboard"; 
 
-// 🔥 1. Admin Dashboard එක Import කළා
+// 1. Admin Dashboard එක Import කළා
 import AdminDashboard from "./pages/AdminDashboard"; 
 
 function App() {
@@ -35,13 +35,8 @@ function App() {
             <Route path="/service" element={<Service />} />
             <Route path="/history" element={<TrackHistory />} />
             <Route path="/profile" element={<Profile />} />
-            
-            {/* 🔥 2. Garage Dashboard Route එක සම්බන්ධ කළා */}
             <Route path="/garage-dashboard" element={<GarageDashboard />} /> 
-            
-            {/* 🔥 3. Admin Dashboard Route එක සම්බන්ධ කළා */}
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            
           </Routes>
         </main>
 
