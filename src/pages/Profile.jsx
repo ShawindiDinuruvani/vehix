@@ -23,7 +23,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const email = localStorage.getItem("email") || localStorage.getItem("userEmail");
+        const email = localStorage.getItem("email") || localStorage.getItem("Email");
         const token = localStorage.getItem("token");
 
         if (!token || !email) {

@@ -16,9 +16,9 @@ public class UserProfileController {
     @Autowired
     private UserRepository userRepository;
 
-    // 1. Profile දත්ත ලබා ගැනීම (GET) - "Failed to load" දෝෂය මෙය විසඳයි
+    // 1. Profile දත්ත ලබා ගැනීම (GET)
     @GetMapping("/{email}")
-    public ResponseEntity<?> getUserProfile(@PathVariable String email) {
+    public ResponseEntity<?> getUserProfile(@PathVariable("email") String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
