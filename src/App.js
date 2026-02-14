@@ -15,8 +15,9 @@ import Service from "./pages/Service";
 import TrackHistory from "./pages/TrackHistory";
 import Profile from "./pages/Profile";
 import GarageDashboard from "./pages/GarageDashboard"; 
+import Forum from "./components/Forum";
+import GarageReviews from "./components/GarageReviews";
 
-// 1. Admin Dashboard එක Import කළා
 import AdminDashboard from "./pages/AdminDashboard"; 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/garage-dashboard" element={<GarageDashboard />} /> 
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/forum" element={<Forum />} />
+            <Route path="/reviews" element={<GarageReviews />} />
           </Routes>
         </main>
 
