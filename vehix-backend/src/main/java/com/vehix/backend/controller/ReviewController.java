@@ -23,7 +23,7 @@ public class ReviewController {
 
     // 2. අදාළ ගරාජ් එකේ Reviews ටික ගන්න (e.g., /api/reviews/Thanamalvila_Motors)
     @GetMapping("/{garageName}")
-    public List<Review> getGarageReviews(@PathVariable String garageName) {
+    public List<Review> getGarageReviews(@PathVariable("garageName") String garageName) {
         return reviewRepository.findByGarageName(garageName);
     }
 }
