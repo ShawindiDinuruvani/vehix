@@ -1,125 +1,143 @@
-/* --- 1. Background Styling (Appointment Page එක වගේමයි) --- */
-.forum-page {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.7)), 
-              url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop'); /* Car background */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  font-family: 'Poppins', 'Segoe UI', sans-serif; 
-  min-height: 100vh;
-  padding-top: 100px; /* Navbar එකට ඉඩ */
-  padding-bottom: 50px;
+/* මුළු පිටුවම */
+.chat-page {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* පිටුව scroll නොවී chat එක විතරක් scroll වෙන්න */
 }
 
-/* --- 2. Main Glass Card (Dark & Blurry) --- */
-.glass-card {
-  background: rgba(17, 16, 16, 0.92) !important; /* Dark background */
-  backdrop-filter: blur(20px); 
-  -webkit-backdrop-filter: blur(20px); 
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Light Border */
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); 
-  border-radius: 20px !important;
-  overflow: hidden; 
-  color: white; /* Text color white */
-  padding: 2rem;
+/* මැද Chat පෙට්ටිය */
+.chat-window-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-/* --- 3. Typography --- */
-h2, h4 {
-  color: #fff;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+.chat-window {
+    flex-grow: 1;
+    overflow-y: auto; /* Chat එක විතරක් scroll කරන්න */
+    padding: 20px;
 }
 
-.text-gold {
-  color: #ffc107; /* Vehix Gold Color */
+/* Scrollbar Style */
+.chat-window::-webkit-scrollbar {
+    width: 6px;
+}
+.chat-window::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
 }
 
-/* --- 4. Inputs (Appointment Form එකේ වගේමයි) --- */
-.form-control, .form-select {
-  background-color: #f8f9fa; /* Light Input background */
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  padding: 12px 15px;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  color: #333;
+/* Message Styles */
+.message-row {
+    display: flex;
+    margin-bottom: 15px;
 }
 
-.form-control:focus {
-  background-color: #fff;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25); 
-  outline: none;
+.other-message {
+    justify-content: flex-start;
 }
 
-/* Form labels - White color for visibility on dark card */
-.form-label {
-  font-weight: 600;
-  color: #e0e0e0; /* Light Grey */
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+/* ඔයාගේ නම type කරාම දකුණු පැත්තට එන විදියට හදන්න (JS එකේ logic එක අනුව) */
+.my-message {
+    justify-content: flex-end; /* මේක දැනට වැඩ කරන්නේ නම match වුනොත් විතරයි */
 }
 
-/* --- 5. Buttons (Gradient Blue) --- */
-.btn-primary {
-  background: linear-gradient(45deg, #0d6efd, #0056b3); 
-  border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 100%;
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 18px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    color: white;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px); 
-  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4); 
-  background: linear-gradient(45deg, #0b5ed7, #004494);
+/* අනිත් අයගේ මැසේජ් (Dark Glass) */
+.other-message .message-bubble {
+    background: rgba(40, 40, 40, 0.85);
+    border-top-left-radius: 0;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* --- 6. Forum Post Items (List Style) --- */
-/* මේක තමයි Forum එකේ පේළියෙන් පේළියට වැටෙන ප්‍රශ්න කාඩ් */
-.forum-post-item {
-  background: rgba(255, 255, 255, 0.05); /* Very light transparent white */
-  border-left: 5px solid #ffc107; /* Gold Left Border */
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  transition: transform 0.3s ease, background 0.3s ease;
+/* මගේ මැසේජ් (Gold/Yellow Highlight) */
+.my-message .message-bubble {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #000;
+    border-top-right-radius: 0;
 }
 
-.forum-post-item:hover {
-  background: rgba(255, 255, 255, 0.1); /* Hover වුනාම පොඩ්ඩක් එළිය වෙයි */
-  transform: translateX(5px); /* දකුණට පොඩ්ඩක් පනිනවා */
-  cursor: pointer;
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+    font-weight: bold;
 }
 
-.post-title {
-  color: #0d6efd; /* Blue Title */
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 5px;
+.author-name {
+    opacity: 0.9;
 }
 
-.post-meta {
-  color: #adb5bd; /* Grey text for Author name */
-  font-size: 0.85rem;
-  margin-bottom: 10px;
+.message-topic {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.2) !important;
+    color: inherit;
 }
 
-.post-content {
-  color: #e9ecef; /* Light text */
-  font-size: 0.95rem;
+.message-body {
+    font-size: 1rem;
+    line-height: 1.4;
+    word-wrap: break-word;
 }
 
-/* --- 7. Search Bar Container --- */
-.search-container {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+.message-time {
+    font-size: 0.65rem;
+    opacity: 0.6;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* පහල Input කොටස */
+.chat-input-area {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat-input-sm {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.chat-input-main {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    resize: none;
+}
+
+.chat-input-sm:focus, .chat-input-main:focus {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-shadow: none;
+    border: 1px solid #ffc107;
+}
+
+.send-btn {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.send-btn:active {
+    transform: scale(0.95);
 }
