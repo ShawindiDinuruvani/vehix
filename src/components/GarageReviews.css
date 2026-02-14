@@ -1,0 +1,19 @@
+.review-page {
+  background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1920');
+  background-size: cover;
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+}
