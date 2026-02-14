@@ -5,7 +5,7 @@ import "./GarageReviews.css";
 
 const GarageReviews = () => {
  
-  const garageName = "Thanamalvila_Auto_Care"; 
+  const garageName = "Vehix"; 
 
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState({
